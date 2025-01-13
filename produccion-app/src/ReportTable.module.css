@@ -1,0 +1,67 @@
+/* Asegúrate de que cada selector esté precedido por un contenedor único */
+.table-container {
+  margin-top: 30px; /* Espaciado adicional superior */
+  text-align: center;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* Espaciado adicional entre elementos */
+  margin-bottom: 20px; /* Espaciado inferior para separar la tabla */
+  flex-wrap: wrap; /* Permite que los elementos se acomoden en líneas si es necesario */
+}
+
+.search-container input {
+  padding: 10px; /* Más espaciado interno */
+  border: 1px solid #444;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  width: 200px; /* Tamaño uniforme para los inputs */
+}
+
+.search-container button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background-color: #0056b3;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  border: 1px solid #444;
+}
+
+.table th {
+  background-color: #007BFF;
+  color: white;
+}
+
+.table tr:nth-child(even) {
+  background-color: #2e2e2e;
+}
+
+.table tr:nth-child(odd) {
+  background-color: #3e3e3e;
+}
+
+.no-results {
+  text-align: center;
+  color: #ccc;
+  margin-top: 20px;
+}
