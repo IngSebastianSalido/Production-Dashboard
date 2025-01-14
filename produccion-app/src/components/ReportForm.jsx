@@ -3,10 +3,10 @@ import axios from 'axios';
 
 const ReportForm = () => {
   const [formData, setFormData] = useState({
-    fecha: '',
-    area: '',
-    linea: '',
-    hora: '',
+    fecha: localStorage.getItem('fecha') || '',
+    area: localStorage.getItem('area') || '',
+    linea: localStorage.getItem('linea') || '',
+    hora: localStorage.getItem('hora') || '',
     piezas_ok: 0,
     piezas_nok: 0,
   });
@@ -24,21 +24,18 @@ const ReportForm = () => {
     };
 
     fetchOptions();
-
-    const savedData = {
-      fecha: localStorage.getItem('fecha') || '',
-      area: localStorage.getItem('area') || '',
-      linea: localStorage.getItem('linea') || '',
-    };
-    setFormData((prevData) => ({ ...prevData, ...savedData }));
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    setFormData((prevFormData) => {
+      const newFormData = { ...prevFormData, [name]: value };
+      // Save the updated form data to localStorage
+      if (name !== 'piezas_ok' && name !== 'piezas_nok') {
+        localStorage.setItem(name, value);
+      }
+      return newFormData;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -47,14 +44,11 @@ const ReportForm = () => {
       const response = await axios.post('http://192.168.68.165:3000/api/reportes', formData);
       if (response.status === 200) {
         alert('Reporte guardado correctamente');
-        setFormData({
-          fecha: '',
-          area: '',
-          linea: '',
-          hora: '',
+        setFormData((prevFormData) => ({
+          ...prevFormData,
           piezas_ok: 0,
           piezas_nok: 0,
-        });
+        }));
       } else {
         alert('Error al guardar el reporte');
       }
@@ -84,7 +78,7 @@ const ReportForm = () => {
           <label>Línea:</label>
           <select name="linea" value={formData.linea} onChange={handleChange} style={styles.select}>
             <option value="">Seleccionar Línea</option>
-            {options.lineas.filter(linea => linea.parent === formData.area).map((linea, index) => (
+            {options.lineas.filter(linea => linea.parent.toLowerCase() === formData.area.toLowerCase()).map((linea, index) => (
               <option key={index} value={linea.name}>{linea.name}</option>
             ))}
           </select>

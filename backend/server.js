@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 // Rutas a los archivos CSV
 const productionFilePath = path.join('C:/Users/salid/Desktop/DB', 'produccion.csv');
 const stopsFilePath = path.join('C:/Users/salid/Desktop/DB', 'paros.csv');
+const optionsFilePath = path.join(__dirname, 'options.json');
 
 // Verificar si los archivos CSV existen, si no, crearlos con encabezados
 if (!fs.existsSync(productionFilePath)) {
@@ -184,7 +185,6 @@ app.get('/api/paros', (req, res) => {
 });
 
 // END POINTS PARA OPCIONES
-const optionsFilePath = path.join(__dirname, 'options.json');
 let options = {
     areas: [],
     lineas: [],
@@ -214,7 +214,7 @@ app.get('/api/opciones', (req, res) => {
 
 // Endpoint to add a new option
 app.post('/api/opciones', (req, res) => {
-    const { type, name, parent } = req.body;
+    const { type, name, parent, rate } = req.body;
 
     if (!type || !name) {
         return res.status(400).json({ error: 'Type and name are required' });
@@ -226,7 +226,7 @@ app.post('/api/opciones', (req, res) => {
         if (!parent) {
             return res.status(400).json({ error: 'Parent is required for lineas' });
         }
-        options.lineas.push({ name, parent });
+        options.lineas.push({ name, parent, rate });
     } else if (type === 'estaciones') {
         if (!parent) {
             return res.status(400).json({ error: 'Parent is required for estaciones' });

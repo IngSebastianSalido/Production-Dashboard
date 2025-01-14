@@ -13,9 +13,9 @@ const fetchOptions = async () => {
   }
 };
 
-const addOption = async (type, name, parent) => {
+const addOption = async (type, name, parent, rate) => {
   try {
-    await axios.post(apiUrl, { type, name, parent });
+    await axios.post(apiUrl, { type, name, parent, rate });
   } catch (error) {
     console.error(`Error adding ${type}:`, error);
   }
@@ -36,6 +36,7 @@ const ConfigPage = () => {
   const [newEstacion, setNewEstacion] = useState('');
   const [selectedArea, setSelectedArea] = useState('');
   const [selectedLinea, setSelectedLinea] = useState('');
+  const [newRate, setNewRate] = useState('');
 
   useEffect(() => {
     const loadOptions = async () => {
@@ -46,20 +47,21 @@ const ConfigPage = () => {
     loadOptions();
   }, []);
 
-  const handleAddOption = async (type, name, parent, setName) => {
-    await addOption(type, name, parent);
+  const handleAddOption = async (type, name, parent, rate, setName) => {
+    await addOption(type, name, parent, rate);
     setOptions((prevOptions) => ({
       ...prevOptions,
-      [type]: [...prevOptions[type], { name, parent }],
+      [type]: [...prevOptions[type], { name, parent, rate }],
     }));
     setName('');
+    if (type === 'lineas') setNewRate('');
   };
 
   const handleRemoveOption = async (type, name) => {
     await removeOption(type, name);
     setOptions((prevOptions) => ({
       ...prevOptions,
-      [type]: prevOptions[type].filter((option) => option.name !== name),
+      [type]: prevOptions[type].filter((option) => option.name.toLowerCase() !== name.toLowerCase()),
     }));
   };
 
@@ -75,7 +77,7 @@ const ConfigPage = () => {
             onChange={(e) => setNewArea(e.target.value)}
             style={styles.input}
           />
-          <button onClick={() => handleAddOption('areas', newArea, null, setNewArea)} style={styles.button}>Agregar</button>
+          <button onClick={() => handleAddOption('areas', newArea, null, null, setNewArea)} style={styles.button}>Agregar</button>
         </div>
       </div>
       <div style={styles.formGroup}>
@@ -93,7 +95,14 @@ const ConfigPage = () => {
             onChange={(e) => setNewLinea(e.target.value)}
             style={styles.input}
           />
-          <button onClick={() => handleAddOption('lineas', newLinea, selectedArea, setNewLinea)} style={styles.button}>Agregar</button>
+          <input
+            type="number"
+            value={newRate}
+            onChange={(e) => setNewRate(e.target.value)}
+            placeholder="Rate"
+            style={styles.input}
+          />
+          <button onClick={() => handleAddOption('lineas', newLinea, selectedArea, newRate, setNewLinea)} style={styles.button}>Agregar</button>
         </div>
       </div>
       <div style={styles.formGroup}>
@@ -101,7 +110,7 @@ const ConfigPage = () => {
         <div style={styles.horizontalGroup}>
           <select value={selectedLinea} onChange={(e) => setSelectedLinea(e.target.value)} style={styles.select}>
             <option value="">Seleccionar Línea</option>
-            {options.lineas.filter(linea => linea.parent === selectedArea).map((linea, index) => (
+            {options.lineas.filter(linea => linea.parent.toLowerCase() === selectedArea.toLowerCase()).map((linea, index) => (
               <option key={index} value={linea.name}>{linea.name}</option>
             ))}
           </select>
@@ -111,7 +120,7 @@ const ConfigPage = () => {
             onChange={(e) => setNewEstacion(e.target.value)}
             style={styles.input}
           />
-          <button onClick={() => handleAddOption('estaciones', newEstacion, selectedLinea, setNewEstacion)} style={styles.button}>Agregar</button>
+          <button onClick={() => handleAddOption('estaciones', newEstacion, selectedLinea, null, setNewEstacion)} style={styles.button}>Agregar</button>
         </div>
       </div>
       <div style={styles.tableContainer}>
@@ -121,6 +130,7 @@ const ConfigPage = () => {
             <tr>
               <th>Área</th>
               <th>Línea</th>
+              <th>Rate</th>
               <th>Estación</th>
               <th>Acciones</th>
             </tr>
@@ -131,22 +141,25 @@ const ConfigPage = () => {
                 <tr>
                   <td>{area.name}</td>
                   <td colSpan="2"></td>
+                  <td colSpan="1"></td>
                   <td>
                     <button onClick={() => handleRemoveOption('areas', area.name)} style={styles.button}>Eliminar</button>
                   </td>
                 </tr>
-                {options.lineas.filter(linea => linea.parent === area.name).map((linea, lineaIndex) => (
+                {options.lineas.filter(linea => linea.parent.toLowerCase() === area.name.toLowerCase()).map((linea, lineaIndex) => (
                   <React.Fragment key={lineaIndex}>
                     <tr>
                       <td></td>
                       <td>{linea.name}</td>
+                      <td>{linea.rate}</td>
                       <td></td>
                       <td>
                         <button onClick={() => handleRemoveOption('lineas', linea.name)} style={styles.button}>Eliminar</button>
                       </td>
                     </tr>
-                    {options.estaciones.filter(estacion => estacion.parent === linea.name).map((estacion, estacionIndex) => (
+                    {options.estaciones.filter(estacion => estacion.parent.toLowerCase() === linea.name.toLowerCase()).map((estacion, estacionIndex) => (
                       <tr key={estacionIndex}>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td>{estacion.name}</td>

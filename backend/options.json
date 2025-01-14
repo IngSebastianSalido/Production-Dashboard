@@ -7,27 +7,49 @@
       "name": "actuadores"
     },
     {
-      "name": "Rea"
+      "name": "Prueba"
     }
   ],
   "lineas": [
     {
       "name": "Moldeo",
-      "parent": "REA"
+      "parent": "REA",
+      "rate": 50
     },
     {
       "name": "Linea 1",
-      "parent": "actuadores"
+      "parent": "actuadores",
+      "rate": 60
     },
     {
       "name": "linea 2",
-      "parent": "actuadores"
+      "parent": "actuadores",
+      "rate": 55
+    },
+    {
+      "name": "LineaPrueba",
+      "parent": "Prueba",
+      "rate": "15"
+    },
+    {
+      "name": "Lineaprueba",
+      "parent": "Prueba",
+      "rate": "20"
+    },
+    {
+      "name": "LineaPrueba",
+      "parent": "Prueba",
+      "rate": "16"
     }
   ],
   "estaciones": [
     {
       "name": "l1",
       "parent": "Moldeo"
+    },
+    {
+      "name": "16",
+      "parent": "LineaPrueba"
     }
   ]
 }

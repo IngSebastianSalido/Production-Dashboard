@@ -19,6 +19,21 @@ const App = () => {
   const [fecha, setFecha] = useState(localStorage.getItem('fecha') || ''); // Recuperar fecha del localStorage
   const [lineasData, setLineasData] = useState({});
   const [totales, setTotales] = useState({}); // Guardar los totales de piezas OK y NOK
+  const [config, setConfig] = useState({}); // Store configuration data
+
+  useEffect(() => {
+    // Fetch configuration data
+    const fetchConfig = async () => {
+      try {
+        const response = await axios.get('http://192.168.68.165:3000/api/opciones');
+        setConfig(response.data);
+      } catch (error) {
+        console.error('Error fetching configuration:', error);
+      }
+    };
+
+    fetchConfig();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,14 +74,15 @@ const App = () => {
         const formattedData = {};
         Object.keys(lineas).forEach((linea) => {
           const horas = Object.keys(lineas[linea]).sort(); // Ordenar horas
+          const rate = config.lineas.find(l => l.name === linea)?.rate || 0; // Get the rate from config
           formattedData[linea] = {
             labels: horas,
             datasets: [
               {
                 label: 'Piezas OK',
                 data: horas.map((hora) => lineas[linea][hora].ok),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: horas.map((hora) => lineas[linea][hora].ok >= rate ? 'rgba(0, 255, 0, 0.6)' : 'rgba(75, 192, 192, 0.6)'),
+                borderColor: horas.map((hora) => lineas[linea][hora].ok >= rate ? 'rgba(0, 255, 0, 1)' : 'rgba(75, 192, 192, 1)'),
                 borderWidth: 1,
               },
               {
@@ -92,7 +108,7 @@ const App = () => {
     const interval = setInterval(fetchData, 30000); // Actualizar cada 30 segundos
 
     return () => clearInterval(interval); // Limpiar el intervalo al desmontar
-  }, [fecha]);
+  }, [fecha, config]);
 
   // Guardar fecha en localStorage cada vez que cambie
   useEffect(() => {
@@ -125,7 +141,22 @@ const App = () => {
                 <span style={{ color: 'red' }}>Total NOK: {totales[linea]?.nok || 0}</span>
               </h2>
               <div style={styles.chart}>
-                <Bar data={lineasData[linea]} options={{ responsive: true, maintainAspectRatio: false }} />
+                <Bar
+                  data={lineasData[linea]}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                      },
+                      y1: {
+                        beginAtZero: true,
+                        display: false,
+                      },
+                    },
+                  }}
+                />
               </div>
             </div>
           ))
