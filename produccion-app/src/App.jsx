@@ -100,7 +100,7 @@ const App = () => {
   }, [fecha]);
 
   return (
-    <div style={styles.container}>
+    <div className="main-container">
       <h1 style={styles.title}>Resumen de Producción por Hora</h1>
 
       {/* Filtros */}

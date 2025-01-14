@@ -23,8 +23,8 @@ body {
 .main-container {
   width: 90%;
   max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
+  margin: 5px auto;
+  padding: 0px;
   text-align: center;
 }
 

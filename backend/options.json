@@ -5,6 +5,9 @@
     },
     {
       "name": "actuadores"
+    },
+    {
+      "name": "Rea"
     }
   ],
   "lineas": [
@@ -24,10 +27,6 @@
   "estaciones": [
     {
       "name": "l1",
-      "parent": "Moldeo"
-    },
-    {
-      "name": "fase20",
       "parent": "Moldeo"
     }
   ]

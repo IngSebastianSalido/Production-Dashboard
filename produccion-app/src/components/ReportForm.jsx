@@ -145,11 +145,12 @@ const styles = {
     padding: '10px 20px',
     backgroundColor: '#007BFF',
     border: 'none',
-    borderRadius: '0px',
+    borderRadius: '5px',
     color: 'white',
     cursor: 'pointer',
     fontWeight: 'bold',
     alignSelf: 'center',
+    marginTop: '10px',
   },
 };
 

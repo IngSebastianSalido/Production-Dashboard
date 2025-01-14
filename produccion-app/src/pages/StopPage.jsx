@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const StopPage = () => {
   const [formData, setFormData] = useState({
+    fecha: localStorage.getItem('fecha') || new Date().toISOString().split('T')[0], // Set initial date to today
     area: '',
     linea: '',
     estacion: '',
@@ -48,6 +49,7 @@ const StopPage = () => {
       if (response.ok) {
         alert('Paro registrado correctamente');
         setFormData({
+          fecha: localStorage.getItem('fecha') || new Date().toISOString().split('T')[0], // Reset to today's date
           area: '',
           linea: '',
           estacion: '',
@@ -65,10 +67,19 @@ const StopPage = () => {
     }
   };
 
+  // Save the date to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('fecha', formData.fecha);
+  }, [formData.fecha]);
+
   return (
-    <div style={styles.container}>
-      <h1>Registrar Paro de Línea</h1>
+    <div className="main-container">
+      <h1 style={styles.title}>Registrar Paro de Línea</h1>
       <form onSubmit={handleSubmit} style={styles.form}>
+        <div style={styles.formGroup}>
+          <label>Fecha:</label>
+          <input type="date" name="fecha" value={formData.fecha} onChange={handleChange} style={styles.input} />
+        </div>
         <div style={styles.formGroup}>
           <label>Área:</label>
           <select name="area" value={formData.area} onChange={handleChange} style={styles.select}>
@@ -117,14 +128,21 @@ const StopPage = () => {
 const styles = {
   container: {
     padding: '20px',
+    paddingTop: '60px', // Add padding to the top to create space for the menu
     textAlign: 'center',
   },
+  title: {
+    marginBottom: '20px',
+    whiteSpace: 'nowrap', // Prevent title from being cut off
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
   form: {
-    maxWidth: '800px',
+    maxWidth: '350px',
     margin: '0 auto',
     display: 'flex',
     flexDirection: 'column',
-    gap: '20px',
+    gap: '7px',
   },
   formGroup: {
     display: 'flex',
@@ -132,17 +150,17 @@ const styles = {
     alignItems: 'flex-start',
   },
   select: {
-    width: '100%',
+    width: '325px',
     padding: '10px',
     marginTop: '5px',
   },
   input: {
-    width: '100%',
+    width: '325px',
     padding: '10px',
     marginTop: '5px',
   },
   textarea: {
-    width: '100%',
+    width: '325px',
     padding: '10px',
     marginTop: '5px',
   },

@@ -64,8 +64,8 @@ const ConfigPage = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <h1>Configuración de Valores</h1>
+    <div className="main-container">
+      <h1 style={styles.title}>Configuración de Valores</h1>
       <div style={styles.formGroup}>
         <label style={styles.label}>Agregar Área:</label>
         <div style={styles.horizontalGroup}>
@@ -169,7 +169,15 @@ const ConfigPage = () => {
 const styles = {
   container: {
     padding: '20px',
+    paddingTop: '60px', // Add padding to the top to create space for the menu
     textAlign: 'center',
+    width: '100%',
+  },
+  title: {
+    marginBottom: '20px',
+    whiteSpace: 'nowrap', // Prevent title from being cut off
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   formGroup: {
     marginBottom: '20px',
@@ -178,12 +186,13 @@ const styles = {
     alignItems: 'center',
   },
   label: {
-    marginBottom: '5px', // Add margin to separate the label from the input fields
+    marginBottom: '10px', // Add margin to separate the label from the input fields
   },
   horizontalGroup: {
     display: 'flex',
     alignItems: 'center',
-    gap: '18px',
+    gap: '10px',
+    flexWrap: 'wrap', // Allow wrapping on smaller screens
   },
   input: {
     width: '200px',
@@ -212,6 +221,7 @@ const styles = {
   },
   tableContainer: {
     marginTop: '20px',
+    overflowX: 'auto', // Allow horizontal scrolling on smaller screens
   },
   table: {
     width: '100%',

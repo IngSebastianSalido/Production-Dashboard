@@ -10,7 +10,7 @@ const PORT = 3000;
 // Middleware
 const corsOptions = {
     origin: ['http://localhost:4000', 'http://192.168.68.165:4000'],
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type'],
 };
 app.use(cors(corsOptions));
@@ -26,7 +26,7 @@ if (!fs.existsSync(productionFilePath)) {
 }
 
 if (!fs.existsSync(stopsFilePath)) {
-    fs.writeFileSync(stopsFilePath, 'area,linea,estacion,hora_paro,hora_arranque,descripcion\n');
+    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,estacion,hora_paro,hora_arranque,descripcion\n');
 }
 
 // Logger para verificar las solicitudes
@@ -138,9 +138,9 @@ app.get('/api/reportes/:fecha', (req, res) => {
 
 // Endpoint para registrar un paro de línea
 app.post('/api/paros', (req, res) => {
-    const { area, linea, estacion, hora_paro, hora_arranque, descripcion } = req.body;
+    const { fecha, area, linea, estacion, hora_paro, hora_arranque, descripcion } = req.body;
 
-    if (!area || !linea || !estacion || !hora_paro || !hora_arranque || !descripcion) {
+    if (!fecha || !area || !linea || !estacion || !hora_paro || !hora_arranque || !descripcion) {
         return res.status(400).send('Todos los campos son obligatorios');
     }
 
@@ -151,7 +151,7 @@ app.post('/api/paros', (req, res) => {
             return res.status(500).send('No se pudo leer el archivo de paros.');
         }
 
-        const nuevoRegistro = `${area},${linea},${estacion},${hora_paro},${hora_arranque},${descripcion}`;
+        const nuevoRegistro = `${fecha},${area},${linea},${estacion},${hora_paro},${hora_arranque},${descripcion}`;
         const contenidoActualizado = data.trim() + '\n' + nuevoRegistro;
 
         // Guardar el nuevo paro en el archivo CSV

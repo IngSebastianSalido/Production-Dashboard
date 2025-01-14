@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <nav style={styles.nav}>
-      <div style={styles.brand}>FAIST METALMEX DASHBOARD</div>
+      <div style={styles.brand}>DASHBOARD</div>
       <ul style={styles.navList}>
         <li style={styles.navItem}>
           <Link to="/" style={styles.navLink}>Inicio</Link>
@@ -30,36 +30,66 @@ const styles = {
     alignItems: 'center',
     padding: '10px 20px',
     backgroundColor: '#333',
-    color: '#fff',
-    position: 'fixed', // Posición fija
-    top: 0, // Siempre en la parte superior
-    width: '100%', // Que ocupe todo el ancho
-    zIndex: 1000, // Superposición sobre otros elementos
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)',
+    flexWrap: 'wrap', // Allow wrapping on smaller screens
+    width: '100%', // Ensure full width
   },
   brand: {
+    color: 'white',
     fontSize: '1.5em',
     fontWeight: 'bold',
+    padding: '0px 15px'
   },
   navList: {
     display: 'flex',
     listStyle: 'none',
     padding: 0,
     margin: 0,
+    flexWrap: 'wrap', // Allow wrapping on smaller screens
   },
   navItem: {
     margin: '0 10px',
   },
   navLink: {
-    color: '#fff',
+    color: 'white',
     textDecoration: 'none',
-    fontSize: '1em',
-    padding: '5px 10px',
-    borderRadius: '5px',
-    transition: 'all 0.3s ease',
+    padding: '10px 15px',
+    display: 'block',
   },
-  navLinkHover: {
-    backgroundColor: '#444',
+  '@media (max-width: 600px)': {
+    nav: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+    },
+    navList: {
+      flexDirection: 'column',
+      width: '100%',
+    },
+    navItem: {
+      width: '100%',
+      textAlign: 'left',
+    },
+    navLink: {
+      width: '100%',
+      padding: '10px 20px',
+    },
+  },
+  '@media (min-width: 601px)': {
+    nav: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    navList: {
+      flexDirection: 'row',
+      width: 'auto',
+    },
+    navItem: {
+      width: 'auto',
+      textAlign: 'center',
+    },
+    navLink: {
+      width: 'auto',
+      padding: '10px 15px',
+    },
   },
 };
 
