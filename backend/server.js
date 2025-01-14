@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // Rutas a los archivos CSV
 const productionFilePath = path.join('C:/Users/salid/Desktop/DB', 'produccion.csv');
-const stopsFilePath = path.join('C:/Users/salid/Desktop/DB', 'paros.csv'); // Nuevo archivo para los paros
+const stopsFilePath = path.join('C:/Users/salid/Desktop/DB', 'paros.csv');
 
 // Verificar si los archivos CSV existen, si no, crearlos con encabezados
 if (!fs.existsSync(productionFilePath)) {
@@ -34,6 +34,8 @@ app.use((req, res, next) => {
     console.log(`${req.method} ${req.url} - ${new Date().toISOString()}`);
     next();
 });
+
+// ------------------------- ENDPOINTS -------------------------
 
 // ------------------------- ENDPOINTS PARA REPORTES -------------------------
 
@@ -84,9 +86,9 @@ app.post('/api/reportes', (req, res) => {
     });
 });
 
-// Endpoint para obtener reportes por fecha y área
-app.get('/api/reportes/:fecha/:area', (req, res) => {
-    const { fecha, area } = req.params;
+// Endpoint para obtener reportes por fecha, área y línea
+app.get('/api/reportes/:fecha/:area/:linea', (req, res) => {
+    const { fecha, area, linea } = req.params;
 
     fs.readFile(productionFilePath, 'utf8', (err, data) => {
         if (err) {
@@ -99,7 +101,31 @@ app.get('/api/reportes/:fecha/:area', (req, res) => {
             .slice(1)
             .filter(line => {
                 const cols = line.split(',');
-                return cols.length === 6 && cols[0] === fecha && cols[1].toLowerCase() === area.toLowerCase();
+                return cols.length === 6 && cols[0] === fecha && cols[1].toLowerCase() === area.toLowerCase() && cols[2].toLowerCase() === linea.toLowerCase();
+            })
+            .map(line => line.split(',')) // Convertir cada línea en un array
+            .sort((a, b) => a[3].localeCompare(b[3])); // Ordenar por hora
+
+        res.json(reportes);
+    });
+});
+
+// Endpoint para obtener reportes por fecha (todas las áreas y líneas)
+app.get('/api/reportes/:fecha', (req, res) => {
+    const { fecha } = req.params;
+
+    fs.readFile(productionFilePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error al leer el archivo de producción:', err);
+            return res.status(500).send('No se pudo leer el archivo de producción.');
+        }
+
+        const reportes = data
+            .split('\n')
+            .slice(1)
+            .filter(line => {
+                const cols = line.split(',');
+                return cols.length === 6 && cols[0] === fecha;
             })
             .map(line => line.split(',')) // Convertir cada línea en un array
             .sort((a, b) => a[3].localeCompare(b[3])); // Ordenar por hora
@@ -157,8 +183,91 @@ app.get('/api/paros', (req, res) => {
     });
 });
 
+// END POINTS PARA OPCIONES
+const optionsFilePath = path.join(__dirname, 'options.json');
+let options = {
+    areas: [],
+    lineas: [],
+    estaciones: [],
+};
+
+// Load options from file
+const loadOptions = () => {
+    if (fs.existsSync(optionsFilePath)) {
+        const data = fs.readFileSync(optionsFilePath, 'utf8');
+        options = JSON.parse(data);
+    }
+};
+
+// Save options to file
+const saveOptions = () => {
+    fs.writeFileSync(optionsFilePath, JSON.stringify(options, null, 2), 'utf8');
+};
+
+// Load options when the server starts
+loadOptions();
+
+// Endpoint to fetch all options
+app.get('/api/opciones', (req, res) => {
+    res.json(options);
+});
+
+// Endpoint to add a new option
+app.post('/api/opciones', (req, res) => {
+    const { type, name, parent } = req.body;
+
+    if (!type || !name) {
+        return res.status(400).json({ error: 'Type and name are required' });
+    }
+
+    if (type === 'areas') {
+        options.areas.push({ name });
+    } else if (type === 'lineas') {
+        if (!parent) {
+            return res.status(400).json({ error: 'Parent is required for lineas' });
+        }
+        options.lineas.push({ name, parent });
+    } else if (type === 'estaciones') {
+        if (!parent) {
+            return res.status(400).json({ error: 'Parent is required for estaciones' });
+        }
+        options.estaciones.push({ name, parent });
+    } else {
+        return res.status(400).json({ error: 'Invalid type' });
+    }
+
+    saveOptions();
+    res.status(201).json({ message: `${type.slice(0, -1)} added successfully` });
+});
+
+// Endpoint to remove an option
+app.delete('/api/opciones/:type/:name', (req, res) => {
+    const { type, name } = req.params;
+
+    if (!type || !name) {
+        return res.status(400).json({ error: 'Type and name are required' });
+    }
+
+    if (type === 'areas') {
+        options.areas = options.areas.filter(area => area.name !== name);
+        options.lineas = options.lineas.filter(linea => linea.parent !== name);
+        options.estaciones = options.estaciones.filter(estacion => estacion.parent !== name);
+    } else if (type === 'lineas') {
+        options.lineas = options.lineas.filter(linea => linea.name !== name);
+        options.estaciones = options.estaciones.filter(estacion => estacion.parent !== name);
+    } else if (type === 'estaciones') {
+        options.estaciones = options.estaciones.filter(estacion => estacion.name !== name);
+    } else {
+        return res.status(400).json({ error: 'Invalid type' });
+    }
+
+    saveOptions();
+    res.status(200).json({ message: `${type.slice(0, -1)} removed successfully` });
+});
+
 // ------------------------- INICIAR EL SERVIDOR -------------------------
 
+// Iniciar el servidor HTTP
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
+    console.log(`Servidor corriendo en http://192.168.68.165:${PORT}`);
 });

@@ -15,6 +15,9 @@ const Navbar = () => {
         <li style={styles.navItem}>
           <Link to="/stop" style={styles.navLink}>Registrar Paro</Link>
         </li>
+        <li style={styles.navItem}>
+          <Link to="/opciones" style={styles.navLink}>Configurar</Link>
+        </li>
       </ul>
     </nav>
   );

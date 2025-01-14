@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../ReportTable.module.css";
 
 const ReportTable = () => {
   const [fecha, setFecha] = useState("");
   const [area, setArea] = useState("");
+  const [linea, setLinea] = useState("");
   const [reportes, setReportes] = useState([]);
+  const [options, setOptions] = useState({ areas: [], lineas: [] });
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const response = await axios.get('http://192.168.68.165:3000/api/opciones');
+        setOptions(response.data);
+      } catch (error) {
+        console.error('Error fetching options:', error);
+      }
+    };
+
+    fetchOptions();
+  }, []);
 
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.68.165:3000/api/reportes/${fecha}/${area}`
+        `http://192.168.68.165:3000/api/reportes/${fecha}/${area}/${linea}`
       );
       const sortedReportes = response.data.sort((a, b) => {
         const horaA = a[3]; // La columna de la hora en los datos
@@ -27,22 +42,46 @@ const ReportTable = () => {
   return (
     <div className={styles["table-container"]}>
       <div className={styles["search-container"]}>
-        <label>Fecha:</label>
-        <input
-          type="date"
-          value={fecha}
-          onChange={(e) => setFecha(e.target.value)}
-        />
-        <label>Área:</label>
-        <input
-          type="text"
-          placeholder="Ingresa el área"
-          value={area}
-          onChange={(e) => setArea(e.target.value)}
-        />
-        <button onClick={handleSearch}>Buscar</button>
+        <div className={styles["form-group"]}>
+          <label>Fecha:</label>
+          <input
+            type="date"
+            value={fecha}
+            onChange={(e) => setFecha(e.target.value)}
+            className={styles["search-input"]}
+          />
+        </div>
+        <div className={styles["form-group"]}>
+          <label>Área:</label>
+          <select
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
+            className={styles["search-select"]}
+          >
+            <option value="">Seleccionar Área</option>
+            {options.areas.map((area, index) => (
+              <option key={index} value={area.name}>{area.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className={styles["form-group"]}>
+          <label>Línea:</label>
+          <select
+            value={linea}
+            onChange={(e) => setLinea(e.target.value)}
+            className={styles["search-select"]}
+          >
+            <option value="">Seleccionar Línea</option>
+            {options.lineas.filter(linea => linea.parent === area).map((linea, index) => (
+              <option key={index} value={linea.name}>{linea.name}</option>
+            ))}
+          </select>
+        </div>
+        <button onClick={handleSearch} className={styles["search-button"]}>
+          Buscar
+        </button>
       </div>
-      <table className={styles.table}>
+      <table className={styles["table"]}>
         <thead>
           <tr>
             <th>Fecha</th>
@@ -67,9 +106,7 @@ const ReportTable = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="6" className={styles["no-results"]}>
-                No se encontraron reportes.
-              </td>
+              <td colSpan="6" className={styles["no-results"]}>No hay resultados</td>
             </tr>
           )}
         </tbody>

@@ -11,8 +11,20 @@ const ReportForm = () => {
     piezas_nok: 0,
   });
 
-  // Cargar valores almacenados en localStorage al montar el componente
+  const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [] });
+
   useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const response = await axios.get('http://192.168.68.165:3000/api/opciones');
+        setOptions(response.data);
+      } catch (error) {
+        console.error('Error fetching options:', error);
+      }
+    };
+
+    fetchOptions();
+
     const savedData = {
       fecha: localStorage.getItem('fecha') || '',
       area: localStorage.getItem('area') || '',
@@ -23,95 +35,122 @@ const ReportForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Formatear la hora solo para horas completas (HH:00)
-    if (name === 'hora') {
-      const [hora] = value.split(':'); // Obtener solo la hora
-      setFormData({ ...formData, [name]: `${hora}:00` }); // Asignar minutos como 00
-    } else {
-      setFormData({ ...formData, [name]: value });
-
-      // Guardar en localStorage para las claves persistentes
-      if (name === 'fecha' || name === 'area' || name === 'linea') {
-        localStorage.setItem(name, value);
-      }
-    }
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://192.168.68.165:3000/api/reportes', formData);
-      alert('Reporte guardado correctamente');
+      const response = await axios.post('http://192.168.68.165:3000/api/reportes', formData);
+      if (response.status === 200) {
+        alert('Reporte guardado correctamente');
+        setFormData({
+          fecha: '',
+          area: '',
+          linea: '',
+          hora: '',
+          piezas_ok: 0,
+          piezas_nok: 0,
+        });
+      } else {
+        alert('Error al guardar el reporte');
+      }
     } catch (error) {
-      console.error('Error al guardar el reporte:', error);
-      alert('Error al guardar el reporte.');
+      console.error('Error al enviar el reporte:', error);
+      alert('Error al enviar el reporte');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-row">
-        <label>Fecha:</label>
-        <input
-          type="date"
-          name="fecha"
-          value={formData.fecha}
-          onChange={handleChange}
-          required
-        />
-        <label>Área:</label>
-        <input
-          type="text"
-          name="area"
-          value={formData.area}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-row">
-        <label>Línea:</label>
-        <input
-          type="text"
-          name="linea"
-          value={formData.linea}
-          onChange={handleChange}
-          required
-        />
-        <label>Hora:</label>
-        <input
-          type="time"
-          name="hora"
-          value={formData.hora}
-          step="3600" // Solo permite incrementos de 1 hora
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-row">
-        <label>Piezas OK:</label>
-        <input
-          type="number"
-          name="piezas_ok"
-          value={formData.piezas_ok}
-          onChange={handleChange}
-          required
-        />
-        <label>Piezas NOK:</label>
-        <input
-          type="number"
-          name="piezas_nok"
-          value={formData.piezas_nok}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <button type="submit">Guardar Reporte</button>
-    </form>
+    <div style={styles.container}>
+      <form onSubmit={handleSubmit} style={styles.form}>
+        <div style={styles.formGroup}>
+          <label>Fecha:</label>
+          <input type="date" name="fecha" value={formData.fecha} onChange={handleChange} style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label>Área:</label>
+          <select name="area" value={formData.area} onChange={handleChange} style={styles.select}>
+            <option value="">Seleccionar Área</option>
+            {options.areas.map((area, index) => (
+              <option key={index} value={area.name}>{area.name}</option>
+            ))}
+          </select>
+        </div>
+        <div style={styles.formGroup}>
+          <label>Línea:</label>
+          <select name="linea" value={formData.linea} onChange={handleChange} style={styles.select}>
+            <option value="">Seleccionar Línea</option>
+            {options.lineas.filter(linea => linea.parent === formData.area).map((linea, index) => (
+              <option key={index} value={linea.name}>{linea.name}</option>
+            ))}
+          </select>
+        </div>
+        <div style={styles.formGroup}>
+          <label>Hora:</label>
+          <select name="hora" value={formData.hora} onChange={handleChange} style={styles.select}>
+            <option value="">Seleccionar Hora</option>
+            {[...Array(24).keys()].map(hour => (
+              <option key={hour} value={hour < 10 ? `0${hour}:00` : `${hour}:00`}>
+                {hour < 10 ? `0${hour}:00` : `${hour}:00`}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div style={styles.formGroup}>
+          <label>Piezas OK:</label>
+          <input type="number" name="piezas_ok" value={formData.piezas_ok} onChange={handleChange} style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label>Piezas NOK:</label>
+          <input type="number" name="piezas_nok" value={formData.piezas_nok} onChange={handleChange} style={styles.input} />
+        </div>
+        <button type="submit" style={styles.button}>Registrar Reporte</button>
+      </form>
+    </div>
   );
+};
+
+const styles = {
+  container: {
+    padding: '20px',
+    textAlign: 'center',
+  },
+  form: {
+    maxWidth: '325px',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '5px',
+  },
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  select: {
+    width: '100%',
+    padding: '10px',
+    marginTop: '0px',
+  },
+  input: {
+    width: '100%',
+    padding: '10px',
+    marginTop: '0px',
+  },
+  button: {
+    padding: '10px 20px',
+    backgroundColor: '#007BFF',
+    border: 'none',
+    borderRadius: '0px',
+    color: 'white',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    alignSelf: 'center',
+  },
 };
 
 export default ReportForm;

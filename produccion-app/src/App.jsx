@@ -17,16 +17,15 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const App = () => {
   const [fecha, setFecha] = useState(localStorage.getItem('fecha') || ''); // Recuperar fecha del localStorage
-  const [area, setArea] = useState(localStorage.getItem('area') || ''); // Recuperar área del localStorage
   const [lineasData, setLineasData] = useState({});
   const [totales, setTotales] = useState({}); // Guardar los totales de piezas OK y NOK
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!fecha || !area) return;
+      if (!fecha) return;
 
       try {
-        const response = await axios.get(`http://192.168.68.165:3000/api/reportes/${fecha}/${area}`);
+        const response = await axios.get(`http://192.168.68.165:3000/api/reportes/${fecha}`);
         const data = response.data;
 
         // Agrupar datos por línea y por hora
@@ -93,13 +92,12 @@ const App = () => {
     const interval = setInterval(fetchData, 30000); // Actualizar cada 30 segundos
 
     return () => clearInterval(interval); // Limpiar el intervalo al desmontar
-  }, [fecha, area]);
+  }, [fecha]);
 
-  // Guardar fecha y área en localStorage cada vez que cambien
+  // Guardar fecha en localStorage cada vez que cambie
   useEffect(() => {
     localStorage.setItem('fecha', fecha);
-    localStorage.setItem('area', area);
-  }, [fecha, area]);
+  }, [fecha]);
 
   return (
     <div style={styles.container}>
@@ -112,14 +110,6 @@ const App = () => {
           type="date"
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
-          style={styles.input}
-        />
-        <label>Área:</label>
-        <input
-          type="text"
-          value={area}
-          onChange={(e) => setArea(e.target.value)}
-          placeholder="Ingrese área"
           style={styles.input}
         />
       </div>
@@ -140,7 +130,7 @@ const App = () => {
             </div>
           ))
         ) : (
-          <p>Seleccione una fecha y un área para generar las gráficas.</p>
+          <p>Seleccione una fecha para generar las gráficas.</p>
         )}
       </div>
     </div>
@@ -150,11 +140,15 @@ const App = () => {
 const styles = {
   container: {
     padding: '20px',
+    paddingTop: '60px', // Add padding to the top to create space for the menu
     textAlign: 'center',
     width: '100%',
   },
   title: {
     marginBottom: '20px',
+    whiteSpace: 'nowrap', // Prevent title from being cut off
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   filters: {
     marginBottom: '20px',
@@ -168,7 +162,7 @@ const styles = {
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', // Responsive grid with a maximum of 2 columns
     gap: '20px',
   },
   card: {
