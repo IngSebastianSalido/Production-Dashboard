@@ -12,11 +12,12 @@ const ReportForm = () => {
   });
 
   const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [] });
+  const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const response = await axios.get('http://192.168.68.165:3000/api/opciones');
+        const response = await axios.get(`${serverApiUrl}/api/opciones`);
         setOptions(response.data);
       } catch (error) {
         console.error('Error fetching options:', error);
@@ -24,7 +25,7 @@ const ReportForm = () => {
     };
 
     fetchOptions();
-  }, []);
+  }, [serverApiUrl]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +42,7 @@ const ReportForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://192.168.68.165:3000/api/reportes', formData);
+      const response = await axios.post(`${serverApiUrl}/api/reportes`, formData);
       if (response.status === 200) {
         alert('Reporte guardado correctamente');
         setFormData((prevFormData) => ({

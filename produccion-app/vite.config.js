@@ -1,15 +1,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: '192.168.68.165', // Dirección IP local de tu máquina
-    port: 4000,             // Puerto del frontend
+    host: process.env.VITE_HOST || 'localhost', // Default to 'localhost' if not set
+    port: parseInt(process.env.VITE_PORT) || 4000, // Default to 4000 if not set
     proxy: {
       '/api': {
-        target: 'http://192.168.68.165:3000', // URL del backend con HTTP
-        changeOrigin: true, // Cambia el origen para evitar problemas de CORS
+        target: process.env.VITE_SERVER_API_URL || 'http://localhost:3000', // Default to 'http://localhost:3000' if not set
+        changeOrigin: true, // Change the origin to avoid CORS issues
       },
     },
   },

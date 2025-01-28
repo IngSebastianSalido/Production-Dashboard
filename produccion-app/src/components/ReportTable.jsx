@@ -8,11 +8,12 @@ const ReportTable = () => {
   const [linea, setLinea] = useState("");
   const [reportes, setReportes] = useState([]);
   const [options, setOptions] = useState({ areas: [], lineas: [] });
+  const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const response = await axios.get('http://192.168.68.165:3000/api/opciones');
+        const response = await axios.get(`${serverApiUrl}/api/opciones`);
         setOptions(response.data);
       } catch (error) {
         console.error('Error fetching options:', error);
@@ -20,22 +21,14 @@ const ReportTable = () => {
     };
 
     fetchOptions();
-  }, []);
+  }, [serverApiUrl]);
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(
-        `http://192.168.68.165:3000/api/reportes/${fecha}/${area}/${linea}`
-      );
-      const sortedReportes = response.data.sort((a, b) => {
-        const horaA = a[3]; // La columna de la hora en los datos
-        const horaB = b[3];
-        return horaA.localeCompare(horaB);
-      });
-      setReportes(sortedReportes);
+      const response = await axios.get(`${serverApiUrl}/api/reportes/${fecha}/${area}/${linea}`);
+      setReportes(response.data);
     } catch (error) {
-      console.error("Error al obtener reportes:", error);
-      alert("Error al obtener reportes.");
+      console.error('Error fetching reports:', error);
     }
   };
 

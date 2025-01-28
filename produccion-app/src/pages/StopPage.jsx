@@ -12,11 +12,12 @@ const StopPage = () => {
   });
 
   const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [] });
+  const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const response = await fetch('http://192.168.68.165:3000/api/opciones');
+        const response = await fetch(`${serverApiUrl}/api/opciones`);
         const data = await response.json();
         setOptions(data);
       } catch (error) {
@@ -25,7 +26,7 @@ const StopPage = () => {
     };
 
     fetchOptions();
-  }, []);
+  }, [serverApiUrl]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +39,7 @@ const StopPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://192.168.68.165:3000/api/paros', {
+      const response = await fetch(`${serverApiUrl}/api/paros`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,54 +127,52 @@ const StopPage = () => {
 };
 
 const styles = {
-  container: {
-    padding: '20px',
-    paddingTop: '60px', // Add padding to the top to create space for the menu
-    textAlign: 'center',
-  },
   title: {
     marginBottom: '20px',
-    whiteSpace: 'nowrap', // Prevent title from being cut off
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
   },
   form: {
-    maxWidth: '350px',
-    margin: '0 auto',
     display: 'flex',
     flexDirection: 'column',
-    gap: '7px',
+    gap: '15px',
+    maxWidth: '400px', // Set a maximum width for the form
+    margin: 'auto auto', // Center the form horizontally
   },
   formGroup: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
-  },
-  select: {
-    width: '325px',
-    padding: '10px',
-    marginTop: '5px',
+    gap: '0px',
   },
   input: {
-    width: '325px',
+    padding: '5px',
+    fontSize: '16px',
+    width: '100%', // Make the input take the full width of the form group
+    maxWidth: '300px', // Set a maximum width for the input
+    alignSelf: 'center',
+  },
+  select: {
     padding: '10px',
-    marginTop: '5px',
+    fontSize: '16px',
+    width: '100%', // Make the select take the full width of the form group
+    maxWidth: '300px', // Set a maximum width for the select
+    alignSelf: 'center',
   },
   textarea: {
-    width: '325px',
     padding: '10px',
-    marginTop: '5px',
+    fontSize: '16px',
+    width: '100%', // Make the textarea take the full width of the form group
+    maxWidth: '300px', // Set a maximum width for the textarea
+    height: '100px',
+    alignSelf: 'center',
   },
   button: {
     padding: '10px 20px',
-    backgroundColor: '#007BFF',
+    fontSize: '16px',
+    backgroundColor: '#007bff',
+    color: '#fff',
     border: 'none',
     borderRadius: '5px',
-    color: 'white',
     cursor: 'pointer',
-    fontWeight: 'bold',
-    alignSelf: 'center',
+    alignSelf: 'center', // Center the button horizontally
   },
 };
-
 export default StopPage;

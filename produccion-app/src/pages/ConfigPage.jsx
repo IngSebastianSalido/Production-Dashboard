@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const apiUrl = 'http://192.168.68.165:3000/api/opciones';
+const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
 
 const fetchOptions = async () => {
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(`${serverApiUrl}/api/opciones`);
     return response.data;
   } catch (error) {
     console.error('Error fetching options:', error);
@@ -15,7 +15,7 @@ const fetchOptions = async () => {
 
 const addOption = async (type, name, parent, rate) => {
   try {
-    await axios.post(apiUrl, { type, name, parent, rate });
+    await axios.post(`${serverApiUrl}/api/opciones`, { type, name, parent, rate });
   } catch (error) {
     console.error(`Error adding ${type}:`, error);
   }
@@ -23,7 +23,7 @@ const addOption = async (type, name, parent, rate) => {
 
 const removeOption = async (type, name) => {
   try {
-    await axios.delete(`${apiUrl}/${type}/${name}`);
+    await axios.delete(`${serverApiUrl}/api/opciones/${type}/${name}`);
   } catch (error) {
     console.error(`Error removing ${type}:`, error);
   }

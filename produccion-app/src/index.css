@@ -24,8 +24,9 @@ a:hover {
 
 body {
   margin: 0;
+  padding-top: 60px; /* Add padding to account for the fixed navbar */
   display: flex;
-  place-items: center;
+  flex-direction: column; /* Ensure content flows vertically */
   min-width: 320px;
   min-height: 100vh;
 }

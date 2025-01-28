@@ -20,12 +20,13 @@ const App = () => {
   const [lineasData, setLineasData] = useState({});
   const [totales, setTotales] = useState({}); // Guardar los totales de piezas OK y NOK
   const [config, setConfig] = useState({}); // Store configuration data
+  const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
     // Fetch configuration data
     const fetchConfig = async () => {
       try {
-        const response = await axios.get('http://192.168.68.165:3000/api/opciones');
+        const response = await axios.get(`${serverApiUrl}/api/opciones`);
         setConfig(response.data);
       } catch (error) {
         console.error('Error fetching configuration:', error);
@@ -33,14 +34,14 @@ const App = () => {
     };
 
     fetchConfig();
-  }, []);
+  }, [serverApiUrl]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!fecha) return;
 
       try {
-        const response = await axios.get(`http://192.168.68.165:3000/api/reportes/${fecha}`);
+        const response = await axios.get(`${serverApiUrl}/api/reportes/${fecha}`);
         const data = response.data;
 
         // Agrupar datos por línea y por hora
@@ -108,7 +109,7 @@ const App = () => {
     const interval = setInterval(fetchData, 30000); // Actualizar cada 30 segundos
 
     return () => clearInterval(interval); // Limpiar el intervalo al desmontar
-  }, [fecha, config]);
+  }, [fecha, config, serverApiUrl]);
 
   // Guardar fecha en localStorage cada vez que cambie
   useEffect(() => {

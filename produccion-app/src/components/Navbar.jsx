@@ -32,6 +32,10 @@ const styles = {
     backgroundColor: '#333',
     flexWrap: 'wrap', // Allow wrapping on smaller screens
     width: '100%', // Ensure full width
+    position: 'fixed', // Fix the navbar at the top
+    top: 0, // Align to the top
+    left: 0, // Align to the left
+    zIndex: 1000, // Ensure it stays on top of other content
   },
   brand: {
     color: 'white',

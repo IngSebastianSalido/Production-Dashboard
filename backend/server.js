@@ -3,13 +3,18 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dotenv = require('dotenv');
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 // Middleware
 const corsOptions = {
-    origin: ['http://localhost:4000', 'http://192.168.68.165:4000'],
+    origin: process.env.CORS_ORIGIN.split(','),
     methods: ['GET', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type'],
 };
@@ -17,9 +22,9 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Rutas a los archivos CSV
-const productionFilePath = path.join('C:/Users/salid/Desktop/DB', 'produccion.csv');
-const stopsFilePath = path.join('C:/Users/salid/Desktop/DB', 'paros.csv');
-const optionsFilePath = path.join(__dirname, 'options.json');
+const productionFilePath = path.resolve(process.env.PRODUCTION_FILE_PATH);
+const stopsFilePath = path.resolve(process.env.STOPS_FILE_PATH);
+const optionsFilePath = path.resolve(process.env.OPTIONS_FILE_PATH);
 
 // Verificar si los archivos CSV existen, si no, crearlos con encabezados
 if (!fs.existsSync(productionFilePath)) {
@@ -268,6 +273,6 @@ app.delete('/api/opciones/:type/:name', (req, res) => {
 // ------------------------- INICIAR EL SERVIDOR -------------------------
 
 // Iniciar el servidor HTTP
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Servidor corriendo en http://192.168.68.165:${PORT}`);
+app.listen(PORT, HOST, () => {
+    console.log(`Servidor corriendo en http://${HOST}:${PORT}`);
 });
