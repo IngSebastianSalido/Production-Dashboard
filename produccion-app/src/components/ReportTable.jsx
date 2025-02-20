@@ -7,7 +7,7 @@ const ReportTable = () => {
   const [area, setArea] = useState("");
   const [linea, setLinea] = useState("");
   const [reportes, setReportes] = useState([]);
-  const [options, setOptions] = useState({ areas: [], lineas: [] });
+  const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [], modosFalla: [] });
   const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
 
   useEffect(() => {

@@ -11,7 +11,7 @@ const ReportForm = () => {
     piezas_nok: 0,
   });
 
-  const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [] });
+  const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [], modosFalla: [] });
   const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
 
   useEffect(() => {

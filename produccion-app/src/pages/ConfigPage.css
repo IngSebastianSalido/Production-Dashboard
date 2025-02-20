@@ -1,0 +1,78 @@
+/* Estilos generales */
+.config-container {
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+  background-color: #1a1a1a;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.section {
+  margin-bottom: 10px;
+  padding: 15px;
+  background: #222;
+  border-radius: 5px;
+}
+
+/* Asegurar que el input y el select tengan el mismo tamaño */
+.input, .select {
+  width: 100%;
+  height: 40px; /* Unificar altura */
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: white;
+  font-size: 16px;
+  box-sizing: border-box; /* Evita diferencias de tamaño por padding y bordes */
+  display: block;
+  margin-top: 10px;
+}
+
+/* Deshabilitar input si no hay selección */
+.input:disabled {
+  background-color: #444;
+  color: #ccc;
+  opacity: 1;
+}
+
+/* Asegurar espacio uniforme entre botones */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* Botones alineados */
+.button {
+  flex: 1;
+  padding: 10px;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin: 5px;
+  font-size: 14px;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button.delete {
+  background-color: #dc3545;
+}
+
+.button.delete:hover {
+  background-color: #a71d2a;
+}

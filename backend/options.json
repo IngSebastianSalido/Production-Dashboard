@@ -11,6 +11,12 @@
     },
     {
       "name": "PruebaArea"
+    },
+    {
+      "name": "reatest2modificado"
+    },
+    {
+      "name": "lineaagregada"
     }
   ],
   "lineas": [
@@ -28,12 +34,85 @@
       "name": "Lineaprueba",
       "parent": "Prueba",
       "rate": "20"
+    },
+    {
+      "name": "lineaagredada",
+      "parent": "lineaagregada"
+    },
+    {
+      "name": "LineaNueva",
+      "parent": "REA",
+      "rate": "23"
+    },
+    {
+      "name": "asda",
+      "parent": "reatest2modificado",
+      "rate": "23"
+    },
+    {
+      "name": "Actuador",
+      "parent": "REA",
+      "rate": "180"
     }
   ],
   "estaciones": [
     {
       "name": "l1",
       "parent": "Moldeo"
+    },
+    {
+      "name": "l2",
+      "parent": "Moldeo"
+    },
+    {
+      "name": "rea",
+      "parent": "Moldeo"
+    },
+    {
+      "name": "PruebaSt",
+      "parent": "Lineaprueba"
+    },
+    {
+      "name": "fase20",
+      "parent": "Linea 1"
+    },
+    {
+      "name": "estacionagregada",
+      "parent": "lineaagredada"
+    },
+    {
+      "name": "CHW",
+      "parent": "Actuador"
+    }
+  ],
+  "modosFalla": [
+    {
+      "name": "Falla 1",
+      "parent": "l1"
+    },
+    {
+      "name": "Falla 2",
+      "parent": "l2"
+    },
+    {
+      "name": "fallando",
+      "parent": "l1"
+    },
+    {
+      "name": "fallandooooo",
+      "parent": "l2"
+    },
+    {
+      "name": "modofallafase20",
+      "parent": "fase20"
+    },
+    {
+      "name": "modoagregado",
+      "parent": "estacionagregada"
+    },
+    {
+      "name": "ST1 datamatrix",
+      "parent": "CHW"
     }
   ]
 }

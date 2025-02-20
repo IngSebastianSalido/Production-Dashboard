@@ -6,12 +6,13 @@ const StopPage = () => {
     area: '',
     linea: '',
     estacion: '',
+    modoFalla: '', // Agregar modo de falla
     hora_paro: '',
     hora_arranque: '',
     descripcion: '',
   });
 
-  const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [] });
+  const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [], modosFalla: [] });
   const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
@@ -54,6 +55,7 @@ const StopPage = () => {
           area: '',
           linea: '',
           estacion: '',
+          modoFalla: '', // Reiniciar modo de falla
           hora_paro: '',
           hora_arranque: '',
           descripcion: '',
@@ -105,6 +107,15 @@ const StopPage = () => {
             <option value="">Seleccionar Estación</option>
             {options.estaciones.filter(estacion => estacion.parent === formData.linea).map((estacion, index) => (
               <option key={index} value={estacion.name}>{estacion.name}</option>
+            ))}
+          </select>
+        </div>
+        <div style={styles.formGroup}>
+          <label>Modo de Falla (opcional):</label>
+          <select name="modoFalla" value={formData.modoFalla} onChange={handleChange} style={styles.select}>
+            <option value="">Seleccionar Modo de Falla</option>
+            {options.modosFalla.filter(modoFalla => modoFalla.parent === formData.estacion).map((modoFalla, index) => (
+              <option key={index} value={modoFalla.name}>{modoFalla.name}</option>
             ))}
           </select>
         </div>
@@ -175,4 +186,5 @@ const styles = {
     alignSelf: 'center', // Center the button horizontally
   },
 };
+
 export default StopPage;

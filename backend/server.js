@@ -15,7 +15,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 // Middleware
 const corsOptions = {
     origin: process.env.CORS_ORIGIN.split(','),
-    methods: ['GET', 'POST', 'DELETE'],
+    methods: ['GET', 'POST', 'DELETE','PUT'],
     allowedHeaders: ['Content-Type'],
 };
 app.use(cors(corsOptions));
@@ -32,7 +32,7 @@ if (!fs.existsSync(productionFilePath)) {
 }
 
 if (!fs.existsSync(stopsFilePath)) {
-    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,estacion,hora_paro,hora_arranque,descripcion\n');
+    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,estacion,modos_de_fallo,hora_paro,hora_arranque,descripcion\n');
 }
 
 // Logger para verificar las solicitudes
@@ -144,10 +144,10 @@ app.get('/api/reportes/:fecha', (req, res) => {
 
 // Endpoint para registrar un paro de línea
 app.post('/api/paros', (req, res) => {
-    const { fecha, area, linea, estacion, hora_paro, hora_arranque, descripcion } = req.body;
+    const { fecha, area, linea, estacion, modoFalla, hora_paro, hora_arranque, descripcion } = req.body;
 
     if (!fecha || !area || !linea || !estacion || !hora_paro || !hora_arranque || !descripcion) {
-        return res.status(400).send('Todos los campos son obligatorios');
+        return res.status(400).send('Todos los campos son obligatorios, excepto el modo de falla');
     }
 
     // Leer el archivo CSV de paros
@@ -157,7 +157,7 @@ app.post('/api/paros', (req, res) => {
             return res.status(500).send('No se pudo leer el archivo de paros.');
         }
 
-        const nuevoRegistro = `${fecha},${area},${linea},${estacion},${hora_paro},${hora_arranque},${descripcion}`;
+        const nuevoRegistro = `${fecha},${area},${linea},${estacion},${modoFalla || ''},${hora_paro},${hora_arranque},${descripcion}`;
         const contenidoActualizado = data.trim() + '\n' + nuevoRegistro;
 
         // Guardar el nuevo paro en el archivo CSV
@@ -194,6 +194,7 @@ let options = {
     areas: [],
     lineas: [],
     estaciones: [],
+    modosFalla: [],
 };
 
 // Load options from file
@@ -228,8 +229,8 @@ app.post('/api/opciones', (req, res) => {
     if (type === 'areas') {
         options.areas.push({ name });
     } else if (type === 'lineas') {
-        if (!parent) {
-            return res.status(400).json({ error: 'Parent is required for lineas' });
+        if (!parent || rate === undefined || rate === '') {
+            return res.status(400).json({ error: 'Parent and rate are required for lineas' });
         }
         options.lineas.push({ name, parent, rate });
     } else if (type === 'estaciones') {
@@ -237,6 +238,11 @@ app.post('/api/opciones', (req, res) => {
             return res.status(400).json({ error: 'Parent is required for estaciones' });
         }
         options.estaciones.push({ name, parent });
+    } else if (type === 'modosFalla') {
+        if (!parent) {
+            return res.status(400).json({ error: 'Parent is required for modosFalla' });
+        }
+        options.modosFalla.push({ name, parent });
     } else {
         return res.status(400).json({ error: 'Invalid type' });
     }
@@ -270,6 +276,36 @@ app.delete('/api/opciones/:type/:name', (req, res) => {
     res.status(200).json({ message: `${type.slice(0, -1)} removed successfully` });
 });
 
+// Endpoint to modify an option
+app.put('/api/opciones/:type/:oldName', (req, res) => {
+    const { type, oldName } = req.params;
+    const { name } = req.body;
+
+    if (!type || !oldName || !name) {
+        return res.status(400).json({ error: 'Type, old name, and new name are required' });
+    }
+
+    if (type === 'areas') {
+        options.areas = options.areas.map(area => area.name === oldName ? { ...area, name } : area);
+        options.lineas = options.lineas.map(linea => linea.parent === oldName ? { ...linea, parent: name } : linea);
+        options.estaciones = options.estaciones.map(estacion => estacion.parent === oldName ? { ...estacion, parent: name } : estacion);
+        options.modosFalla = options.modosFalla.map(modoFalla => modoFalla.parent === oldName ? { ...modoFalla, parent: name } : modoFalla);
+    } else if (type === 'lineas') {
+        options.lineas = options.lineas.map(linea => linea.name === oldName ? { ...linea, name } : linea);
+        options.estaciones = options.estaciones.map(estacion => estacion.parent === oldName ? { ...estacion, parent: name } : estacion);
+        options.modosFalla = options.modosFalla.map(modoFalla => modoFalla.parent === oldName ? { ...modoFalla, parent: name } : modoFalla);
+    } else if (type === 'estaciones') {
+        options.estaciones = options.estaciones.map(estacion => estacion.name === oldName ? { ...estacion, name } : estacion);
+        options.modosFalla = options.modosFalla.map(modoFalla => modoFalla.parent === oldName ? { ...modoFalla, parent: name } : modoFalla);
+    } else if (type === 'modosFalla') {
+        options.modosFalla = options.modosFalla.map(modoFalla => modoFalla.name === oldName ? { ...modoFalla, name } : modoFalla);
+    } else {
+        return res.status(400).json({ error: 'Invalid type' });
+    }
+
+    saveOptions();
+    res.status(200).json({ message: `${type.slice(0, -1)} modified successfully` });
+});
 // ------------------------- INICIAR EL SERVIDOR -------------------------
 
 // Iniciar el servidor HTTP
