@@ -76,14 +76,33 @@ const App = () => {
         Object.keys(lineas).forEach((linea) => {
           const horas = Object.keys(lineas[linea]).sort(); // Ordenar horas
           const rate = config.lineas.find(l => l.name === linea)?.rate || 0; // Get the rate from config
+          const rateDos = config.lineas.find(l => l.name === linea)?.rateDos || 0; // Get the rateDos from config
           formattedData[linea] = {
             labels: horas,
             datasets: [
               {
                 label: 'Piezas OK',
                 data: horas.map((hora) => lineas[linea][hora].ok),
-                backgroundColor: horas.map((hora) => lineas[linea][hora].ok >= rate ? 'rgba(0, 255, 0, 0.6)' : 'rgba(75, 192, 192, 0.6)'),
-                borderColor: horas.map((hora) => lineas[linea][hora].ok >= rate ? 'rgba(0, 255, 0, 1)' : 'rgba(75, 192, 192, 1)'),
+                backgroundColor: horas.map((hora) => {
+                  const piezasOk = lineas[linea][hora].ok;
+                  if (piezasOk >= rate) {
+                    return 'rgba(0, 255, 0, 0.6)'; // Verde
+                  } else if (piezasOk >= rateDos) {
+                    return 'rgba(255, 255, 0, 0.6)'; // Amarillo
+                  } else {
+                    return 'rgba(255, 0, 0, 0.6)'; // Rojo
+                  }
+                }),
+                borderColor: horas.map((hora) => {
+                  const piezasOk = lineas[linea][hora].ok;
+                  if (piezasOk >= rate) {
+                    return 'rgba(0, 255, 0, 1)'; // Verde
+                  } else if (piezasOk >= rateDos) {
+                    return 'rgba(255, 255, 0, 1)'; // Amarillo
+                  } else {
+                    return 'rgba(255, 0, 0, 1)'; // Rojo
+                  }
+                }),
                 borderWidth: 1,
               },
               {

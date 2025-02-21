@@ -25,6 +25,7 @@ const ConfigPage = () => {
   const [newEstacion, setNewEstacion] = useState('');
   const [newModoFalla, setNewModoFalla] = useState('');
   const [newRate, setNewRate] = useState(''); // Nuevo estado para el rate
+  const [newRateDos, setNewRateDos] = useState(''); // Nuevo estado para el rateDos
 
   useEffect(() => {
     const loadOptions = async () => {
@@ -71,13 +72,13 @@ const ConfigPage = () => {
     }
   };
 
-  const handleAddOption = async (type, name, parent, rate) => {
-    if (!name || (type === 'lineas' && (rate === undefined || rate === ''))) return;
+  const handleAddOption = async (type, name, parent, rate, rateDos) => {
+    if (!name || (type === 'lineas' && (rate === undefined || rate === '' || rateDos === undefined || rateDos === ''))) return;
     try {
-      await axios.post(`${serverApiUrl}/api/opciones`, { type, name, parent, rate });
+      await axios.post(`${serverApiUrl}/api/opciones`, { type, name, parent, rate, rateDos });
       setOptions(prevOptions => ({
         ...prevOptions,
-        [type]: [...prevOptions[type], { name, parent, rate }],
+        [type]: [...prevOptions[type], { name, parent, rate, rateDos }],
       }));
     } catch (error) {
       console.error(`Error adding ${type}:`, error);
@@ -93,6 +94,7 @@ const ConfigPage = () => {
     setNewEstacion(''); // Limpiar input de Estación
     setNewModoFalla(''); // Limpiar input de Modo de Falla
     setNewRate(''); // Limpiar input de Rate
+    setNewRateDos(''); // Limpiar input de RateDos
   };
 
   const handleSelectLinea = (e) => {
@@ -142,10 +144,11 @@ const ConfigPage = () => {
           </select>
           <input type="text" value={newLinea} onChange={(e) => setNewLinea(e.target.value)} className="input" placeholder="Modificar/Agregar Línea" />
           <input type="number" value={newRate} onChange={(e) => setNewRate(e.target.value)} className="input" placeholder="Rate" />
+          <input type="number" value={newRateDos} onChange={(e) => setNewRateDos(e.target.value)} className="input" placeholder="Rate Dos" />
           <div className="button-group">
             <button className="button" onClick={() => handleModifyOption('lineas', selectedLinea, newLinea)}>Modificar</button>
             <button className="button delete" onClick={() => handleRemove('lineas', selectedLinea)}>Eliminar</button>
-            <button className="button add" onClick={() => handleAddOption('lineas', newLinea, selectedArea, newRate)}>Agregar</button>
+            <button className="button add" onClick={() => handleAddOption('lineas', newLinea, selectedArea, newRate, newRateDos)}>Agregar</button>
           </div>
         </div>
       )}

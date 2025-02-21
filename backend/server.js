@@ -220,7 +220,7 @@ app.get('/api/opciones', (req, res) => {
 
 // Endpoint to add a new option
 app.post('/api/opciones', (req, res) => {
-    const { type, name, parent, rate } = req.body;
+    const { type, name, parent, rate, rateDos } = req.body;
 
     if (!type || !name) {
         return res.status(400).json({ error: 'Type and name are required' });
@@ -229,10 +229,10 @@ app.post('/api/opciones', (req, res) => {
     if (type === 'areas') {
         options.areas.push({ name });
     } else if (type === 'lineas') {
-        if (!parent || rate === undefined || rate === '') {
-            return res.status(400).json({ error: 'Parent and rate are required for lineas' });
+        if (!parent || rate === undefined || rate === '' || rateDos === undefined || rateDos === '') {
+            return res.status(400).json({ error: 'Parent, rate, and rateDos are required for lineas' });
         }
-        options.lineas.push({ name, parent, rate });
+        options.lineas.push({ name, parent, rate, rateDos });
     } else if (type === 'estaciones') {
         if (!parent) {
             return res.status(400).json({ error: 'Parent is required for estaciones' });
