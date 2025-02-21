@@ -28,11 +28,11 @@ const optionsFilePath = path.resolve(process.env.OPTIONS_FILE_PATH);
 
 // Verificar si los archivos CSV existen, si no, crearlos con encabezados
 if (!fs.existsSync(productionFilePath)) {
-    fs.writeFileSync(productionFilePath, 'fecha,area,linea,hora,piezas_ok,piezas_nok\n');
+    fs.writeFileSync(productionFilePath, 'fecha,area,linea,pn,hora,piezas_ok,piezas_nok\n');
 }
 
 if (!fs.existsSync(stopsFilePath)) {
-    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,estacion,modos_de_fallo,hora_paro,hora_arranque,descripcion\n');
+    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,pn,estacion,modos_de_fallo,hora_paro,hora_arranque,descripcion\n');
 }
 
 // Logger para verificar las solicitudes
@@ -47,9 +47,9 @@ app.use((req, res, next) => {
 
 // Endpoint para guardar o actualizar un reporte de producción
 app.post('/api/reportes', (req, res) => {
-    const { fecha, area, linea, hora, piezas_ok, piezas_nok } = req.body;
+    const { fecha, area, linea, pn, hora, piezas_ok, piezas_nok } = req.body;
 
-    if (!fecha || !area || !linea || !hora || piezas_ok === undefined || piezas_nok === undefined) {
+    if (!fecha || !area || !linea || !pn || !hora || piezas_ok === undefined || piezas_nok === undefined) {
         return res.status(400).send('Todos los campos son obligatorios');
     }
 
@@ -64,13 +64,13 @@ app.post('/api/reportes', (req, res) => {
         const headers = rows[0]; // Encabezados
         let registros = rows.slice(1).filter(row => row.trim() !== '');
 
-        // Buscar si ya existe un registro con la misma fecha, área, línea y hora
+        // Buscar si ya existe un registro con la misma fecha, área, línea, PN y hora
         const index = registros.findIndex(row => {
             const cols = row.split(',');
-            return cols.length === 6 && cols[0] === fecha && cols[1] === area && cols[2] === linea && cols[3] === hora;
+            return cols.length === 7 && cols[0] === fecha && cols[1] === area && cols[2] === linea && cols[3] === pn && cols[4] === hora;
         });
 
-        const nuevoRegistro = `${fecha},${area},${linea},${hora},${piezas_ok},${piezas_nok}`;
+        const nuevoRegistro = `${fecha},${area},${linea},${pn},${hora},${piezas_ok},${piezas_nok}`;
 
         if (index !== -1) {
             // Actualizar registro existente
@@ -92,9 +92,9 @@ app.post('/api/reportes', (req, res) => {
     });
 });
 
-// Endpoint para obtener reportes por fecha, área y línea
-app.get('/api/reportes/:fecha/:area/:linea', (req, res) => {
-    const { fecha, area, linea } = req.params;
+// Endpoint para obtener reportes por fecha, área, línea y PN
+app.get('/api/reportes/:fecha/:area/:linea/:pn', (req, res) => {
+    const { fecha, area, linea, pn } = req.params;
 
     fs.readFile(productionFilePath, 'utf8', (err, data) => {
         if (err) {
@@ -107,10 +107,10 @@ app.get('/api/reportes/:fecha/:area/:linea', (req, res) => {
             .slice(1)
             .filter(line => {
                 const cols = line.split(',');
-                return cols.length === 6 && cols[0] === fecha && cols[1].toLowerCase() === area.toLowerCase() && cols[2].toLowerCase() === linea.toLowerCase();
+                return cols.length === 7 && cols[0] === fecha && cols[1].toLowerCase() === area.toLowerCase() && cols[2].toLowerCase() === linea.toLowerCase() && cols[3].toLowerCase() === pn.toLowerCase();
             })
             .map(line => line.split(',')) // Convertir cada línea en un array
-            .sort((a, b) => a[3].localeCompare(b[3])); // Ordenar por hora
+            .sort((a, b) => a[4].localeCompare(b[4])); // Ordenar por hora
 
         res.json(reportes);
     });
@@ -131,22 +131,21 @@ app.get('/api/reportes/:fecha', (req, res) => {
             .slice(1)
             .filter(line => {
                 const cols = line.split(',');
-                return cols.length === 6 && cols[0] === fecha;
+                return cols.length === 7 && cols[0] === fecha;
             })
             .map(line => line.split(',')) // Convertir cada línea en un array
-            .sort((a, b) => a[3].localeCompare(b[3])); // Ordenar por hora
+            .sort((a, b) => a[4].localeCompare(b[4])); // Ordenar por hora
 
         res.json(reportes);
     });
 });
 
 // ------------------------- ENDPOINTS PARA PAROS -------------------------
-
 // Endpoint para registrar un paro de línea
 app.post('/api/paros', (req, res) => {
-    const { fecha, area, linea, estacion, modoFalla, hora_paro, hora_arranque, descripcion } = req.body;
+    const { fecha, area, linea, pn, estacion, modoFalla, hora_paro, hora_arranque, descripcion } = req.body;
 
-    if (!fecha || !area || !linea || !estacion || !hora_paro || !hora_arranque || !descripcion) {
+    if (!fecha || !area || !linea || !pn || !estacion || !hora_paro || !hora_arranque || !descripcion) {
         return res.status(400).send('Todos los campos son obligatorios, excepto el modo de falla');
     }
 
@@ -157,7 +156,7 @@ app.post('/api/paros', (req, res) => {
             return res.status(500).send('No se pudo leer el archivo de paros.');
         }
 
-        const nuevoRegistro = `${fecha},${area},${linea},${estacion},${modoFalla || ''},${hora_paro},${hora_arranque},${descripcion}`;
+        const nuevoRegistro = `${fecha},${area},${linea},${pn},${estacion},${modoFalla || ''},${hora_paro},${hora_arranque},${descripcion}`;
         const contenidoActualizado = data.trim() + '\n' + nuevoRegistro;
 
         // Guardar el nuevo paro en el archivo CSV
@@ -220,7 +219,7 @@ app.get('/api/opciones', (req, res) => {
 
 // Endpoint to add a new option
 app.post('/api/opciones', (req, res) => {
-    const { type, name, parent, rate, rateDos } = req.body;
+    const { type, name, parent, rate, rateDos, pn } = req.body;
 
     if (!type || !name) {
         return res.status(400).json({ error: 'Type and name are required' });
@@ -229,10 +228,10 @@ app.post('/api/opciones', (req, res) => {
     if (type === 'areas') {
         options.areas.push({ name });
     } else if (type === 'lineas') {
-        if (!parent || rate === undefined || rate === '' || rateDos === undefined || rateDos === '') {
-            return res.status(400).json({ error: 'Parent, rate, and rateDos are required for lineas' });
+        if (!parent || rate === undefined || rate === '' || rateDos === undefined || rateDos === '' || pn === undefined || pn === '') {
+            return res.status(400).json({ error: 'Parent, rate, rateDos, and PN are required for lineas' });
         }
-        options.lineas.push({ name, parent, rate, rateDos });
+        options.lineas.push({ name, parent, rate, rateDos, pn });
     } else if (type === 'estaciones') {
         if (!parent) {
             return res.status(400).json({ error: 'Parent is required for estaciones' });

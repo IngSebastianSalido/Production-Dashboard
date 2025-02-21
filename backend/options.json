@@ -7,11 +7,49 @@
   "lineas": [
     {
       "name": "FORD 3140CA29",
+      "parent": "actuadores",
+      "rate": "180",
+      "rateDos": "154",
+      "pn": "PN12345"
+    },
+    {
+      "name": "FORD 3140CA29",
       "parent": "REA",
       "rate": "180",
-      "rateDos": "154"
+      "rateDos": "154",
+      "pn": "PN12345"
+    },
+    {
+      "name": "Actuadores",
+      "parent": "REA",
+      "rate": "180",
+      "rateDos": "154",
+      "pn": "3140CA029"
+    },
+    {
+      "name": "Actuadores",
+      "parent": "REA",
+      "rate": "180",
+      "rateDos": "154",
+      "pn": "3140CA030"
+    },
+    {
+      "name": "FORD 29",
+      "parent": "REA",
+      "rate": "180",
+      "rateDos": "154",
+      "pn": "3140CA029"
     }
   ],
-  "estaciones": [],
+  "estaciones": [
+    {
+      "name": "CHW",
+      "parent": "FORD 3140CA29"
+    },
+    {
+      "name": "CHW",
+      "parent": "Actuadores"
+    }
+  ],
   "modosFalla": []
 }

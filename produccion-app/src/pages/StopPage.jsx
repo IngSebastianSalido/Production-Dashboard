@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 const StopPage = () => {
   const [formData, setFormData] = useState({
     fecha: localStorage.getItem('fecha') || new Date().toISOString().split('T')[0], // Set initial date to today
-    area: '',
-    linea: '',
+    area: localStorage.getItem('area') || '',
+    linea: localStorage.getItem('linea') || '',
+    pn: localStorage.getItem('pn') || '',
     estacion: '',
-    modoFalla: '', // Agregar modo de falla
-    categoria: '', // Agregar categoría
+    modoFalla: '',
+    categoria: '',
     hora_paro: '',
     hora_arranque: '',
     descripcion: '',
@@ -44,10 +45,26 @@ const StopPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    setFormData((prevFormData) => {
+      const newFormData = { ...prevFormData, [name]: value };
+
+      // Save the updated form data to localStorage
+      if (name === 'area') {
+        newFormData.linea = '';
+        newFormData.pn = '';
+        localStorage.removeItem('linea');
+        localStorage.removeItem('pn');
+      } else if (name === 'linea') {
+        newFormData.pn = '';
+        localStorage.removeItem('pn');
+      }
+
+      if (name !== 'piezas_ok' && name !== 'piezas_nok' && name !== 'estacion' && name !== 'modoFalla' && name !== 'categoria' && name !== 'hora_paro' && name !== 'hora_arranque' && name !== 'descripcion') {
+        localStorage.setItem(name, value);
+      }
+
+      return newFormData;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -67,17 +84,15 @@ const StopPage = () => {
 
       if (response.ok) {
         alert('Paro registrado correctamente');
-        setFormData({
-          fecha: localStorage.getItem('fecha') || new Date().toISOString().split('T')[0], // Reset to today's date
-          area: '',
-          linea: '',
+        setFormData((prevFormData) => ({
+          ...prevFormData,
           estacion: '',
-          modoFalla: '', // Reiniciar modo de falla
-          categoria: '', // Reiniciar categoría
+          modoFalla: '',
+          categoria: '',
           hora_paro: '',
           hora_arranque: '',
           descripcion: '',
-        });
+        }));
       } else {
         const errorData = await response.text();
         alert(`Error al registrar el paro: ${errorData}`);
@@ -92,6 +107,9 @@ const StopPage = () => {
   useEffect(() => {
     localStorage.setItem('fecha', formData.fecha);
   }, [formData.fecha]);
+
+  // Obtener líneas únicas
+  const uniqueLineas = Array.from(new Set(options.lineas.map(linea => linea.name)));
 
   return (
     <div className="main-container">
@@ -114,8 +132,17 @@ const StopPage = () => {
           <label>Línea:</label>
           <select name="linea" value={formData.linea} onChange={handleChange} style={styles.select}>
             <option value="">Seleccionar Línea</option>
-            {options.lineas.filter(linea => linea.parent === formData.area).map((linea, index) => (
-              <option key={index} value={linea.name}>{linea.name}</option>
+            {uniqueLineas.filter(linea => options.lineas.some(l => l.name === linea && l.parent === formData.area)).map((linea, index) => (
+              <option key={index} value={linea}>{linea}</option>
+            ))}
+          </select>
+        </div>
+        <div style={styles.formGroup}>
+          <label>PN:</label>
+          <select name="pn" value={formData.pn} onChange={handleChange} style={styles.select}>
+            <option value="">Seleccionar PN</option>
+            {options.lineas.filter(linea => linea.name === formData.linea).map((linea, index) => (
+              <option key={index} value={linea.pn}>{linea.pn}</option>
             ))}
           </select>
         </div>

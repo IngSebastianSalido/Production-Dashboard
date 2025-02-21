@@ -44,47 +44,51 @@ const App = () => {
         const response = await axios.get(`${serverApiUrl}/api/reportes/${fecha}`);
         const data = response.data;
 
-        // Agrupar datos por línea y por hora
+        // Agrupar datos por área, línea, PN y hora
         const lineas = {};
         const lineasTotales = {};
         data.forEach((row) => {
+          const area = row[1]; // Área
           const linea = row[2]; // Línea
-          const hora = row[3]; // Hora
-          const piezasOk = parseInt(row[4]);
-          const piezasNok = parseInt(row[5]);
+          const pn = row[3]; // PN
+          const hora = row[4]; // Hora
+          const piezasOk = parseInt(row[5]);
+          const piezasNok = parseInt(row[6]);
 
-          // Agrupar datos por línea y hora
-          if (!lineas[linea]) {
-            lineas[linea] = {};
+          // Agrupar datos por área, línea, PN y hora
+          const key = `${area}-${linea}-${pn}`;
+          if (!lineas[key]) {
+            lineas[key] = {};
           }
-          if (!lineas[linea][hora]) {
-            lineas[linea][hora] = { ok: 0, nok: 0 };
+          if (!lineas[key][hora]) {
+            lineas[key][hora] = { ok: 0, nok: 0 };
           }
-          lineas[linea][hora].ok += piezasOk;
-          lineas[linea][hora].nok += piezasNok;
+          lineas[key][hora].ok += piezasOk;
+          lineas[key][hora].nok += piezasNok;
 
-          // Calcular totales por línea
-          if (!lineasTotales[linea]) {
-            lineasTotales[linea] = { ok: 0, nok: 0 };
+          // Calcular totales por área, línea y PN
+          if (!lineasTotales[key]) {
+            lineasTotales[key] = { ok: 0, nok: 0 };
           }
-          lineasTotales[linea].ok += piezasOk;
-          lineasTotales[linea].nok += piezasNok;
+          lineasTotales[key].ok += piezasOk;
+          lineasTotales[key].nok += piezasNok;
         });
 
         // Formatear los datos para Chart.js
         const formattedData = {};
-        Object.keys(lineas).forEach((linea) => {
-          const horas = Object.keys(lineas[linea]).sort(); // Ordenar horas
-          const rate = config.lineas.find(l => l.name === linea)?.rate || 0; // Get the rate from config
-          const rateDos = config.lineas.find(l => l.name === linea)?.rateDos || 0; // Get the rateDos from config
-          formattedData[linea] = {
+        Object.keys(lineas).forEach((key) => {
+          const horas = Object.keys(lineas[key]).sort(); // Ordenar horas
+          const [area, linea, pn] = key.split('-');
+          const rate = config.lineas.find(l => l.name === linea && l.pn === pn)?.rate || 0; // Get the rate from config
+          const rateDos = config.lineas.find(l => l.name === linea && l.pn === pn)?.rateDos || 0; // Get the rateDos from config
+          formattedData[key] = {
             labels: horas,
             datasets: [
               {
                 label: 'Piezas OK',
-                data: horas.map((hora) => lineas[linea][hora].ok),
+                data: horas.map((hora) => lineas[key][hora].ok),
                 backgroundColor: horas.map((hora) => {
-                  const piezasOk = lineas[linea][hora].ok;
+                  const piezasOk = lineas[key][hora].ok;
                   if (piezasOk >= rate) {
                     return 'rgba(0, 255, 0, 0.6)'; // Verde
                   } else if (piezasOk >= rateDos) {
@@ -94,7 +98,7 @@ const App = () => {
                   }
                 }),
                 borderColor: horas.map((hora) => {
-                  const piezasOk = lineas[linea][hora].ok;
+                  const piezasOk = lineas[key][hora].ok;
                   if (piezasOk >= rate) {
                     return 'rgba(0, 255, 0, 1)'; // Verde
                   } else if (piezasOk >= rateDos) {
@@ -107,7 +111,7 @@ const App = () => {
               },
               {
                 label: 'Piezas NOK',
-                data: horas.map((hora) => lineas[linea][hora].nok),
+                data: horas.map((hora) => lineas[key][hora].nok),
                 backgroundColor: 'rgba(255, 99, 132, 0.6)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1,
@@ -153,33 +157,36 @@ const App = () => {
       {/* Gráficas por línea en diseño tipo Grid */}
       <div style={styles.grid}>
         {Object.keys(lineasData).length > 0 ? (
-          Object.keys(lineasData).map((linea) => (
-            <div key={linea} style={styles.card}>
-              <h2 style={styles.lineTitle}>
-                Línea: {linea} -{' '}
-                <span style={{ color: 'green' }}>Total OK: {totales[linea]?.ok || 0}</span>,{' '}
-                <span style={{ color: 'red' }}>Total NOK: {totales[linea]?.nok || 0}</span>
-              </h2>
-              <div style={styles.chart}>
-                <Bar
-                  data={lineasData[linea]}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                      y: {
-                        beginAtZero: true,
+          Object.keys(lineasData).map((key) => {
+            const [area, linea, pn] = key.split('-');
+            return (
+              <div key={key} style={styles.card}>
+                <h2 style={styles.lineTitle}>
+                  Área: {area} - Línea: {linea} - PN: {pn} -{' '}
+                  <span style={{ color: 'green' }}>Total OK: {totales[key]?.ok || 0}</span>,{' '}
+                  <span style={{ color: 'red' }}>Total NOK: {totales[key]?.nok || 0}</span>
+                </h2>
+                <div style={styles.chart}>
+                  <Bar
+                    data={lineasData[key]}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                        y: {
+                          beginAtZero: true,
+                        },
+                        y1: {
+                          beginAtZero: true,
+                          display: false,
+                        },
                       },
-                      y1: {
-                        beginAtZero: true,
-                        display: false,
-                      },
-                    },
-                  }}
-                />
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>Seleccione una fecha para generar las gráficas.</p>
         )}

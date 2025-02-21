@@ -26,6 +26,7 @@ const ConfigPage = () => {
   const [newModoFalla, setNewModoFalla] = useState('');
   const [newRate, setNewRate] = useState(''); // Nuevo estado para el rate
   const [newRateDos, setNewRateDos] = useState(''); // Nuevo estado para el rateDos
+  const [newPN, setNewPN] = useState(''); // Nuevo estado para el PN
 
   useEffect(() => {
     const loadOptions = async () => {
@@ -72,13 +73,13 @@ const ConfigPage = () => {
     }
   };
 
-  const handleAddOption = async (type, name, parent, rate, rateDos) => {
-    if (!name || (type === 'lineas' && (rate === undefined || rate === '' || rateDos === undefined || rateDos === ''))) return;
+  const handleAddOption = async (type, name, parent, rate, rateDos, pn) => {
+    if (!name || (type === 'lineas' && (rate === undefined || rate === '' || rateDos === undefined || rateDos === '' || pn === undefined || pn === ''))) return;
     try {
-      await axios.post(`${serverApiUrl}/api/opciones`, { type, name, parent, rate, rateDos });
+      await axios.post(`${serverApiUrl}/api/opciones`, { type, name, parent, rate, rateDos, pn });
       setOptions(prevOptions => ({
         ...prevOptions,
-        [type]: [...prevOptions[type], { name, parent, rate, rateDos }],
+        [type]: [...prevOptions[type], { name, parent, rate, rateDos, pn }],
       }));
     } catch (error) {
       console.error(`Error adding ${type}:`, error);
@@ -95,6 +96,7 @@ const ConfigPage = () => {
     setNewModoFalla(''); // Limpiar input de Modo de Falla
     setNewRate(''); // Limpiar input de Rate
     setNewRateDos(''); // Limpiar input de RateDos
+    setNewPN(''); // Limpiar input de PN
   };
 
   const handleSelectLinea = (e) => {
@@ -110,6 +112,9 @@ const ConfigPage = () => {
     setSelectedModoFalla(''); // Reiniciar Modo de Falla
     setNewModoFalla(''); // Limpiar input de Modo de Falla
   };
+
+  // Obtener líneas únicas
+  const uniqueLineas = Array.from(new Set(options.lineas.map(linea => linea.name)));
 
   return (
     <div className="config-container">
@@ -138,17 +143,18 @@ const ConfigPage = () => {
           <h2>Seleccionar Línea</h2>
           <select value={selectedLinea} onChange={handleSelectLinea} className="select">
             <option value="">Selecciona una Línea</option>
-            {options.lineas.filter(linea => linea.parent === selectedArea).map((linea, index) => (
-              <option key={index} value={linea.name}>{linea.name}</option>
+            {uniqueLineas.filter(linea => options.lineas.some(l => l.name === linea && l.parent === selectedArea)).map((linea, index) => (
+              <option key={index} value={linea}>{linea}</option>
             ))}
           </select>
           <input type="text" value={newLinea} onChange={(e) => setNewLinea(e.target.value)} className="input" placeholder="Modificar/Agregar Línea" />
           <input type="number" value={newRate} onChange={(e) => setNewRate(e.target.value)} className="input" placeholder="Rate" />
           <input type="number" value={newRateDos} onChange={(e) => setNewRateDos(e.target.value)} className="input" placeholder="Rate Dos" />
+          <input type="text" value={newPN} onChange={(e) => setNewPN(e.target.value)} className="input" placeholder="PN" />
           <div className="button-group">
             <button className="button" onClick={() => handleModifyOption('lineas', selectedLinea, newLinea)}>Modificar</button>
             <button className="button delete" onClick={() => handleRemove('lineas', selectedLinea)}>Eliminar</button>
-            <button className="button add" onClick={() => handleAddOption('lineas', newLinea, selectedArea, newRate, newRateDos)}>Agregar</button>
+            <button className="button add" onClick={() => handleAddOption('lineas', newLinea, selectedArea, newRate, newRateDos, newPN)}>Agregar</button>
           </div>
         </div>
       )}

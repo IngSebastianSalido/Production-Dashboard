@@ -6,6 +6,7 @@ const ReportForm = () => {
     fecha: localStorage.getItem('fecha') || '',
     area: localStorage.getItem('area') || '',
     linea: localStorage.getItem('linea') || '',
+    pn: localStorage.getItem('pn') || '',
     hora: localStorage.getItem('hora') || '',
     piezas_ok: 0,
     piezas_nok: 0,
@@ -32,6 +33,16 @@ const ReportForm = () => {
     setFormData((prevFormData) => {
       const newFormData = { ...prevFormData, [name]: value };
       // Save the updated form data to localStorage
+      if (name === 'area') {
+        newFormData.linea = '';
+        newFormData.pn = '';
+        localStorage.removeItem('linea');
+        localStorage.removeItem('pn');
+      } else if (name === 'linea') {
+        newFormData.pn = '';
+        localStorage.removeItem('pn');
+      }
+
       if (name !== 'piezas_ok' && name !== 'piezas_nok') {
         localStorage.setItem(name, value);
       }
@@ -59,6 +70,9 @@ const ReportForm = () => {
     }
   };
 
+  // Obtener líneas únicas
+  const uniqueLineas = Array.from(new Set(options.lineas.map(linea => linea.name)));
+
   return (
     <div style={styles.container}>
       <form onSubmit={handleSubmit} style={styles.form}>
@@ -79,8 +93,17 @@ const ReportForm = () => {
           <label>Línea:</label>
           <select name="linea" value={formData.linea} onChange={handleChange} style={styles.select}>
             <option value="">Seleccionar Línea</option>
-            {options.lineas.filter(linea => linea.parent.toLowerCase() === formData.area.toLowerCase()).map((linea, index) => (
-              <option key={index} value={linea.name}>{linea.name}</option>
+            {uniqueLineas.filter(linea => options.lineas.some(l => l.name === linea && l.parent.toLowerCase() === formData.area.toLowerCase())).map((linea, index) => (
+              <option key={index} value={linea}>{linea}</option>
+            ))}
+          </select>
+        </div>
+        <div style={styles.formGroup}>
+          <label>PN:</label>
+          <select name="pn" value={formData.pn} onChange={handleChange} style={styles.select}>
+            <option value="">Seleccionar PN</option>
+            {options.lineas.filter(linea => linea.name.toLowerCase() === formData.linea.toLowerCase()).map((linea, index) => (
+              <option key={index} value={linea.pn}>{linea.pn}</option>
             ))}
           </select>
         </div>

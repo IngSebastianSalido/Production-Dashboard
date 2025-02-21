@@ -6,6 +6,7 @@ const ReportTable = () => {
   const [fecha, setFecha] = useState("");
   const [area, setArea] = useState("");
   const [linea, setLinea] = useState("");
+  const [pn, setPn] = useState(""); // Agregar estado para PN
   const [reportes, setReportes] = useState([]);
   const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [], modosFalla: [] });
   const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
@@ -25,12 +26,15 @@ const ReportTable = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`${serverApiUrl}/api/reportes/${fecha}/${area}/${linea}`);
+      const response = await axios.get(`${serverApiUrl}/api/reportes/${fecha}/${area}/${linea}/${pn}`);
       setReportes(response.data);
     } catch (error) {
       console.error('Error fetching reports:', error);
     }
   };
+
+  // Obtener líneas únicas
+  const uniqueLineas = Array.from(new Set(options.lineas.map(linea => linea.name)));
 
   return (
     <div className={styles["table-container"]}>
@@ -65,8 +69,21 @@ const ReportTable = () => {
             className={styles["search-select"]}
           >
             <option value="">Seleccionar Línea</option>
-            {options.lineas.filter(linea => linea.parent === area).map((linea, index) => (
-              <option key={index} value={linea.name}>{linea.name}</option>
+            {uniqueLineas.filter(linea => options.lineas.some(l => l.name === linea && l.parent === area)).map((linea, index) => (
+              <option key={index} value={linea}>{linea}</option>
+            ))}
+          </select>
+        </div>
+        <div className={styles["form-group"]}>
+          <label>PN:</label>
+          <select
+            value={pn}
+            onChange={(e) => setPn(e.target.value)}
+            className={styles["search-select"]}
+          >
+            <option value="">Seleccionar PN</option>
+            {options.lineas.filter(l => l.name === linea).map((linea, index) => (
+              <option key={index} value={linea.pn}>{linea.pn}</option>
             ))}
           </select>
         </div>
@@ -80,6 +97,7 @@ const ReportTable = () => {
             <th>Fecha</th>
             <th>Área</th>
             <th>Línea</th>
+            <th>PN</th>
             <th>Hora</th>
             <th>Piezas OK</th>
             <th>Piezas NOK</th>
@@ -95,11 +113,12 @@ const ReportTable = () => {
                 <td>{reporte[3]}</td>
                 <td>{reporte[4]}</td>
                 <td>{reporte[5]}</td>
+                <td>{reporte[6]}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="6" className={styles["no-results"]}>No hay resultados</td>
+              <td colSpan="7" className={styles["no-results"]}>No hay resultados</td>
             </tr>
           )}
         </tbody>
