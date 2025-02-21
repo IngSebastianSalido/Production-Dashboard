@@ -306,6 +306,21 @@ app.put('/api/opciones/:type/:oldName', (req, res) => {
     saveOptions();
     res.status(200).json({ message: `${type.slice(0, -1)} modified successfully` });
 });
+
+
+// Categorias
+categoriesFilePath = path.resolve(process.env.CATEGORIES_FILE_PATH);
+// Load categories from file
+let categories = [];
+if (fs.existsSync(categoriesFilePath)) {
+    const data = fs.readFileSync(categoriesFilePath, 'utf8');
+    categories = JSON.parse(data).categories;
+}
+
+// Endpoint to fetch all categories
+app.get('/api/categories', (req, res) => {
+    res.json(categories);
+});
 // ------------------------- INICIAR EL SERVIDOR -------------------------
 
 // Iniciar el servidor HTTP

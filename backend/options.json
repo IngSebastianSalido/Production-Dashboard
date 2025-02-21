@@ -6,99 +6,12 @@
   ],
   "lineas": [
     {
-      "name": "Moldeo",
-      "parent": "REA",
-      "rate": 50
-    },
-    {
-      "name": "LineaNueva",
-      "parent": "REA",
-      "rate": "23"
-    },
-    {
-      "name": "Actuador",
-      "parent": "REA",
-      "rate": "180"
-    },
-    {
-      "name": "LineaNueva2rates",
-      "parent": "REA",
-      "rate": "150",
-      "rateDos": "125"
-    },
-    {
       "name": "FORD 3140CA29",
-      "parent": "actuadores",
+      "parent": "REA",
       "rate": "180",
       "rateDos": "154"
     }
   ],
-  "estaciones": [
-    {
-      "name": "l1",
-      "parent": "Moldeo"
-    },
-    {
-      "name": "l2",
-      "parent": "Moldeo"
-    },
-    {
-      "name": "rea",
-      "parent": "Moldeo"
-    },
-    {
-      "name": "PruebaSt",
-      "parent": "Lineaprueba"
-    },
-    {
-      "name": "estacionagregada",
-      "parent": "lineaagredada"
-    },
-    {
-      "name": "CHW",
-      "parent": "Actuador"
-    },
-    {
-      "name": "probando",
-      "parent": "LineaNueva2rates"
-    },
-    {
-      "name": "Estacion",
-      "parent": "Linea"
-    }
-  ],
-  "modosFalla": [
-    {
-      "name": "Falla 1",
-      "parent": "l1"
-    },
-    {
-      "name": "Falla 2",
-      "parent": "l2"
-    },
-    {
-      "name": "fallando",
-      "parent": "l1"
-    },
-    {
-      "name": "fallandooooo",
-      "parent": "l2"
-    },
-    {
-      "name": "modofallafase20",
-      "parent": "fase20"
-    },
-    {
-      "name": "modoagregado",
-      "parent": "estacionagregada"
-    },
-    {
-      "name": "ST1 datamatrix",
-      "parent": "CHW"
-    },
-    {
-      "name": "sinmodo",
-      "parent": "probando"
-    }
-  ]
+  "estaciones": [],
+  "modosFalla": []
 }

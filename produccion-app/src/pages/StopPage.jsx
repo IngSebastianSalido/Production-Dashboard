@@ -7,12 +7,14 @@ const StopPage = () => {
     linea: '',
     estacion: '',
     modoFalla: '', // Agregar modo de falla
+    categoria: '', // Agregar categoría
     hora_paro: '',
     hora_arranque: '',
     descripcion: '',
   });
 
   const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [], modosFalla: [] });
+  const [categories, setCategories] = useState([]);
   const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
@@ -26,7 +28,18 @@ const StopPage = () => {
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${serverApiUrl}/api/categories`);
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
     fetchOptions();
+    fetchCategories();
   }, [serverApiUrl]);
 
   const handleChange = (e) => {
@@ -39,6 +52,10 @@ const StopPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.categoria) {
+      alert('La categoría es obligatoria');
+      return;
+    }
     try {
       const response = await fetch(`${serverApiUrl}/api/paros`, {
         method: 'POST',
@@ -56,6 +73,7 @@ const StopPage = () => {
           linea: '',
           estacion: '',
           modoFalla: '', // Reiniciar modo de falla
+          categoria: '', // Reiniciar categoría
           hora_paro: '',
           hora_arranque: '',
           descripcion: '',
@@ -116,6 +134,15 @@ const StopPage = () => {
             <option value="">Seleccionar Modo de Falla</option>
             {options.modosFalla.filter(modoFalla => modoFalla.parent === formData.estacion).map((modoFalla, index) => (
               <option key={index} value={modoFalla.name}>{modoFalla.name}</option>
+            ))}
+          </select>
+        </div>
+        <div style={styles.formGroup}>
+          <label>Categoría:</label>
+          <select name="categoria" value={formData.categoria} onChange={handleChange} style={styles.select}>
+            <option value="">Seleccionar Categoría</option>
+            {categories.map((categoria, index) => (
+              <option key={index} value={categoria}>{categoria}</option>
             ))}
           </select>
         </div>
