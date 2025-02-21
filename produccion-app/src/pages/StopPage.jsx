@@ -8,6 +8,7 @@ const StopPage = () => {
     pn: localStorage.getItem('pn') || '',
     estacion: '',
     modoFalla: '',
+    descripcionModoFalla: '', // Agregar estado para la descripción del modo de falla
     categoria: '',
     hora_paro: '',
     hora_arranque: '',
@@ -59,7 +60,7 @@ const StopPage = () => {
         localStorage.removeItem('pn');
       }
 
-      if (name !== 'piezas_ok' && name !== 'piezas_nok' && name !== 'estacion' && name !== 'modoFalla' && name !== 'categoria' && name !== 'hora_paro' && name !== 'hora_arranque' && name !== 'descripcion') {
+      if (name !== 'piezas_ok' && name !== 'piezas_nok' && name !== 'estacion' && name !== 'modoFalla' && name !== 'categoria' && name !== 'hora_paro' && name !== 'hora_arranque' && name !== 'descripcion' && name !== 'descripcionModoFalla') {
         localStorage.setItem(name, value);
       }
 
@@ -88,6 +89,7 @@ const StopPage = () => {
           ...prevFormData,
           estacion: '',
           modoFalla: '',
+          descripcionModoFalla: '', // Reiniciar descripción del modo de falla
           categoria: '',
           hora_paro: '',
           hora_arranque: '',
@@ -110,6 +112,9 @@ const StopPage = () => {
 
   // Obtener líneas únicas
   const uniqueLineas = Array.from(new Set(options.lineas.map(linea => linea.name)));
+
+  // Obtener modos de falla únicos
+  const uniqueModosFalla = Array.from(new Set(options.modosFalla.map(modoFalla => modoFalla.name)));
 
   return (
     <div className="main-container">
@@ -159,8 +164,17 @@ const StopPage = () => {
           <label>Modo de Falla (opcional):</label>
           <select name="modoFalla" value={formData.modoFalla} onChange={handleChange} style={styles.select}>
             <option value="">Seleccionar Modo de Falla</option>
-            {options.modosFalla.filter(modoFalla => modoFalla.parent === formData.estacion).map((modoFalla, index) => (
-              <option key={index} value={modoFalla.name}>{modoFalla.name}</option>
+            {uniqueModosFalla.filter(modoFalla => options.modosFalla.some(m => m.name === modoFalla && m.parent === formData.estacion)).map((modoFalla, index) => (
+              <option key={index} value={modoFalla}>{modoFalla}</option>
+            ))}
+          </select>
+        </div>
+        <div style={styles.formGroup}>
+          <label>Descripción del Modo de Falla (opcional):</label>
+          <select name="descripcionModoFalla" value={formData.descripcionModoFalla} onChange={handleChange} style={styles.select}>
+            <option value="">Seleccionar Descripción</option>
+            {options.modosFalla.filter(modoFalla => modoFalla.name === formData.modoFalla).map((modoFalla, index) => (
+              <option key={index} value={modoFalla.descripcionModoFalla}>{modoFalla.descripcionModoFalla}</option>
             ))}
           </select>
         </div>

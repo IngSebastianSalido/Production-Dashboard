@@ -32,7 +32,7 @@ if (!fs.existsSync(productionFilePath)) {
 }
 
 if (!fs.existsSync(stopsFilePath)) {
-    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,pn,estacion,modos_de_fallo,hora_paro,hora_arranque,descripcion\n');
+    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,pn,estacion,modos_de_fallo,descripcion_modo_de_fallo,hora_paro,hora_arranque,descripcion\n');
 }
 
 // Logger para verificar las solicitudes
@@ -143,10 +143,10 @@ app.get('/api/reportes/:fecha', (req, res) => {
 // ------------------------- ENDPOINTS PARA PAROS -------------------------
 // Endpoint para registrar un paro de línea
 app.post('/api/paros', (req, res) => {
-    const { fecha, area, linea, pn, estacion, modoFalla, hora_paro, hora_arranque, descripcion } = req.body;
+    const { fecha, area, linea, pn, estacion, modoFalla, descripcionModoFalla, hora_paro, hora_arranque, descripcion } = req.body;
 
     if (!fecha || !area || !linea || !pn || !estacion || !hora_paro || !hora_arranque || !descripcion) {
-        return res.status(400).send('Todos los campos son obligatorios, excepto el modo de falla');
+        return res.status(400).send('Todos los campos son obligatorios, excepto el modo de falla y su descripción');
     }
 
     // Leer el archivo CSV de paros
@@ -156,7 +156,7 @@ app.post('/api/paros', (req, res) => {
             return res.status(500).send('No se pudo leer el archivo de paros.');
         }
 
-        const nuevoRegistro = `${fecha},${area},${linea},${pn},${estacion},${modoFalla || ''},${hora_paro},${hora_arranque},${descripcion}`;
+        const nuevoRegistro = `${fecha},${area},${linea},${pn},${estacion},${modoFalla || ''},${descripcionModoFalla || ''},${hora_paro},${hora_arranque},${descripcion}`;
         const contenidoActualizado = data.trim() + '\n' + nuevoRegistro;
 
         // Guardar el nuevo paro en el archivo CSV
@@ -219,7 +219,7 @@ app.get('/api/opciones', (req, res) => {
 
 // Endpoint to add a new option
 app.post('/api/opciones', (req, res) => {
-    const { type, name, parent, rate, rateDos, pn } = req.body;
+    const { type, name, parent, rate, rateDos, pn, descripcionModoFalla } = req.body;
 
     if (!type || !name) {
         return res.status(400).json({ error: 'Type and name are required' });
@@ -241,7 +241,7 @@ app.post('/api/opciones', (req, res) => {
         if (!parent) {
             return res.status(400).json({ error: 'Parent is required for modosFalla' });
         }
-        options.modosFalla.push({ name, parent });
+        options.modosFalla.push({ name, parent, descripcionModoFalla });
     } else {
         return res.status(400).json({ error: 'Invalid type' });
     }

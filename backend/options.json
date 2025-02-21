@@ -51,5 +51,11 @@
       "parent": "Actuadores"
     }
   ],
-  "modosFalla": []
+  "modosFalla": [
+    {
+      "name": "St1",
+      "parent": "CHW",
+      "descripcionModoFalla": "Datamatrix"
+    }
+  ]
 }

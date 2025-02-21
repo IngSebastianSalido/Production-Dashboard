@@ -24,6 +24,7 @@ const ConfigPage = () => {
   const [newLinea, setNewLinea] = useState('');
   const [newEstacion, setNewEstacion] = useState('');
   const [newModoFalla, setNewModoFalla] = useState('');
+  const [newDescripcionModoFalla, setNewDescripcionModoFalla] = useState(''); // Nuevo estado para la descripción del modo de falla
   const [newRate, setNewRate] = useState(''); // Nuevo estado para el rate
   const [newRateDos, setNewRateDos] = useState(''); // Nuevo estado para el rateDos
   const [newPN, setNewPN] = useState(''); // Nuevo estado para el PN
@@ -73,13 +74,13 @@ const ConfigPage = () => {
     }
   };
 
-  const handleAddOption = async (type, name, parent, rate, rateDos, pn) => {
+  const handleAddOption = async (type, name, parent, rate, rateDos, pn, descripcionModoFalla) => {
     if (!name || (type === 'lineas' && (rate === undefined || rate === '' || rateDos === undefined || rateDos === '' || pn === undefined || pn === ''))) return;
     try {
-      await axios.post(`${serverApiUrl}/api/opciones`, { type, name, parent, rate, rateDos, pn });
+      await axios.post(`${serverApiUrl}/api/opciones`, { type, name, parent, rate, rateDos, pn, descripcionModoFalla });
       setOptions(prevOptions => ({
         ...prevOptions,
-        [type]: [...prevOptions[type], { name, parent, rate, rateDos, pn }],
+        [type]: [...prevOptions[type], { name, parent, rate, rateDos, pn, descripcionModoFalla }],
       }));
     } catch (error) {
       console.error(`Error adding ${type}:`, error);
@@ -94,6 +95,7 @@ const ConfigPage = () => {
     setNewLinea(''); // Limpiar input de Línea
     setNewEstacion(''); // Limpiar input de Estación
     setNewModoFalla(''); // Limpiar input de Modo de Falla
+    setNewDescripcionModoFalla(''); // Limpiar input de Descripción del Modo de Falla
     setNewRate(''); // Limpiar input de Rate
     setNewRateDos(''); // Limpiar input de RateDos
     setNewPN(''); // Limpiar input de PN
@@ -105,12 +107,14 @@ const ConfigPage = () => {
     setSelectedModoFalla(''); // Reiniciar Modo de Falla
     setNewEstacion(''); // Limpiar input de Estación
     setNewModoFalla(''); // Limpiar input de Modo de Falla
+    setNewDescripcionModoFalla(''); // Limpiar input de Descripción del Modo de Falla
   };
 
   const handleSelectEstacion = (e) => {
     setSelectedEstacion(e.target.value);
     setSelectedModoFalla(''); // Reiniciar Modo de Falla
     setNewModoFalla(''); // Limpiar input de Modo de Falla
+    setNewDescripcionModoFalla(''); // Limpiar input de Descripción del Modo de Falla
   };
 
   // Obtener líneas únicas
@@ -189,10 +193,11 @@ const ConfigPage = () => {
             ))}
           </select>
           <input type="text" value={newModoFalla} onChange={(e) => setNewModoFalla(e.target.value)} className="input" placeholder="Modificar/Agregar Modo de Falla" />
+          <textarea value={newDescripcionModoFalla} onChange={(e) => setNewDescripcionModoFalla(e.target.value)} className="input" placeholder="Descripción del Modo de Falla" />
           <div className="button-group">
             <button className="button" onClick={() => handleModifyOption('modosFalla', selectedModoFalla, newModoFalla)}>Modificar</button>
             <button className="button delete" onClick={() => handleRemove('modosFalla', selectedModoFalla)}>Eliminar</button>
-            <button className="button add" onClick={() => handleAddOption('modosFalla', newModoFalla, selectedEstacion)}>Agregar</button>
+            <button className="button add" onClick={() => handleAddOption('modosFalla', newModoFalla, selectedEstacion, null, null, null, newDescripcionModoFalla)}>Agregar</button>
           </div>
         </div>
       )}
