@@ -116,6 +116,9 @@ const StopPage = () => {
   // Obtener modos de falla únicos
   const uniqueModosFalla = Array.from(new Set(options.modosFalla.map(modoFalla => modoFalla.name)));
 
+  // Filtrar descripciones de modos de falla según el modo de falla y la estación seleccionados
+  const filteredDescripcionesModoFalla = options.modosFalla.filter(modoFalla => modoFalla.name === formData.modoFalla && modoFalla.parent === formData.estacion);
+
   return (
     <div className="main-container">
       <h1 style={styles.title}>Registrar Paro de Línea</h1>
@@ -173,7 +176,7 @@ const StopPage = () => {
           <label>Descripción del Modo de Falla (opcional):</label>
           <select name="descripcionModoFalla" value={formData.descripcionModoFalla} onChange={handleChange} style={styles.select}>
             <option value="">Seleccionar Descripción</option>
-            {options.modosFalla.filter(modoFalla => modoFalla.name === formData.modoFalla).map((modoFalla, index) => (
+            {filteredDescripcionesModoFalla.map((modoFalla, index) => (
               <option key={index} value={modoFalla.descripcionModoFalla}>{modoFalla.descripcionModoFalla}</option>
             ))}
           </select>

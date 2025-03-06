@@ -6,20 +6,6 @@
   ],
   "lineas": [
     {
-      "name": "FORD 3140CA29",
-      "parent": "actuadores",
-      "rate": "180",
-      "rateDos": "154",
-      "pn": "PN12345"
-    },
-    {
-      "name": "FORD 3140CA29",
-      "parent": "REA",
-      "rate": "180",
-      "rateDos": "154",
-      "pn": "PN12345"
-    },
-    {
       "name": "Actuadores",
       "parent": "REA",
       "rate": "180",
@@ -34,28 +20,1170 @@
       "pn": "3140CA030"
     },
     {
-      "name": "FORD 29",
+      "name": "Actuadores",
       "parent": "REA",
       "rate": "180",
       "rateDos": "154",
-      "pn": "3140CA029"
+      "pn": "3140CS022"
+    },
+    {
+      "name": "Actuadores",
+      "parent": "REA",
+      "rate": "180",
+      "rateDos": "154",
+      "pn": "3140CS023"
+    },
+    {
+      "name": "Actuadores",
+      "parent": "REA",
+      "rate": "180",
+      "rateDos": "154",
+      "pn": "3140CA027"
+    },
+    {
+      "name": "Actuadores",
+      "parent": "REA",
+      "rate": "180",
+      "rateDos": "154",
+      "pn": "3140CA028"
     }
   ],
   "estaciones": [
-    {
-      "name": "CHW",
-      "parent": "FORD 3140CA29"
-    },
-    {
-      "name": "CHW",
-      "parent": "Actuadores"
-    }
+      { "name": "CHW", "parent": "Actuadores" },
+      { "name": "CCC", "parent": "Actuadores" },
+      { "name": "Press_620", "parent": "Actuadores" },
+      { "name": "Press_730", "parent": "Actuadores" },
+      { "name": "Press_731", "parent": "Actuadores" },
+      { "name": "Press_750", "parent": "Actuadores" },
+      { "name": "MAT", "parent": "Actuadores" },
+      { "name": "MSA", "parent": "Actuadores" },
+      { "name": "S915", "parent": "Actuadores" },
+      { "name": "USW", "parent": "Actuadores" },
+      { "name": "CAW", "parent": "Actuadores" },
+      { "name": "EOL", "parent": "Actuadores" },
+      { "name": "Robots", "parent": "Actuadores" },
+      { "name": "Conveyors", "parent": "Actuadores" },
+      { "name": "Aux", "parent": "Actuadores" },
+      { "name": "Main_conveyor", "parent": "Actuadores" },
+      { "name": "REA", "parent": "Actuadores" }
   ],
   "modosFalla": [
+    { "name": "St1", "parent": "CHW", "descripcionModoFalla": "Consumables: Chip reel" },
+    { "name": "St1", "parent": "CHW", "descripcionModoFalla": "DM reader" },
+    { "name": "St2", "parent": "CHW", "descripcionModoFalla": "SCARA" },
+    { "name": "St3", "parent": "CHW", "descripcionModoFalla": "Thermodo" },
+    { "name": "St4", "parent": "CHW", "descripcionModoFalla": "Consumables: Argon" },
+    { "name": "St4", "parent": "CHW", "descripcionModoFalla": "Pressor" },
+    { "name": "St5", "parent": "CHW", "descripcionModoFalla": "Vision system" },
+    { "name": "St6", "parent": "CHW", "descripcionModoFalla": "PTC" },
+    { "name": "St1", "parent": "CHW", "descripcionModoFalla": "Presence sensor" },
+    { "name": "St2", "parent": "CHW", "descripcionModoFalla": "Vacuum system" },
+    { "name": "St3", "parent": "CHW", "descripcionModoFalla": "Electrodos" },
+    { "name": "St4", "parent": "CHW", "descripcionModoFalla": "Dispensacion de gas" },
+    { "name": "St5", "parent": "CHW", "descripcionModoFalla": "Puntas de prueba" },
+    { "name": "St6", "parent": "CHW", "descripcionModoFalla": "PLC" },
+    { "name": "General", "parent": "CHW", "descripcionModoFalla": "Electrical system" },
+    { "name": "General", "parent": "CHW", "descripcionModoFalla": "Index table/Jigs" },
+    { "name": "General", "parent": "CHW", "descripcionModoFalla": "Software/PC" },
+    { "name": "General", "parent": "CHW", "descripcionModoFalla": "To be defined" },
     {
       "name": "St1",
-      "parent": "CHW",
-      "descripcionModoFalla": "Datamatrix"
-    }
+      "parent": "CCC",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "St3",
+      "parent": "CCC",
+      "descripcionModoFalla": "Actuator NOK"
+    },
+    {
+      "name": "St3",
+      "parent": "CCC",
+      "descripcionModoFalla": "Dosificador"
+    },
+    {
+      "name": "St3",
+      "parent": "CCC",
+      "descripcionModoFalla": "Driver de dosificador"
+    },
+    {
+      "name": "St3",
+      "parent": "CCC",
+      "descripcionModoFalla": "Consumables: Resin"
+    },
+    {
+      "name": "St4/St5",
+      "parent": "CCC",
+      "descripcionModoFalla": "UV lights"
+    },
+    {
+      "name": "St6",
+      "parent": "CCC",
+      "descripcionModoFalla": "Thermocamara"
+    },
+    {
+      "name": "St1",
+      "parent": "MAT",
+      "descripcionModoFalla": "Motor DM reader"
+    },
+    {
+      "name": "St1",
+      "parent": "MAT",
+      "descripcionModoFalla": "Body DM reader"
+    },
+    {
+      "name": "St1",
+      "parent": "MAT",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "St2",
+      "parent": "MAT",
+      "descripcionModoFalla": "Celda de carga"
+    },
+    {
+      "name": "St2",
+      "parent": "MAT",
+      "descripcionModoFalla": "Actuador linear"
+    },
+    {
+      "name": "St3",
+      "parent": "MAT",
+      "descripcionModoFalla": "Consumible: Tornillos"
+    },
+    {
+      "name": "St3",
+      "parent": "MAT",
+      "descripcionModoFalla": "Locking piston"
+    },
+    {
+      "name": "St3",
+      "parent": "MAT",
+      "descripcionModoFalla": "INTOCO"
+    },
+    {
+      "name": "St4",
+      "parent": "MAT",
+      "descripcionModoFalla": "CRIO"
+    },
+    {
+      "name": "St4",
+      "parent": "MAT",
+      "descripcionModoFalla": "Pogo pins"
+    },
+    {
+      "name": "St4",
+      "parent": "MAT",
+      "descripcionModoFalla": "Power supply"
+    },
+    {
+      "name": "St4",
+      "parent": "MAT",
+      "descripcionModoFalla": "Telemetro keyence"
+    },
+    {
+      "name": "St5",
+      "parent": "MAT",
+      "descripcionModoFalla": "Axis not in home"
+    },
+    {
+      "name": "St6",
+      "parent": "MAT",
+      "descripcionModoFalla": "Consumables: Grease"
+    },
+    {
+      "name": "St6",
+      "parent": "MAT",
+      "descripcionModoFalla": "Sensor de grasa terminada"
+    },
+    {
+      "name": "St6",
+      "parent": "MAT",
+      "descripcionModoFalla": "Presostato"
+    },
+    {
+      "name": "St6",
+      "parent": "MAT",
+      "descripcionModoFalla": "Regulador de presion"
+    },
+    {
+      "name": "St6",
+      "parent": "MAT",
+      "descripcionModoFalla": "Dosificador"
+    },
+    {
+      "name": "St6",
+      "parent": "MAT",
+      "descripcionModoFalla": "Pistones"
+    },
+    {
+      "name": "General",
+      "parent": "MSA",
+      "descripcionModoFalla": "Chiller"
+    },
+    {
+      "name": "General",
+      "parent": "MSA",
+      "descripcionModoFalla": "Sensor de presencia"
+    },
+    {
+      "name": "General",
+      "parent": "MSA",
+      "descripcionModoFalla": "Driver"
+    },
+    {
+      "name": "General",
+      "parent": "MSA",
+      "descripcionModoFalla": "Lector de Datamatrix"
+    },
+    {
+      "name": "General",
+      "parent": "MSA",
+      "descripcionModoFalla": "Gaussmeter"
+    },
+    {
+      "name": "General",
+      "parent": "S915",
+      "descripcionModoFalla": "Vision system"
+    },
+    {
+      "name": "General",
+      "parent": "S915",
+      "descripcionModoFalla": "Dart sensor"
+    },
+    {
+      "name": "General",
+      "parent": "S915",
+      "descripcionModoFalla": "SMC module"
+    },
+    {
+      "name": "CPA",
+      "parent": "CAW",
+      "descripcionModoFalla": "Vision system"
+    },
+    {
+      "name": "CPA",
+      "parent": "CAW",
+      "descripcionModoFalla": "SCARA"
+    },
+    {
+      "name": "CPA",
+      "parent": "CAW",
+      "descripcionModoFalla": "Feeder"
+    },
+    {
+      "name": "LWS",
+      "parent": "CAW",
+      "descripcionModoFalla": "Pressor"
+    },
+    {
+      "name": "Jig/Index",
+      "parent": "CAW",
+      "descripcionModoFalla": "Index not in home"
+    },
+    {
+      "name": "LWS",
+      "parent": "CAW",
+      "descripcionModoFalla": "Laser module"
+    },
+    {
+      "name": "Jig/Index",
+      "parent": "CAW",
+      "descripcionModoFalla": "Blade orienter actuator"
+    },
+    {
+      "name": "LWS",
+      "parent": "CAW",
+      "descripcionModoFalla": "Consumables: Nitrogren"
+    },
+    {
+      "name": "LWS",
+      "parent": "CAW",
+      "descripcionModoFalla": "Vision system"
+    },
+    {
+      "name": "Jig/Index",
+      "parent": "CAW",
+      "descripcionModoFalla": "Ingun actuator"
+    },
+    {
+      "name": "Jig/Index",
+      "parent": "CAW",
+      "descripcionModoFalla": "Presence sensor"
+    }, {
+      "name": "St11",
+      "parent": "USW",
+      "descripcionModoFalla": "Branson"
+    },
+    {
+      "name": "St11",
+      "parent": "USW",
+      "descripcionModoFalla": "Weld NOK"
+    },
+    {
+      "name": "St11",
+      "parent": "USW",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "St11",
+      "parent": "USW",
+      "descripcionModoFalla": "Jig"
+    },
+    {
+      "name": "St12",
+      "parent": "USW",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "St13",
+      "parent": "USW",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "St14",
+      "parent": "USW",
+      "descripcionModoFalla": "Ateq"
+    },
+    {
+      "name": "St14",
+      "parent": "USW",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "St14",
+      "parent": "USW",
+      "descripcionModoFalla": "Lower Jig"
+    },
+    {
+      "name": "St14",
+      "parent": "USW",
+      "descripcionModoFalla": "Upper Jig"
+    },
+    {
+      "name": "St15",
+      "parent": "USW",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "St1",
+      "parent": "EOL",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "St1",
+      "parent": "EOL",
+      "descripcionModoFalla": "DM reader"
+    },
+    {
+      "name": "St1",
+      "parent": "EOL",
+      "descripcionModoFalla": "PTC"
+    },
+    {
+      "name": "St2",
+      "parent": "EOL",
+      "descripcionModoFalla": "Gripper NOK"
+    },
+    {
+      "name": "St2",
+      "parent": "EOL",
+      "descripcionModoFalla": "CRIO NOK"
+    },
+    {
+      "name": "St3",
+      "parent": "EOL",
+      "descripcionModoFalla": "Gripper NOK"
+    },
+    {
+      "name": "St3",
+      "parent": "EOL",
+      "descripcionModoFalla": "Axial play NOK"
+    },
+    {
+      "name": "St4",
+      "parent": "EOL",
+      "descripcionModoFalla": "Gripper NOK"
+    },
+    {
+      "name": "St4",
+      "parent": "EOL",
+      "descripcionModoFalla": "CRIO NOK"
+    },
+    {
+      "name": "St5",
+      "parent": "EOL",
+      "descripcionModoFalla": "Vision system"
+    },
+    {
+      "name": "St6",
+      "parent": "EOL",
+      "descripcionModoFalla": "Laser module/Samlight"
+    },
+    {
+      "name": "R33",
+      "parent": "Robots",
+      "descripcionModoFalla": "Incorrect pick/place"
+    },
+    {
+      "name": "R33",
+      "parent": "Robots",
+      "descripcionModoFalla": "Motion supervision/Joint collision"
+    },
+    {
+      "name": "R33",
+      "parent": "Robots",
+      "descripcionModoFalla": "Module error"
+    },
+    {
+      "name": "R33",
+      "parent": "Robots",
+      "descripcionModoFalla": "Gripper/tool adjustments"
+    },
+    {
+      "name": "R33",
+      "parent": "Robots",
+      "descripcionModoFalla": "Pneumatic system"
+    },
+    {
+      "name": "R33",
+      "parent": "Robots",
+      "descripcionModoFalla": "Sensor/Wiring"
+    },
+    {
+      "name": "R33",
+      "parent": "Robots",
+      "descripcionModoFalla": "PLC"
+    },
+    {
+      "name": "R33",
+      "parent": "Robots",
+      "descripcionModoFalla": "Safety system"
+    },
+    {
+      "name": "R33",
+      "parent": "Robots",
+      "descripcionModoFalla": "To be defined"
+    },
+    {
+      "name": "R38",
+      "parent": "Robots",
+      "descripcionModoFalla": "Incorrect pick/place"
+    },
+    {
+      "name": "R38",
+      "parent": "Robots",
+      "descripcionModoFalla": "Motion supervision/Joint collision"
+    },
+    {
+      "name": "R38",
+      "parent": "Robots",
+      "descripcionModoFalla": "Module error"
+    },
+    {
+      "name": "R38",
+      "parent": "Robots",
+      "descripcionModoFalla": "Gripper/tool adjustments"
+    },
+    {
+      "name": "R38",
+      "parent": "Robots",
+      "descripcionModoFalla": "Vacuum system"
+    },
+    {
+      "name": "R38",
+      "parent": "Robots",
+      "descripcionModoFalla": "Sensor/Wiring"
+    },
+    {
+      "name": "R38",
+      "parent": "Robots",
+      "descripcionModoFalla": "PLC"
+    },
+    {
+      "name": "R38",
+      "parent": "Robots",
+      "descripcionModoFalla": "Safety system"
+    },
+    {
+      "name": "R38",
+      "parent": "Robots",
+      "descripcionModoFalla": "To be defined"
+    },
+    {
+      "name": "R40",
+      "parent": "Robots",
+      "descripcionModoFalla": "Incorrect pick/place"
+    },
+    {
+      "name": "R40",
+      "parent": "Robots",
+      "descripcionModoFalla": "Motion supervision/Joint collision"
+    },
+    {
+      "name": "R40",
+      "parent": "Robots",
+      "descripcionModoFalla": "Module error"
+    },
+    {
+      "name": "R40",
+      "parent": "Robots",
+      "descripcionModoFalla": "Gripper/tool adjustments"
+    },
+    {
+      "name": "R40",
+      "parent": "Robots",
+      "descripcionModoFalla": "Pneumatic system"
+    },
+    {
+      "name": "R40",
+      "parent": "Robots",
+      "descripcionModoFalla": "Sensor/Wiring"
+    },
+    {
+      "name": "R40",
+      "parent": "Robots",
+      "descripcionModoFalla": "PLC"
+    },
+    {
+      "name": "R40",
+      "parent": "Robots",
+      "descripcionModoFalla": "Safety system"
+    },
+    {
+      "name": "R40",
+      "parent": "Robots",
+      "descripcionModoFalla": "To be defined"
+    },
+    {
+      "name": "R65",
+      "parent": "Robots",
+      "descripcionModoFalla": "Incorrect pick/place"
+    },
+    {
+      "name": "R65",
+      "parent": "Robots",
+      "descripcionModoFalla": "Motion supervision/Joint collision"
+    },
+    {
+      "name": "R65",
+      "parent": "Robots",
+      "descripcionModoFalla": "Module error"
+    },
+    {
+      "name": "R65",
+      "parent": "Robots",
+      "descripcionModoFalla": "Gripper/tool adjustments"
+    },
+    {
+      "name": "R65",
+      "parent": "Robots",
+      "descripcionModoFalla": "Vacuum system"
+    },
+    {
+      "name": "R65",
+      "parent": "Robots",
+      "descripcionModoFalla": "Sensor/Wiring"
+    },
+    {
+      "name": "R65",
+      "parent": "Robots",
+      "descripcionModoFalla": "PLC"
+    },
+    {
+      "name": "R65",
+      "parent": "Robots",
+      "descripcionModoFalla": "Safety system"
+    },
+    {
+      "name": "R65",
+      "parent": "Robots",
+      "descripcionModoFalla": "To be defined"
+    },
+    {
+      "name": "R70",
+      "parent": "Robots",
+      "descripcionModoFalla": "Incorrect pick/place"
+    },
+    {
+      "name": "R70",
+      "parent": "Robots",
+      "descripcionModoFalla": "Motion supervision/Joint collision"
+    },
+    {
+      "name": "R70",
+      "parent": "Robots",
+      "descripcionModoFalla": "Module error"
+    },
+    {
+      "name": "R70",
+      "parent": "Robots",
+      "descripcionModoFalla": "Gripper/tool adjustments"
+    },
+    {
+      "name": "R70",
+      "parent": "Robots",
+      "descripcionModoFalla": "Vacuum system"
+    },
+    {
+      "name": "R70",
+      "parent": "Robots",
+      "descripcionModoFalla": "Sensor/Wiring"
+    },
+    {
+      "name": "R70",
+      "parent": "Robots",
+      "descripcionModoFalla": "PLC"
+    },
+    {
+      "name": "R70",
+      "parent": "Robots",
+      "descripcionModoFalla": "Safety system"
+    },
+    {
+      "name": "R70",
+      "parent": "Robots",
+      "descripcionModoFalla": "To be defined"
+    },
+    {
+      "name": "R75",
+      "parent": "Robots",
+      "descripcionModoFalla": "Incorrect pick/place"
+    },
+    {
+        "name": "R75",
+        "parent": "Robots",
+        "descripcionModoFalla": "Motion supervision/Joint collision"
+    },
+    {
+        "name": "R75",
+        "parent": "Robots",
+        "descripcionModoFalla": "Module error"
+    },
+    {
+        "name": "R75",
+        "parent": "Robots",
+        "descripcionModoFalla": "Gripper/tool adjustments"
+    },
+    {
+        "name": "R75",
+        "parent": "Robots",
+        "descripcionModoFalla": "Pneumatic system"
+    },
+    {
+        "name": "R75",
+        "parent": "Robots",
+        "descripcionModoFalla": "Sensor/Wiring"
+    },
+    {
+        "name": "R75",
+        "parent": "Robots",
+        "descripcionModoFalla": "PLC"
+    },
+    {
+        "name": "R75",
+        "parent": "Robots",
+        "descripcionModoFalla": "Safety system"
+    },
+    {
+        "name": "R75",
+        "parent": "Robots",
+        "descripcionModoFalla": "To be defined"
+    },
+    {
+        "name": "R80",
+        "parent": "Robots",
+        "descripcionModoFalla": "Incorrect pick/place"
+    },
+    {
+        "name": "R80",
+        "parent": "Robots",
+        "descripcionModoFalla": "Motion supervision/Joint collision"
+    },
+    {
+        "name": "R80",
+        "parent": "Robots",
+        "descripcionModoFalla": "Module error"
+    },
+    {
+        "name": "R80",
+        "parent": "Robots",
+        "descripcionModoFalla": "Gripper/tool adjustments"
+    },
+    {
+        "name": "R80",
+        "parent": "Robots",
+        "descripcionModoFalla": "Pneumatic system"
+    },
+    {
+        "name": "R80",
+        "parent": "Robots",
+        "descripcionModoFalla": "Sensor/Wiring"
+    },
+    {
+        "name": "R80",
+        "parent": "Robots",
+        "descripcionModoFalla": "PLC"
+    },
+    {
+        "name": "R80",
+        "parent": "Robots",
+        "descripcionModoFalla": "Safety system"
+    },
+    {
+        "name": "R80",
+        "parent": "Robots",
+        "descripcionModoFalla": "To be defined"
+    },
+    {
+      "name": "General",
+      "parent": "Press_620",
+      "descripcionModoFalla": "Bowl/Lineal feeder"
+    },
+    {
+      "name": "General",
+      "parent": "Press_620",
+      "descripcionModoFalla": "Feed piston"
+    },
+    {
+      "name": "General",
+      "parent": "Press_620",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "General",
+      "parent": "Press_620",
+      "descripcionModoFalla": "Alphamatic Module"
+    },
+    {
+      "name": "General",
+      "parent": "Press_620",
+      "descripcionModoFalla": "Tool"
+    },
+    {
+      "name": "General",
+      "parent": "Press_750",
+      "descripcionModoFalla": "Bowl/Lineal feeder"
+    },
+    {
+      "name": "General",
+      "parent": "Press_750",
+      "descripcionModoFalla": "Feed piston"
+    },
+    {
+      "name": "General",
+      "parent": "Press_750",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "General",
+      "parent": "Press_750",
+      "descripcionModoFalla": "Alphamatic Module"
+    },
+    {
+      "name": "General",
+      "parent": "Press_750",
+      "descripcionModoFalla": "Tool"
+    },
+    {
+      "name": "General",
+      "parent": "Press_730",
+      "descripcionModoFalla": "Bowl/Lineal feeder"
+    },
+    {
+      "name": "General",
+      "parent": "Press_730",
+      "descripcionModoFalla": "Feed piston"
+    },
+    {
+      "name": "General",
+      "parent": "Press_730",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "General",
+      "parent": "Press_730",
+      "descripcionModoFalla": "Alphamatic Module"
+    },
+    {
+      "name": "General",
+      "parent": "Press_730",
+      "descripcionModoFalla": "Tool"
+    },
+    {
+      "name": "General",
+      "parent": "Press_730",
+      "descripcionModoFalla": "Vacuum"
+    },
+    {
+      "name": "General",
+      "parent": "Press_731",
+      "descripcionModoFalla": "Bowl/Lineal feeder"
+    },
+    {
+      "name": "General",
+      "parent": "Press_731",
+      "descripcionModoFalla": "Feed piston"
+    },
+    {
+      "name": "General",
+      "parent": "Press_731",
+      "descripcionModoFalla": "Presence sensor"
+    },
+    {
+      "name": "General",
+      "parent": "Press_731",
+      "descripcionModoFalla": "Alphamatic Module"
+    },
+    {
+      "name": "General",
+      "parent": "Press_731",
+      "descripcionModoFalla": "Tool"
+    },
+    {
+      "name": "General",
+      "parent": "Press_731",
+      "descripcionModoFalla": "Vacuum"
+    },
+    {
+      "name": "St_974",
+      "parent": "Aux",
+      "descripcionModoFalla": "Actuator NOK"
+  },
+  {
+      "name": "St_980",
+      "parent": "Aux",
+      "descripcionModoFalla": "Actuator NOK"
+  },
+  {
+      "name": "St_980",
+      "parent": "Aux",
+      "descripcionModoFalla": "Presence sensor"
+  },
+  {
+      "name": "St_710",
+      "parent": "Aux",
+      "descripcionModoFalla": "Actuator NOK"
+  },
+  {
+      "name": "St_710",
+      "parent": "Aux",
+      "descripcionModoFalla": "Presence sensor"
+  },
+  {
+      "name": "St_805",
+      "parent": "Aux",
+      "descripcionModoFalla": "Actuator NOK"
+  },
+  {
+      "name": "St_805",
+      "parent": "Aux",
+      "descripcionModoFalla": "Presence sensor"
+  },
+  {
+      "name": "St_905",
+      "parent": "Aux",
+      "descripcionModoFalla": "Actuator NOK"
+  },
+  {
+      "name": "St_905",
+      "parent": "Aux",
+      "descripcionModoFalla": "Presence sensor"
+  },
+  {
+      "name": "Main_conveyor",
+      "parent": "Aux",
+      "descripcionModoFalla": "Motor"
+  },
+  {
+      "name": "Main_conveyor",
+      "parent": "Aux",
+      "descripcionModoFalla": "Belt"
+  },
+  {
+      "name": "Main_conveyor",
+      "parent": "Aux",
+      "descripcionModoFalla": "Lift"
+  },
+  {
+      "name": "Main_conveyor",
+      "parent": "Aux",
+      "descripcionModoFalla": "Inductive sensor"
+  },
+  {
+      "name": "Main_conveyor",
+      "parent": "Aux",
+      "descripcionModoFalla": "RFID Reader"
+  },
+  {
+      "name": "Main_conveyor",
+      "parent": "Aux",
+      "descripcionModoFalla": "Lock NOK"
+  },
+  {
+      "name": "Main_conveyor",
+      "parent": "Aux",
+      "descripcionModoFalla": "Singulator NOK"
+  },
+  {
+    "name": "C_31",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Belt"
+},
+{
+    "name": "C_31",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Presence sensor"
+},
+{
+    "name": "C_31",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Actuator NOK"
+},
+{
+    "name": "C_31",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Guides"
+},
+{
+    "name": "C_31",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Motor"
+},
+{
+    "name": "C_31",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Lift"
+},
+{
+    "name": "C_36",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Belt"
+},
+{
+    "name": "C_36",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Presence sensor"
+},
+{
+    "name": "C_36",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Actuator NOK"
+},
+{
+    "name": "C_36",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Guides"
+},
+{
+    "name": "C_36",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Motor"
+},
+{
+    "name": "C_36",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Lift"
+},
+{
+    "name": "C_37",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Belt"
+},
+{
+    "name": "C_37",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Presence sensor"
+},
+{
+    "name": "C_37",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Actuator NOK"
+},
+{
+    "name": "C_37",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Guides"
+},
+{
+    "name": "C_37",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Motor"
+},
+{
+    "name": "C_37",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Lift"
+},
+{
+    "name": "C_55",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Belt"
+},
+{
+    "name": "C_55",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Presence sensor"
+},
+{
+    "name": "C_55",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Actuator NOK"
+},
+{
+    "name": "C_55",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Guides"
+},
+{
+    "name": "C_55",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Motor"
+},
+{
+    "name": "C_55",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Lift"
+},
+{
+    "name": "C_55",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "DM Reader"
+},
+{
+    "name": "C_56",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Belt"
+},
+{
+    "name": "C_56",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Presence sensor"
+},
+{
+    "name": "C_56",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Actuator NOK"
+},
+{
+    "name": "C_56",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Guides"
+},
+{
+    "name": "C_56",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Motor"
+},
+{
+    "name": "C_56",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Lift"
+},
+{
+    "name": "C_65",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Belt"
+},
+{
+    "name": "C_65",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Presence sensor"
+},
+{
+    "name": "C_65",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Actuator NOK"
+},
+{
+    "name": "C_65",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Guides"
+},
+{
+    "name": "C_65",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Motor"
+},
+{
+    "name": "C_65",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Lift"
+},
+{
+    "name": "C_65",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "DM Reader"
+},
+{
+    "name": "C_85",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Belt"
+},
+{
+    "name": "C_85",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Presence sensor"
+},
+{
+    "name": "C_85",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Actuator NOK"
+},
+{
+    "name": "C_85",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Guides"
+},
+{
+    "name": "C_85",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Motor"
+},
+{
+    "name": "C_85",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "Lift"
+},
+{
+    "name": "C_85",
+    "parent": "Conveyors",
+    "descripcionModoFalla": "DM Reader"
+},
+{
+  "name": "General",
+  "parent": "REA",
+  "descripcionModoFalla": "Checklist"
+},
+{
+  "name": "General",
+  "parent": "REA",
+  "descripcionModoFalla": "SOP"
+},
+{
+  "name": "General",
+  "parent": "REA",
+  "descripcionModoFalla": "EOP"
+},
+{
+  "name": "General",
+  "parent": "REA",
+  "descripcionModoFalla": "Change Over"
+},
+{
+  "name": "General",
+  "parent": "REA",
+  "descripcionModoFalla": "Waiting for spare part"
+},
+{
+  "name": "General",
+  "parent": "REA",
+  "descripcionModoFalla": "No staff available"
+},
+{
+  "name": "General",
+  "parent": "REA",
+  "descripcionModoFalla": "TBD"
+}
   ]
 }
