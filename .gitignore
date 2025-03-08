@@ -41,3 +41,6 @@ produccion-app/.env
 # Specific exclusions for backend
 backend/node_modules/
 backend/.env
+
+package.json
+package-lock.json
