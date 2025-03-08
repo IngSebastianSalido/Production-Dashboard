@@ -1,16 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png'; // Importar el logo
 
 const Navbar = () => {
   return (
     <nav style={styles.nav}>
-      <div style={styles.brand}>DASHBOARD</div>
+      <div style={styles.brand}>
+        <img src={logo} alt="Logo" style={styles.logo} /> {/* Usar el logo */}
+      </div>
       <ul style={styles.navList}>
         <li style={styles.navItem}>
-          <Link to="/" style={styles.navLink}>Inicio</Link>
+          <Link to="/" style={styles.navLink}>ProdChart</Link>
         </li>
         <li style={styles.navItem}>
           <Link to="/produccion" style={styles.navLink}>Hora por hora</Link>
+        </li>
+        <li style={styles.navItem}>
+          <Link to="/grafica-paros" style={styles.navLink}>StopChart</Link>
         </li>
         <li style={styles.navItem}>
           <Link to="/stop" style={styles.navLink}>Registrar Paro</Link>
@@ -38,10 +44,11 @@ const styles = {
     zIndex: 1000, // Ensure it stays on top of other content
   },
   brand: {
-    color: 'white',
-    fontSize: '1.5em',
-    fontWeight: 'bold',
-    padding: '0px 15px'
+    display: 'flex',
+    alignItems: 'center',
+  },
+  logo: {
+    height: '100px', // Ajusta el tamaño del logo según sea necesario
   },
   navList: {
     display: 'flex',
