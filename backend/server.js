@@ -32,7 +32,7 @@ if (!fs.existsSync(productionFilePath)) {
 }
 
 if (!fs.existsSync(stopsFilePath)) {
-    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,pn,estacion,modos_de_fallo,descripcion_modo_de_fallo,hora_paro,hora_arranque,descripcion\n');
+    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,pn,estacion,modos_de_fallo,descripcion_modo_de_fallo,hora_paro,hora_arranque,diferenciaMinutos,descripcion\n');
 }
 
 // Logger para verificar las solicitudes
@@ -149,6 +149,11 @@ app.post('/api/paros', (req, res) => {
         return res.status(400).send('Todos los campos son obligatorios, excepto el modo de falla y su descripción');
     }
 
+    // Calcular la diferencia de tiempo en minutos
+    const horaParoDate = new Date(`1970-01-01T${hora_paro}:00Z`);
+    const horaArranqueDate = new Date(`1970-01-01T${hora_arranque}:00Z`);
+    const diferenciaMinutos = Math.round((horaArranqueDate - horaParoDate) / 60000);
+
     // Leer el archivo CSV de paros
     fs.readFile(stopsFilePath, 'utf8', (err, data) => {
         if (err) {
@@ -156,7 +161,7 @@ app.post('/api/paros', (req, res) => {
             return res.status(500).send('No se pudo leer el archivo de paros.');
         }
 
-        const nuevoRegistro = `${fecha},${area},${linea},${pn},${estacion},${modoFalla || ''},${descripcionModoFalla || ''},${hora_paro},${hora_arranque},${descripcion}`;
+        const nuevoRegistro = `${fecha},${area},${linea},${pn},${estacion},${modoFalla || ''},${descripcionModoFalla || ''},${hora_paro},${hora_arranque},${diferenciaMinutos},${descripcion}`;
         const contenidoActualizado = data.trim() + '\n' + nuevoRegistro;
 
         // Guardar el nuevo paro en el archivo CSV
