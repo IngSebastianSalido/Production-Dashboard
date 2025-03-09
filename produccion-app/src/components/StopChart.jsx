@@ -18,20 +18,20 @@ const StopChart = ({ fecha }) => {
         const stopMinutes = Array(24).fill(0);
 
         filteredData.forEach(paro => {
-          const horaParo = new Date(`1970-01-01T${paro[4]}:00Z`);
-          const horaArranque = new Date(`1970-01-01T${paro[5]}:00Z`);
+          let horaParo = new Date(`1970-01-01T${paro[4]}:00Z`);
           const diferenciaMinutos = parseInt(paro[6], 10);
-
-          let currentHour = horaParo.getHours();
           let remainingMinutes = diferenciaMinutos;
 
           while (remainingMinutes > 0) {
-            const nextHour = (currentHour + 1) % 24;
-            const minutesInCurrentHour = Math.min(remainingMinutes, 60 - horaParo.getMinutes());
-            stopMinutes[nextHour] += minutesInCurrentHour;
-            remainingMinutes -= minutesInCurrentHour;
-            horaParo.setHours(nextHour, 0, 0, 0);
-            currentHour = nextHour;
+            const currentHour = horaParo.getUTCHours();
+            const currentMinute = horaParo.getUTCMinutes();
+            const availableMinutesInHour = 60 - currentMinute;
+            const minutesToAdd = Math.min(availableMinutesInHour, remainingMinutes);
+
+            stopMinutes[currentHour] += minutesToAdd;
+            remainingMinutes -= minutesToAdd;
+
+            horaParo.setUTCMinutes(horaParo.getUTCMinutes() + minutesToAdd);
           }
         });
 
@@ -75,14 +75,8 @@ const StopChart = ({ fecha }) => {
         data={chartData}
         options={{
           scales: {
-            x: {
-              stacked: true,
-            },
-            y: {
-              stacked: true,
-              beginAtZero: true,
-              max: 60,
-            },
+            x: { stacked: true },
+            y: { stacked: true, beginAtZero: true, max: 60 },
           },
         }}
       />
