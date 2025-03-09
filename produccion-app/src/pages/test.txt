@@ -28,11 +28,11 @@ const optionsFilePath = path.resolve(process.env.OPTIONS_FILE_PATH);
 
 // Verificar si los archivos CSV existen, si no, crearlos con encabezados
 if (!fs.existsSync(productionFilePath)) {
-    fs.writeFileSync(productionFilePath, 'fecha;area;linea;pn;hora;piezas_ok;piezas_nok\n');
+    fs.writeFileSync(productionFilePath, 'fecha,area,linea,pn,hora,piezas_ok,piezas_nok\n');
 }
 
 if (!fs.existsSync(stopsFilePath)) {
-    fs.writeFileSync(stopsFilePath, 'fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacion;modo_falla;descripcion_modo_falla;descripcion\n');
+    fs.writeFileSync(stopsFilePath, 'fecha,area,linea,pn,estacion,modos_de_fallo,descripcion_modo_de_fallo,hora_paro,hora_arranque,diferenciaMinutos,descripcion\n');
 }
 
 // Logger para verificar las solicitudes
@@ -66,11 +66,11 @@ app.post('/api/reportes', (req, res) => {
 
         // Buscar si ya existe un registro con la misma fecha, área, línea, PN y hora
         const index = registros.findIndex(row => {
-            const cols = row.split(';');
+            const cols = row.split(',');
             return cols.length === 7 && cols[0] === fecha && cols[1] === area && cols[2] === linea && cols[3] === pn && cols[4] === hora;
         });
 
-        const nuevoRegistro = `${fecha};${area};${linea};${pn};${hora};${piezas_ok};${piezas_nok}`;
+        const nuevoRegistro = `${fecha},${area},${linea},${pn},${hora},${piezas_ok},${piezas_nok}`;
 
         if (index !== -1) {
             // Actualizar registro existente
@@ -106,10 +106,10 @@ app.get('/api/reportes/:fecha/:area/:linea/:pn', (req, res) => {
             .split('\n')
             .slice(1)
             .filter(line => {
-                const cols = line.split(';');
+                const cols = line.split(',');
                 return cols.length === 7 && cols[0] === fecha && cols[1].toLowerCase() === area.toLowerCase() && cols[2].toLowerCase() === linea.toLowerCase() && cols[3].toLowerCase() === pn.toLowerCase();
             })
-            .map(line => line.split(';')) // Convertir cada línea en un array
+            .map(line => line.split(',')) // Convertir cada línea en un array
             .sort((a, b) => a[4].localeCompare(b[4])); // Ordenar por hora
 
         res.json(reportes);
@@ -130,10 +130,10 @@ app.get('/api/reportes/:fecha', (req, res) => {
             .split('\n')
             .slice(1)
             .filter(line => {
-                const cols = line.split(';');
+                const cols = line.split(',');
                 return cols.length === 7 && cols[0] === fecha;
             })
-            .map(line => line.split(';')) // Convertir cada línea en un array
+            .map(line => line.split(',')) // Convertir cada línea en un array
             .sort((a, b) => a[4].localeCompare(b[4])); // Ordenar por hora
 
         res.json(reportes);
@@ -143,9 +143,9 @@ app.get('/api/reportes/:fecha', (req, res) => {
 // ------------------------- ENDPOINTS PARA PAROS -------------------------
 // Endpoint para registrar un paro de línea
 app.post('/api/paros', (req, res) => {
-    const { fecha, area, linea, pn, estacion, modoFalla, descripcionModoFalla, hora_paro, hora_arranque, descripcion, categoria } = req.body;
+    const { fecha, area, linea, pn, estacion, modoFalla, descripcionModoFalla, hora_paro, hora_arranque, descripcion } = req.body;
 
-    if (!fecha || !area || !linea || !pn || !estacion || !hora_paro || !hora_arranque || !descripcion || !categoria) {
+    if (!fecha || !area || !linea || !pn || !estacion || !hora_paro || !hora_arranque || !descripcion) {
         return res.status(400).send('Todos los campos son obligatorios, excepto el modo de falla y su descripción');
     }
 
@@ -161,7 +161,7 @@ app.post('/api/paros', (req, res) => {
             return res.status(500).send('No se pudo leer el archivo de paros.');
         }
 
-        const nuevoRegistro = `${fecha};${area};${linea};${pn};${hora_paro};${hora_arranque};${diferenciaMinutos};${categoria};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion}`;
+        const nuevoRegistro = `${fecha},${area},${linea},${pn},${estacion},${modoFalla || ''},${descripcionModoFalla || ''},${hora_paro},${hora_arranque},${diferenciaMinutos},${descripcion}`;
         const contenidoActualizado = data.trim() + '\n' + nuevoRegistro;
 
         // Guardar el nuevo paro en el archivo CSV
@@ -187,7 +187,7 @@ app.get('/api/paros', (req, res) => {
             .split('\n')
             .slice(1)
             .filter(line => line.trim() !== '')
-            .map(line => line.split(';')); // Convertir cada línea en un array
+            .map(line => line.split(',')); // Convertir cada línea en un array
 
         res.json(paros);
     });

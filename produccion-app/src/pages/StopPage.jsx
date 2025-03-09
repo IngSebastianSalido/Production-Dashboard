@@ -123,84 +123,96 @@ const StopPage = () => {
     <div className="main-container">
       <h1 style={styles.title}>Registrar Paro de Línea</h1>
       <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.formGroup}>
-          <label>Fecha:</label>
-          <input type="date" name="fecha" value={formData.fecha} onChange={handleChange} style={styles.input} />
+        <div style={styles.row}>
+          <div style={styles.column}>
+            <div style={styles.formGroup}>
+              <label>Fecha:</label>
+              <input type="date" name="fecha" value={formData.fecha} onChange={handleChange} style={styles.input} />
+            </div>
+            <div style={styles.formGroup}>
+              <label>Área:</label>
+              <select name="area" value={formData.area} onChange={handleChange} style={styles.select}>
+                <option value="">Seleccionar Área</option>
+                {options.areas.map((area, index) => (
+                  <option key={index} value={area.name}>{area.name}</option>
+                ))}
+              </select>
+            </div>
+            <div style={styles.formGroup}>
+              <label>Línea:</label>
+              <select name="linea" value={formData.linea} onChange={handleChange} style={styles.select}>
+                <option value="">Seleccionar Línea</option>
+                {uniqueLineas.filter(linea => options.lineas.some(l => l.name === linea && l.parent === formData.area)).map((linea, index) => (
+                  <option key={index} value={linea}>{linea}</option>
+                ))}
+              </select>
+            </div>
+            <div style={styles.formGroup}>
+              <label>PN:</label>
+              <select name="pn" value={formData.pn} onChange={handleChange} style={styles.select}>
+                <option value="">Seleccionar PN</option>
+                {options.lineas.filter(linea => linea.name === formData.linea).map((linea, index) => (
+                  <option key={index} value={linea.pn}>{linea.pn}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div style={styles.column}>
+            <div style={styles.formGroup}>
+              <label>Estación:</label>
+              <select name="estacion" value={formData.estacion} onChange={handleChange} style={styles.select}>
+                <option value="">Seleccionar Estación</option>
+                {options.estaciones.filter(estacion => estacion.parent === formData.linea).map((estacion, index) => (
+                  <option key={index} value={estacion.name}>{estacion.name}</option>
+                ))}
+              </select>
+            </div>
+            <div style={styles.formGroup}>
+              <label>Modo de Falla (opcional):</label>
+              <select name="modoFalla" value={formData.modoFalla} onChange={handleChange} style={styles.select}>
+                <option value="">Seleccionar Modo de Falla</option>
+                {uniqueModosFalla.filter(modoFalla => options.modosFalla.some(m => m.name === modoFalla && m.parent === formData.estacion)).map((modoFalla, index) => (
+                  <option key={index} value={modoFalla}>{modoFalla}</option>
+                ))}
+              </select>
+            </div>
+            <div style={styles.formGroup}>
+              <label>Descripción del Modo de Falla (opcional):</label>
+              <select name="descripcionModoFalla" value={formData.descripcionModoFalla} onChange={handleChange} style={styles.select}>
+                <option value="">Seleccionar Descripción</option>
+                {filteredDescripcionesModoFalla.map((modoFalla, index) => (
+                  <option key={index} value={modoFalla.descripcionModoFalla}>{modoFalla.descripcionModoFalla}</option>
+                ))}
+              </select>
+            </div>
+            <div style={styles.formGroup}>
+              <label>Categoría:</label>
+              <select name="categoria" value={formData.categoria} onChange={handleChange} style={styles.select}>
+                <option value="">Seleccionar Categoría</option>
+                {categories.map((categoria, index) => (
+                  <option key={index} value={categoria}>{categoria}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
-        <div style={styles.formGroup}>
-          <label>Área:</label>
-          <select name="area" value={formData.area} onChange={handleChange} style={styles.select}>
-            <option value="">Seleccionar Área</option>
-            {options.areas.map((area, index) => (
-              <option key={index} value={area.name}>{area.name}</option>
-            ))}
-          </select>
-        </div>
-        <div style={styles.formGroup}>
-          <label>Línea:</label>
-          <select name="linea" value={formData.linea} onChange={handleChange} style={styles.select}>
-            <option value="">Seleccionar Línea</option>
-            {uniqueLineas.filter(linea => options.lineas.some(l => l.name === linea && l.parent === formData.area)).map((linea, index) => (
-              <option key={index} value={linea}>{linea}</option>
-            ))}
-          </select>
-        </div>
-        <div style={styles.formGroup}>
-          <label>PN:</label>
-          <select name="pn" value={formData.pn} onChange={handleChange} style={styles.select}>
-            <option value="">Seleccionar PN</option>
-            {options.lineas.filter(linea => linea.name === formData.linea).map((linea, index) => (
-              <option key={index} value={linea.pn}>{linea.pn}</option>
-            ))}
-          </select>
-        </div>
-        <div style={styles.formGroup}>
-          <label>Estación:</label>
-          <select name="estacion" value={formData.estacion} onChange={handleChange} style={styles.select}>
-            <option value="">Seleccionar Estación</option>
-            {options.estaciones.filter(estacion => estacion.parent === formData.linea).map((estacion, index) => (
-              <option key={index} value={estacion.name}>{estacion.name}</option>
-            ))}
-          </select>
-        </div>
-        <div style={styles.formGroup}>
-          <label>Modo de Falla (opcional):</label>
-          <select name="modoFalla" value={formData.modoFalla} onChange={handleChange} style={styles.select}>
-            <option value="">Seleccionar Modo de Falla</option>
-            {uniqueModosFalla.filter(modoFalla => options.modosFalla.some(m => m.name === modoFalla && m.parent === formData.estacion)).map((modoFalla, index) => (
-              <option key={index} value={modoFalla}>{modoFalla}</option>
-            ))}
-          </select>
-        </div>
-        <div style={styles.formGroup}>
-          <label>Descripción del Modo de Falla (opcional):</label>
-          <select name="descripcionModoFalla" value={formData.descripcionModoFalla} onChange={handleChange} style={styles.select}>
-            <option value="">Seleccionar Descripción</option>
-            {filteredDescripcionesModoFalla.map((modoFalla, index) => (
-              <option key={index} value={modoFalla.descripcionModoFalla}>{modoFalla.descripcionModoFalla}</option>
-            ))}
-          </select>
-        </div>
-        <div style={styles.formGroup}>
-          <label>Categoría:</label>
-          <select name="categoria" value={formData.categoria} onChange={handleChange} style={styles.select}>
-            <option value="">Seleccionar Categoría</option>
-            {categories.map((categoria, index) => (
-              <option key={index} value={categoria}>{categoria}</option>
-            ))}
-          </select>
-        </div>
-        <div style={styles.formGroup}>
-          <label>Hora de Paro:</label>
-          <input type="time" name="hora_paro" value={formData.hora_paro} onChange={handleChange} style={styles.input} />
-        </div>
-        <div style={styles.formGroup}>
-          <label>Hora de Arranque:</label>
-          <input type="time" name="hora_arranque" value={formData.hora_arranque} onChange={handleChange} style={styles.input} />
-        </div>
-        <div style={styles.formGroup}>
-          <label>Descripción:</label>
-          <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} style={styles.textarea} />
+        <div style={styles.row}>
+          <div style={styles.column}>
+            <div style={styles.formGroup}>
+              <label>Hora de Paro:</label>
+              <input type="time" name="hora_paro" value={formData.hora_paro} onChange={handleChange} style={styles.input} />
+            </div>
+            <div style={styles.formGroup}>
+              <label>Hora de Arranque:</label>
+              <input type="time" name="hora_arranque" value={formData.hora_arranque} onChange={handleChange} style={styles.input} />
+            </div>
+          </div>
+          <div style={styles.column}>
+            <div style={styles.formGroup}>
+              <label>Descripción:</label>
+              <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} style={styles.textarea} />
+            </div>
+          </div>
         </div>
         <button type="submit" style={styles.button}>Registrar Paro</button>
       </form>
@@ -216,13 +228,24 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '15px',
-    maxWidth: '400px', // Set a maximum width for the form
-    margin: 'auto auto', // Center the form horizontally
+    maxWidth: '800px', // Set a maximum width for the form
+    margin: 'auto', // Center the form horizontally
+  },
+  row: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '15px',
+  },
+  column: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
   },
   formGroup: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '0px',
+    gap: '5px',
   },
   input: {
     padding: '5px',

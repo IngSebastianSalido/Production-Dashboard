@@ -13,14 +13,26 @@ const StopChart = ({ fecha }) => {
 
         const filteredData = data.filter(paro => paro[0] === fecha);
 
-        const hours = Array.from({ length: 24 }, (_, i) => `${i + 1}:00`);
+        const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
         const totalMinutes = Array(24).fill(60);
         const stopMinutes = Array(24).fill(0);
 
         filteredData.forEach(paro => {
-          const horaParo = new Date(`1970-01-01T${paro[7]}:00Z`).getHours();
-          const horaRegistro = (horaParo + 1) % 24; // Registrar en la hora siguiente
-          stopMinutes[horaRegistro] += parseInt(paro[9], 10);
+          const horaParo = new Date(`1970-01-01T${paro[4]}:00Z`);
+          const horaArranque = new Date(`1970-01-01T${paro[5]}:00Z`);
+          const diferenciaMinutos = parseInt(paro[6], 10);
+
+          let currentHour = horaParo.getHours();
+          let remainingMinutes = diferenciaMinutos;
+
+          while (remainingMinutes > 0) {
+            const nextHour = (currentHour + 1) % 24;
+            const minutesInCurrentHour = Math.min(remainingMinutes, 60 - horaParo.getMinutes());
+            stopMinutes[nextHour] += minutesInCurrentHour;
+            remainingMinutes -= minutesInCurrentHour;
+            horaParo.setHours(nextHour, 0, 0, 0);
+            currentHour = nextHour;
+          }
         });
 
         const runningMinutes = totalMinutes.map((total, i) => total - stopMinutes[i]);
@@ -58,6 +70,7 @@ const StopChart = ({ fecha }) => {
 
   return (
     <div>
+      <h2>Minutos de Paro por Hora</h2>
       <Bar
         data={chartData}
         options={{
