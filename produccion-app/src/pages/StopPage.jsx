@@ -4,7 +4,7 @@ import EditableTable from '../components/EditableTable';
 
 const StopPage = () => {
   const [formData, setFormData] = useState({
-    fecha: localStorage.getItem('fecha') || new Date().toISOString().split('T')[0], // Set initial date to today
+    fecha: localStorage.getItem('fecha') || new Date().toLocaleDateString('en-CA'),
     area: localStorage.getItem('area') || '',
     linea: localStorage.getItem('linea') || '',
     pn: localStorage.getItem('pn') || '',
@@ -14,7 +14,7 @@ const StopPage = () => {
     categoria: '',
     hora_paro: '',
     hora_arranque: '',
-    descripcion: '',
+    descripcion: '',  
   });
 
   const [options, setOptions] = useState({ areas: [], lineas: [], estaciones: [], modosFalla: [] });

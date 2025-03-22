@@ -379,6 +379,11 @@ app.get('/api/categories', (req, res) => {
 });
 // ------------------------- INICIAR EL SERVIDOR -------------------------
 
+// Importar la nueva ruta
+const reaProductionRoute = require('./routes/reaproduction');
+app.use('/api', reaProductionRoute);
+
+
 // Iniciar el servidor HTTP
 app.listen(PORT, HOST, () => {
     console.log(`Servidor corriendo en http://${HOST}:${PORT}`);

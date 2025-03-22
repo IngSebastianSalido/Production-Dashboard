@@ -109,7 +109,7 @@ const handleRowUpdate = async (newData, oldData, resolve) => {
 };
 
 const columns = [
-  { title: 'Fecha', field: 'fecha', render: (rowData) => rowData.fecha ? new Date(rowData.fecha).toLocaleDateString() : 'N/A' },
+  { title: 'Fecha', field: 'fecha', render: (rowData) => rowData.fecha || 'N/A' },
   { title: 'Área', field: 'area', width: '10%' },
   { title: 'Línea', field: 'linea', width: '10%' },
   { title: 'PN', field: 'pn', width: '10%' },
