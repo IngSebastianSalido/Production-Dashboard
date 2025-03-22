@@ -22,7 +22,7 @@ body {
 
 .main-container {
   width: 90%;
-  max-width: 1200px;
+  max-width: 2000px;
   margin: 5px auto;
   padding: 0px;
   text-align: center;
@@ -108,4 +108,46 @@ tr:nth-child(even) {
 
 tr:nth-child(odd) {
   background-color: #3e3e3e;
+}
+
+/* Estilos para mejorar el tamaño y apariencia de la tabla */
+.table-container {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  max-width: 2000px; /* Ajusta el ancho máximo */
+  margin: 20px auto; /* Centra la tabla horizontalmente */
+  padding: 20px;
+  background-color: #1e1e1e; /* Fondo oscuro */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Sombra */
+  overflow-x: auto; /* Habilita el desplazamiento horizontal si es necesario */
+}
+
+/* Mejorando el diseño del título */
+.title {
+  text-align: center;
+  font-size: 28px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* Ajustes visuales para MaterialTable */
+.MuiPaper-root {
+  background-color: #2a2a2a !important; /* Color de fondo */
+  color: white !important; /* Color del texto */
+}
+
+.MuiTableHead-root {
+  background-color: #007bff !important; /* Azul para los encabezados */
+}
+
+.MuiTableCell-head {
+  color: white !important; /* Texto blanco en encabezados */
+}
+
+.MuiTableRow-root {
+  background-color: #333 !important; /* Color oscuro en filas */
+}
+
+.MuiTableRow-root:nth-child(even) {
+  background-color: #444 !important; /* Alternar filas con tonos grises */
 }

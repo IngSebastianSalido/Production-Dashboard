@@ -32,7 +32,7 @@ if (!fs.existsSync(productionFilePath)) {
 }
 
 if (!fs.existsSync(stopsFilePath)) {
-    fs.writeFileSync(stopsFilePath, 'fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacion;modo_falla;descripcion_modo_falla;descripcion\n');
+    fs.writeFileSync(stopsFilePath, 'fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;estacion;modo_falla;descripcion_modo_falla;descripcion;categoria\n');
 }
 
 // Logger para verificar las solicitudes
@@ -143,7 +143,21 @@ app.get('/api/reportes/:fecha', (req, res) => {
 // ------------------------- ENDPOINTS PARA PAROS -------------------------
 // Endpoint para registrar un paro de línea
 app.post('/api/paros', (req, res) => {
-    const { fecha, area, linea, pn, estacion, modoFalla, descripcionModoFalla, hora_paro, hora_arranque, descripcion, categoria } = req.body;
+    const {
+        fecha,
+        area,
+        linea,
+        pn,
+        estacion,
+        modoFalla = '', // Valor predeterminado
+        descripcionModoFalla = '', // Valor predeterminado
+        hora_paro,
+        hora_arranque,
+        descripcion,
+        categoria,
+    } = req.body;
+
+    console.log("Datos recibidos en el backend (POST /api/paros):", req.body);
 
     if (!fecha || !area || !linea || !pn || !estacion || !hora_paro || !hora_arranque || !descripcion || !categoria) {
         return res.status(400).send('Todos los campos son obligatorios, excepto el modo de falla y su descripción');
@@ -173,6 +187,9 @@ app.post('/api/paros', (req, res) => {
             res.send('Paro registrado correctamente');
         });
     });
+
+    const nuevoRegistro = `${fecha};${area};${linea};${pn};${hora_paro};${hora_arranque};${diferenciaMinutos};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion};${categoria}`;
+    console.log("Registro que se guardará en el archivo CSV:", nuevoRegistro);
 });
 
 // Endpoint para obtener los paros registrados
@@ -190,6 +207,41 @@ app.get('/api/paros', (req, res) => {
             .map(line => line.split(';')); // Convertir cada línea en un array
 
         res.json(paros);
+    });
+});
+
+// Endpoint para eliminar un paro
+app.delete('/api/paros', (req, res) => {
+    const { fecha, area, linea, pn, hora_paro } = req.body;
+
+    if (!fecha || !area || !linea || !pn || !hora_paro) {
+        return res.status(400).send('Todos los campos son obligatorios para eliminar un paro');
+    }
+
+    fs.readFile(stopsFilePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error al leer el archivo de paros:', err);
+            return res.status(500).send('No se pudo leer el archivo de paros.');
+        }
+
+        const rows = data.split('\n');
+        const headers = rows[0];
+        const registros = rows.slice(1).filter(row => row.trim() !== '');
+
+        // Filtrar los registros para eliminar el que coincide con los datos proporcionados
+        const registrosActualizados = registros.filter(row => {
+            const cols = row.split(';');
+            return !(cols[0] === fecha && cols[1] === area && cols[2] === linea && cols[3] === pn && cols[4] === hora_paro);
+        });
+
+        const nuevoContenido = [headers, ...registrosActualizados].join('\n');
+        fs.writeFile(stopsFilePath, nuevoContenido, (err) => {
+            if (err) {
+                console.error('Error al guardar los cambios:', err);
+                return res.status(500).send('Error al guardar los cambios.');
+            }
+            res.send('Paro eliminado correctamente');
+        });
     });
 });
 

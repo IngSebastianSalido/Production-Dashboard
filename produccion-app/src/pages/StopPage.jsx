@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import EditableTable from '../components/EditableTable';
+
 
 const StopPage = () => {
   const [formData, setFormData] = useState({
@@ -216,7 +218,12 @@ const StopPage = () => {
         </div>
         <button type="submit" style={styles.button}>Registrar Paro</button>
       </form>
+      <div className="table-container"> 
+      <h1>Stops Management</h1>
+      <EditableTable />
     </div>
+    </div>
+    
   );
 };
 
@@ -279,6 +286,8 @@ const styles = {
     cursor: 'pointer',
     alignSelf: 'center', // Center the button horizontally
   },
+
+
 };
 
 export default StopPage;
