@@ -13,13 +13,15 @@ import './index.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <Navbar />
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/rea" element={<REA />} />
-      <Route path="/stop" element={<StopPage />} />
-      <Route path="/produccion" element={<ProdPage />} />
-      <Route path="/opciones" element={<ConfigPage />} />
-      <Route path="/grafica-paros" element={<StopChartPage />} /> {/* Nueva ruta */}
-    </Routes>
+    <div className="content-container"> {/* Nuevo contenedor */}
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/rea" element={<REA />} />
+        <Route path="/stop" element={<StopPage />} />
+        <Route path="/produccion" element={<ProdPage />} />
+        <Route path="/opciones" element={<ConfigPage />} />
+        <Route path="/grafica-paros" element={<StopChartPage />} /> {/* Nueva ruta */}
+      </Routes>
+    </div>
   </BrowserRouter>
 );

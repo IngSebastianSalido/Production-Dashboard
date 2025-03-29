@@ -55,6 +55,10 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.content-container {
+  padding-top: 60px; /* Ajusta este valor según la altura del navbar */
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
