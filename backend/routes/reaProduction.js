@@ -167,7 +167,7 @@ router.get('/rea-production-eolo', (req, res) => {
 });
 
 // 🔥🚀🚀🚀 NUEVO ENDPOINT QUE FALTABA: /rea-production-eolo-graph
-// 🚀 Leer HrperHrReport para gráficas
+// 🚀 Leer HrperHrReport para gráficas (siempre actualizar)
 router.get('/rea-production-eolo-graph', async (req, res) => {
     const { fecha } = req.query;
   
@@ -176,77 +176,72 @@ router.get('/rea-production-eolo-graph', async (req, res) => {
     }
   
     try {
-      // 🧹 Verificar si HrperHrReport existe
-      if (!fs.existsSync(outputCsvPath)) {
-        console.log('⚡ HrperHrReport.csv no existe. Generándolo...');
+      // 🔥 Siempre regenerar HrperHrReport.csv, no importa si existe
+      await new Promise((resolve, reject) => {
+        fs.readFile(reaSourceFilePath, 'utf8', (err, data) => {
+          if (err) return reject('Error leyendo ProductionReport original.');
   
-        // Ejecutar generación como una promesa para esperar
-        await new Promise((resolve, reject) => {
-          fs.readFile(reaSourceFilePath, 'utf8', (err, data) => {
-            if (err) return reject('Error leyendo ProductionReport original.');
+          const rows = data.split('\n').filter(row => row.trim() !== '');
+          const header = rows[0].split(';');
+          const dataRows = rows.slice(-40000);
   
-            const rows = data.split('\n').filter(row => row.trim() !== '');
-            const header = rows[0].split(';');
-            const dataRows = rows.slice(-40000);
+          const eoloIndex = header.findIndex(col => col.toLowerCase().includes('eolok'));
+          if (eoloIndex === -1) return reject('No se encontró columna EOLOk.');
   
-            const eoloIndex = header.findIndex(col => col.toLowerCase().includes('eolok'));
-            if (eoloIndex === -1) return reject('No se encontró columna EOLOk.');
+          const registros = [];
+          for (const row of dataRows) {
+            const columns = row.split(';');
+            const rowFecha = columns[0];
+            const rowHora = columns[1];
   
-            const registros = [];
-            for (const row of dataRows) {
-              const columns = row.split(';');
-              const rowFecha = columns[0];
-              const rowHora = columns[1];
+            if (!rowFecha || !rowHora) continue;
   
-              if (!rowFecha || !rowHora) continue;
+            const cleanHora = rowHora.replace('a. m.', 'AM').replace('p. m.', 'PM').trim();
+            const fechaHoraString = `${rowFecha} ${cleanHora}`;
+            const fechaHoraObj = new Date(fechaHoraString);
   
-              const cleanHora = rowHora.replace('a. m.', 'AM').replace('p. m.', 'PM').trim();
-              const fechaHoraString = `${rowFecha} ${cleanHora}`;
-              const fechaHoraObj = new Date(fechaHoraString);
+            if (isNaN(fechaHoraObj)) continue;
   
-              if (isNaN(fechaHoraObj)) continue;
+            const horaCompleta = fechaHoraObj.toTimeString().split(' ')[0];
+            const eolOk = parseInt(columns[eoloIndex]) || 0;
   
-              const horaCompleta = fechaHoraObj.toTimeString().split(' ')[0];
-              const eolOk = parseInt(columns[eoloIndex]) || 0;
+            registros.push({ fecha: rowFecha, horaCompleta, piezasAcumuladas: eolOk, fechaHoraReal: fechaHoraObj });
+          }
   
-              registros.push({ fecha: rowFecha, horaCompleta, piezasAcumuladas: eolOk, fechaHoraReal: fechaHoraObj });
+          registros.sort((a, b) => a.fechaHoraReal - b.fechaHoraReal);
+  
+          const diferencias = [];
+          let acumuladoAnterior = 0;
+          for (let i = 0; i < registros.length; i++) {
+            const actual = registros[i];
+            let diferencia = 0;
+            if (actual.piezasAcumuladas === 0) {
+              diferencia = 0;
+            } else {
+              diferencia = actual.piezasAcumuladas >= acumuladoAnterior
+                ? actual.piezasAcumuladas - acumuladoAnterior
+                : actual.piezasAcumuladas;
+              acumuladoAnterior = actual.piezasAcumuladas;
             }
-  
-            registros.sort((a, b) => a.fechaHoraReal - b.fechaHoraReal);
-  
-            const diferencias = [];
-            let acumuladoAnterior = 0;
-            for (let i = 0; i < registros.length; i++) {
-              const actual = registros[i];
-              let diferencia = 0;
-              if (actual.piezasAcumuladas === 0) {
-                diferencia = 0;
-              } else {
-                diferencia = actual.piezasAcumuladas >= acumuladoAnterior
-                  ? actual.piezasAcumuladas - acumuladoAnterior
-                  : actual.piezasAcumuladas;
-                acumuladoAnterior = actual.piezasAcumuladas;
-              }
-              diferencias.push({
-                fecha: actual.fecha,
-                hora: actual.horaCompleta,
-                piezasProducidas: diferencia
-              });
-            }
-  
-            const csvHeader = 'Fecha,Hora,PiezasProducidas\n';
-            const csvContent = diferencias.map(dif => `${dif.fecha},${dif.hora},${dif.piezasProducidas}`).join('\n');
-            const fullCsv = csvHeader + csvContent;
-  
-            fs.writeFile(outputCsvPath, fullCsv, 'utf8', (err) => {
-              if (err) return reject('Error escribiendo HrperHrReport.');
-              resolve(); // ✅
+            diferencias.push({
+              fecha: actual.fecha,
+              hora: actual.horaCompleta,
+              piezasProducidas: diferencia
             });
+          }
+  
+          const csvHeader = 'Fecha,Hora,PiezasProducidas\n';
+          const csvContent = diferencias.map(dif => `${dif.fecha},${dif.hora},${dif.piezasProducidas}`).join('\n');
+          const fullCsv = csvHeader + csvContent;
+  
+          fs.writeFile(outputCsvPath, fullCsv, 'utf8', (err) => {
+            if (err) return reject('Error escribiendo HrperHrReport.');
+            resolve(); // ✅
           });
         });
-      }
+      });
   
-      // 🔥 Ahora sí leer HrperHrReport.csv
+      // 🔥 Ahora leer HrperHrReport.csv actualizado
       const data = fs.readFileSync(outputCsvPath, 'utf8');
       const rows = data.split('\n').filter(row => row.trim() !== '');
       const header = rows[0].split(',');
@@ -283,6 +278,7 @@ router.get('/rea-production-eolo-graph', async (req, res) => {
       res.status(500).send('Error procesando la gráfica.');
     }
   });
+  
   
 
 module.exports = router;
