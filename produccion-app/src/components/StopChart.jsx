@@ -4,11 +4,15 @@ import 'chart.js/auto';
 
 const StopChart = ({ fecha }) => {
   const [chartData, setChartData] = useState(null);
+  const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000'; // Asegúrate de que la URL sea válida
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_SERVER_API_URL}/api/paros`);
+        const response = await fetch(`${serverApiUrl}/api/paros`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
 
         const filteredData = data.filter(paro => paro[0] === fecha);
@@ -55,14 +59,14 @@ const StopChart = ({ fecha }) => {
           ],
         });
       } catch (error) {
-        console.error('Error fetching stop data:', error);
+        console.error('Error fetching stop data:', error.message);
       }
     };
 
     if (fecha) {
       fetchData();
     }
-  }, [fecha]);
+  }, [fecha, serverApiUrl]);
 
   if (!chartData) {
     return <div>Cargando datos...</div>;

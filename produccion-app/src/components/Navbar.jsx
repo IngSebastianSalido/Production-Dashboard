@@ -6,9 +6,12 @@ const Navbar = () => {
   return (
     <nav style={styles.nav}>
       <div style={styles.brand}>
-        <img src={logo} alt="Logo" style={styles.logo} /> {/* Usar el logo */}
+        <img src={logo} alt="Logo" style={styles.logo} />
       </div>
       <ul style={styles.navList}>
+        <li style={styles.navItem}>
+          <Link to="/presentacion" style={styles.navLink}>Presentación</Link>
+        </li>
         <li style={styles.navItem}>
           <Link to="/rea" style={styles.navLink}>REA</Link>
         </li>
@@ -27,6 +30,7 @@ const Navbar = () => {
         <li style={styles.navItem}>
           <Link to="/opciones" style={styles.navLink}>Configurar</Link>
         </li>
+
       </ul>
     </nav>
   );
@@ -39,26 +43,26 @@ const styles = {
     alignItems: 'center',
     padding: '10px 20px',
     backgroundColor: '#333',
-    flexWrap: 'wrap', // Allow wrapping on smaller screens
-    width: '100%', // Ensure full width
-    position: 'fixed', // Fix the navbar at the top
-    top: 0, // Align to the top
-    left: 0, // Align to the left
-    zIndex: 1000, // Ensure it stays on top of other content
+    flexWrap: 'wrap',
+    width: '100%',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    zIndex: 1000,
   },
   brand: {
     display: 'flex',
     alignItems: 'center',
   },
   logo: {
-    height: '100px', // Ajusta el tamaño del logo según sea necesario
+    height: '100px',
   },
   navList: {
     display: 'flex',
     listStyle: 'none',
     padding: 0,
     margin: 0,
-    flexWrap: 'wrap', // Allow wrapping on smaller screens
+    flexWrap: 'wrap',
   },
   navItem: {
     margin: '0 10px',

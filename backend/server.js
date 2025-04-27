@@ -10,7 +10,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
+const HOST = process.env.HOST
 
 // Middleware
 const corsOptions = {
@@ -20,6 +20,8 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use('/static', express.static(path.join(__dirname, 'data')));
+
 
 // Rutas a los archivos CSV
 const productionFilePath = path.resolve(process.env.PRODUCTION_FILE_PATH);
@@ -380,7 +382,7 @@ app.get('/api/categories', (req, res) => {
 // ------------------------- INICIAR EL SERVIDOR -------------------------
 
 // Importar la nueva ruta
-const reaProductionRoute = require('./routes/reaproduction');
+const reaProductionRoute = require('./routes/reaProduction');
 app.use('/api', reaProductionRoute);
 
 
