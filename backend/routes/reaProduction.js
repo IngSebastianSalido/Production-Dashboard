@@ -266,15 +266,18 @@ router.get('/rea-production-eolo-graph', async (req, res) => {
           const rowDate = new Date(`${formattedDate}T${horaCompleta}`);
 
           if (rowDate >= startDate && rowDate < endDate) {
-            const hour = rowDate.getHours().toString().padStart(2, '0') + ':00';
-            registros.push({ hora: hour, piezasProducidas });
+            // Guardar la hora completa con minutos para cálculos de turnos
+            registros.push({ 
+              hora: rowDate.getHours().toString().padStart(2, '0') + ':00',
+              horaExacta: horaCompleta, // Hora completa con minutos
+              piezasProducidas 
+            });
           }
         } else {
           console.log(`DEBUG: fechaRow formato inválido: ${fechaRow} for row: ${row}`);
         }
       }
-
-  
+      
       // Agrupar las piezas producidas por hora
       const datosPorHora = {};
       for (const registro of registros) {
@@ -294,23 +297,25 @@ router.get('/rea-production-eolo-graph', async (req, res) => {
         });
       }
       
-      // Calcular totales de turnos según los rangos exactos:
+      // Calcular totales de turnos usando la hora exacta (con minutos)
       // Turno 1: de 7:00 a 15:00 (horas 07:00 a 14:59)
       // Turno 2: de 15:00 a 22:30 (horas 15:00 a 22:29)
       // Turno 3: de 22:30 a 7:00 (horas 22:30 a 06:59 del día siguiente)
       let turno1 = 0, turno2 = 0, turno3 = 0;
 
       for (const registro of registros) {
-        const horaCompleta = registro.hora;
-        const [hour, minute] = horaCompleta.split(':').map(Number);
+        const horaExacta = registro.horaExacta;
+        const [hourStr, minuteStr] = horaExacta.split(':');
+        const hour = parseInt(hourStr);
+        const minute = parseInt(minuteStr);
 
         if (hour >= 7 && hour < 15) {
           // Turno 1: 07:00 - 14:59
           turno1 += registro.piezasProducidas;
-        } else if ((hour === 15 && minute === 0) || (hour > 15 && hour < 22) || (hour === 22 && minute < 30)) {
+        } else if ((hour === 15 && minute >= 0) || (hour > 15 && hour < 22) || (hour === 22 && minute < 30)) {
           // Turno 2: 15:00 - 22:29
           turno2 += registro.piezasProducidas;
-        } else if ((hour === 22 && minute >= 30) || (hour > 22) || (hour < 7)) {
+        } else if ((hour === 22 && minute >= 30) || hour > 22 || hour < 7) {
           // Turno 3: 22:30 - 06:59
           turno3 += registro.piezasProducidas;
         }
