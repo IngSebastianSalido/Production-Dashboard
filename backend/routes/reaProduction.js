@@ -241,37 +241,82 @@ router.get('/rea-production-eolo-graph', async (req, res) => {
         });
       });
   
-      // 🔥 Ahora leer HrperHrReport.csv actualizado
+      // Ahora leer HrperHrReport.csv actualizado
       const data = fs.readFileSync(outputCsvPath, 'utf8');
       const rows = data.split('\n').filter(row => row.trim() !== '');
       const header = rows[0].split(',');
       const dataRows = rows.slice(1);
   
       const registros = [];
+      // Se define el rango de 7am a 7am del siguiente día
+      const startDate = new Date(`${fecha}T07:00:00`);
+      const endDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
+
   
-      for (const row of dataRows) {
+      for (const row of rows.slice(1)) {
         const columns = row.split(',');
-        const fechaRow = columns[0];
-        const horaCompleta = columns[1];
+        const fechaRow = columns[0].trim();
+        const horaCompleta = columns[1].trim();
         const piezasProducidas = parseInt(columns[2]) || 0;
   
-        if (fechaRow === fecha) {
-          const horaSolo = horaCompleta.split(':')[0] + ":00";
-          registros.push({ hora: horaSolo, piezasProducidas });
+        // Convertir "M/D/YYYY" a "YYYY-MM-DD"
+        const parts = fechaRow.split('/');
+        if (parts.length === 3) {
+          const formattedDate = `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+          const rowDate = new Date(`${formattedDate}T${horaCompleta}`);
+
+          if (rowDate >= startDate && rowDate < endDate) {
+            const hour = rowDate.getHours().toString().padStart(2, '0') + ':00';
+            registros.push({ hora: hour, piezasProducidas });
+          }
+        } else {
+          console.log(`DEBUG: fechaRow formato inválido: ${fechaRow} for row: ${row}`);
         }
       }
+
   
+      // Agrupar las piezas producidas por hora
       const datosPorHora = {};
       for (const registro of registros) {
-        if (!datosPorHora[registro.hora]) datosPorHora[registro.hora] = 0;
-        datosPorHora[registro.hora] += registro.piezasProducidas;
+        const key = registro.hora;
+        if (!datosPorHora[key]) datosPorHora[key] = 0;
+        datosPorHora[key] += registro.piezasProducidas;
       }
   
-      const datosOrdenados = Object.keys(datosPorHora)
-        .sort((a, b) => parseInt(a) - parseInt(b))
-        .map(hora => ({ hora, piezasProducidas: datosPorHora[hora] }));
-  
-      res.json(datosOrdenados);
+      // Generar 24 entradas una por cada hora desde startDate (7am) hasta 7am del día siguiente
+      const datosOrdenados = [];
+      for (let i = 0; i < 24; i++) {
+        const currentDate = new Date(startDate.getTime() + i * 60 * 60 * 1000);
+        const hourStr = currentDate.getHours().toString().padStart(2, '0') + ':00';
+        datosOrdenados.push({
+           hora: hourStr,
+           piezasProducidas: datosPorHora[hourStr] || 0
+        });
+      }
+      
+      // Calcular totales de turnos según los rangos exactos:
+      // Turno 1: de 7:00 a 15:00 (horas 07:00 a 14:59)
+      // Turno 2: de 15:00 a 22:30 (horas 15:00 a 22:29)
+      // Turno 3: de 22:30 a 7:00 (horas 22:30 a 06:59 del día siguiente)
+      let turno1 = 0, turno2 = 0, turno3 = 0;
+
+      for (const registro of registros) {
+        const horaCompleta = registro.hora;
+        const [hour, minute] = horaCompleta.split(':').map(Number);
+
+        if (hour >= 7 && hour < 15) {
+          // Turno 1: 07:00 - 14:59
+          turno1 += registro.piezasProducidas;
+        } else if ((hour === 15 && minute === 0) || (hour > 15 && hour < 22) || (hour === 22 && minute < 30)) {
+          // Turno 2: 15:00 - 22:29
+          turno2 += registro.piezasProducidas;
+        } else if ((hour === 22 && minute >= 30) || (hour > 22) || (hour < 7)) {
+          // Turno 3: 22:30 - 06:59
+          turno3 += registro.piezasProducidas;
+        }
+      }
+
+      res.json({ datos: datosOrdenados, turnos: { turno1, turno2, turno3 } });
   
     } catch (error) {
       console.error(error);

@@ -49,8 +49,7 @@ const REA = () => {
     <div className="rea-container">
       <h1 className="rea-title">REA</h1>
 
-      {/* Selector de fecha */}
-      <div className="rea-date-picker">
+      <div className="rea-date-picker" style={{ marginBottom: "40px" }}> {/* Espaciado adicional */}
         <label htmlFor="fecha">Seleccionar fecha: </label>
         <input
           type="date"
@@ -60,14 +59,12 @@ const REA = () => {
         />
       </div>
 
-      {/* Gráfica arriba */}
-      <div className="rea-chart-full">
+      <div className="rea-chart-full" style={{ marginBottom: "60px" }}> {/* Espaciado adicional */}
         {fechaSeleccionada && <REAChart fecha={fechaSeleccionada} />}
       </div>
 
-      {/* Estaciones en scroll horizontal */}
       {data.map((entry, index) => (
-        <div key={index} className="rea-entry">
+        <div key={index} className="rea-entry" style={{ marginBottom: "50px" }}> {/* Espaciado adicional */}
           <h2 className="rea-date">Fecha: {entry.fecha}</h2>
           <h3 className="rea-time">Hora: {entry.hora}</h3>
 

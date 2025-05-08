@@ -3,7 +3,7 @@ import "../REA.css"; // Usamos mismo CSS
 
 const StationsGrid = ({ estaciones }) => {
   return (
-    <div className="stations-scroll-container">
+    <div className="stations-grid-container">
       {estaciones.map((station, idx) => (
         <div
           key={idx}

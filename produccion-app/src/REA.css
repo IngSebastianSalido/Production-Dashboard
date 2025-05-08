@@ -39,13 +39,14 @@
   margin-bottom: 20px;
 }
 
-/* 🔥 Estaciones en una sola fila con scroll si es necesario */
-.stations-scroll-container {
+/* 🔥 Estaciones en una cuadrícula para ver todas al mismo tiempo */
+.stations-grid-container {
   display: flex;
-  flex-wrap: nowrap; /* 🔥 No permitir que bajen de línea */
-  overflow-x: auto;
-  gap: 30px;
-  padding: 20px 0;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 15px 0;
+  width: 100%;
+  justify-content: center;
 }
 
 /* Scroll bonito */
@@ -60,20 +61,21 @@
 
 /* 🔥 Estilo de las tarjetas */
 .rea-station-card {
-  background: #333;
-  padding: 20px;
-  border-radius: 12px;
-  min-width: 160px;
-  max-width: 160px;
+  background: #28a745;
+  padding: 12px;
+  border-radius: 6px;
+  width: 140px;
+  min-height: 90px;
   text-align: center;
-  flex-shrink: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .rea-station-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
 }
 
 .rea-station-card.green {
@@ -90,12 +92,15 @@
 }
 
 .rea-station-name {
-  font-size: 1.3rem;
-  margin-bottom: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .rea-station-metrics div {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .rea-loading {
