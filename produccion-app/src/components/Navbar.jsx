@@ -8,18 +8,9 @@ const Navbar = () => {
       <div style={styles.brand}>
         <img src={logo} alt="Logo" style={styles.logo} />
       </div>
-      <ul style={styles.navList}>
+      <ul style={styles.navList}>        
         <li style={styles.navItem}>
-          <Link to="/presentacion" style={styles.navLink}>Presentación</Link>
-        </li>
-        <li style={styles.navItem}>
-          <Link to="/rea" style={styles.navLink}>REA</Link>
-        </li>
-        <li style={styles.navItem}>
-          <Link to="/" style={styles.navLink}>ProdChart</Link>
-        </li>
-        <li style={styles.navItem}>
-          <Link to="/produccion" style={styles.navLink}>Hora por hora</Link>
+          <Link to="/" style={styles.navLink}>REA</Link>
         </li>
         <li style={styles.navItem}>
           <Link to="/grafica-paros" style={styles.navLink}>StopChart</Link>
@@ -28,9 +19,11 @@ const Navbar = () => {
           <Link to="/stop" style={styles.navLink}>Registrar Paro</Link>
         </li>
         <li style={styles.navItem}>
-          <Link to="/opciones" style={styles.navLink}>Configurar</Link>
+          <Link to="/production-board" style={styles.navLink}>Production Board</Link>
         </li>
-
+        <li style={styles.navItem}>
+          <Link to="/presentacion" style={styles.navLink}>Presentación</Link>
+        </li>
       </ul>
     </nav>
   );

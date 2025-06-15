@@ -1,0 +1,287 @@
+/* Estilo base para el tema oscuro */
+.chart-card {
+  background-color: #1f1f1f;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 350px;
+  overflow: hidden;
+}
+
+.chart-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+}
+
+.chart-card h3 {
+  color: #ffffff;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.chart-container {
+  background-color: #2d2d2d;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+/* Estilos para la sección de datos - adjusted to match the screenshot */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  background-color: rgba(50, 50, 50, 0.3);
+  border-radius: 5px;
+  padding: 15px;
+  width: 100%;
+  margin-bottom: 15px;
+  overflow-x: visible;
+}
+
+/* Navegación de páginas */
+.data-grid-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.page-button {
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 40px;
+}
+
+.page-button:hover:not(:disabled) {
+  background-color: #666;
+}
+
+.page-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  color: #ddd;
+  font-size: 0.9rem;
+  padding: 0 10px;
+}
+
+/* Estilos para columnas de días - fixed sizing to match screenshot */
+.day-column {
+  background-color: rgba(45, 45, 45, 0.5);
+  border-radius: 5px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: unset;
+  max-width: unset;
+  margin-right: 0;
+  border-left: none;
+}
+
+.day-column:last-child {
+  margin-right: 0;
+}
+
+.day-header {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 6px 0;
+  border-radius: 4px 4px 0 0;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+/* Contenedores de inputs - adjusted spacing */
+.input-container {
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.input-label {
+  color: #ccc;
+  margin-bottom: 2px;
+  font-size: 0.85rem;
+  display: block;
+  text-align: center;
+}
+
+.data-input {
+  width: 100%;
+  padding: 6px 4px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 3px;
+  text-align: center;
+  box-sizing: border-box;
+  font-size: 14px;
+  height: 30px;
+}
+
+.data-input:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.percent-box {
+  width: 100%;
+  padding: 6px 4px;
+  border-radius: 3px;
+  text-align: center;
+  font-weight: bold;
+  box-sizing: border-box;
+  height: 30px;
+  line-height: 18px;
+}
+
+/* Colores según porcentaje */
+.percent-high {
+  background-color: rgba(0, 200, 0, 0.6);
+  color: white;
+}
+
+.percent-medium {
+  background-color: rgba(255, 255, 0, 0.6);
+  color: black;
+}
+
+.percent-low {
+  background-color: rgba(255, 0, 0, 0.6);
+  color: white;
+}
+
+/* Estilos para la miniatura */
+.data-grid-mini {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.mini-summary {
+  background-color: #2d2d2d;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.mini-summary p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.mini-summary p:last-child {
+  font-style: italic;
+  color: #1890ff;
+  font-size: 0.8rem;
+}
+
+/* Estilos para el modal */
+.modal-chart-container {
+  height: 350px;
+  margin-bottom: 20px;
+  min-height: 300px;
+}
+
+.modal-data-section {
+  background-color: #2d2d2d;
+  border-radius: 6px;
+  padding: 20px 15px;
+  margin-top: 20px;
+}
+
+.chart-details {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.chart-details h4 {
+  color: #1890ff;
+  margin-bottom: 10px;
+}
+
+/* Estilos para indicadores de carga */
+.chart-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.chart-loading-spinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid #1890ff;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Nuevos estilos para el selector de mes y año */
+.month-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.selector-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.month-select, .year-select {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background-color: #333;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.month-select:focus, .year-select:focus {
+  outline: none;
+  border-color: #0088ff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .day-column {
+    min-width: 90px;
+  }
+  
+  .page-indicator {
+    font-size: 0.8rem;
+  }
+}

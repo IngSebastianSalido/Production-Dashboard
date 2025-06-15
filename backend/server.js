@@ -10,12 +10,13 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST
+// Escuchar en todas las interfaces si no se especifica un HOST
+const HOST = process.env.HOST || '0.0.0.0';
 
-// Middleware
+// Middleware: permitir CORS desde cualquier origen en desarrollo
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN.split(','),
-    methods: ['GET', 'POST', 'DELETE','PUT'],
+    origin: '*',
+    methods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders: ['Content-Type'],
 };
 app.use(cors(corsOptions));
@@ -383,10 +384,12 @@ app.get('/api/categories', (req, res) => {
 
 // Importar la nueva ruta
 const reaProductionRoute = require('./routes/reaProduction');
+const efficiencyRoute = require('./routes/efficiency');
 app.use('/api', reaProductionRoute);
+app.use('/api', efficiencyRoute);
 
 
-// Iniciar el servidor HTTP
+// Iniciar el servidor HTTP en el host especificado
 app.listen(PORT, HOST, () => {
     console.log(`Servidor corriendo en http://${HOST}:${PORT}`);
 });

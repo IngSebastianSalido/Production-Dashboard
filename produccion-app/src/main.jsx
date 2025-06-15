@@ -9,6 +9,7 @@ import StopChartPage from './pages/StopChartPage'; // Importar la nueva página
 import Navbar from './components/NavBar';
 import REA from './pages/REA';
 import PPTPage from './pages/PPTPage'; // Importar la nueva página de presentación
+import ProductionBoard from './pages/ProductionBoard'; // Importar la página de ProductionBoard
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -16,13 +17,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Navbar />
     <div className="content-container"> {/* Nuevo contenedor */}
     <Routes>
-  <Route path="/" element={<App />} />
-  <Route path="/rea" element={<REA />} />
+  <Route path="/" element={<REA />} />
   <Route path="/stop" element={<StopPage />} />
   <Route path="/produccion" element={<ProdPage />} />
   <Route path="/opciones" element={<ConfigPage />} />
   <Route path="/grafica-paros" element={<StopChartPage />} />
-  <Route path="/presentacion" element={<PPTPage />} /> {/* 🔥 NUEVA RUTA */}
+  <Route path="/presentacion" element={<PPTPage />} /> 
+  <Route path="/production-board" element={<ProductionBoard />} /> 
 </Routes>
 
     </div>
