@@ -43,6 +43,7 @@ router.get('/rea-production', (req, res) => {
         const columns = row.split(';');
         const fecha = columns[0];
         const hora = columns[1];
+        const pn = columns[2]; // Agregar número de parte
 
         const estaciones = [];
 
@@ -59,7 +60,7 @@ router.get('/rea-production', (req, res) => {
           });
         }
 
-        resultados.push({ fecha, hora, estaciones });
+        resultados.push({ fecha, hora, pn, estaciones });
       }
 
       res.json(resultados);

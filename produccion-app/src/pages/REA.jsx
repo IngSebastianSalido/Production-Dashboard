@@ -67,6 +67,7 @@ const REA = () => {
         <div key={index} className="rea-entry" style={{ marginBottom: "50px" }}> {/* Espaciado adicional */}
           <h2 className="rea-date">Fecha: {entry.fecha}</h2>
           <h3 className="rea-time">Hora: {entry.hora}</h3>
+          <h3 className="rea-pn">Número de Parte: {entry.pn}</h3>
 
           <StationsGrid estaciones={entry.estaciones} />
         </div>
