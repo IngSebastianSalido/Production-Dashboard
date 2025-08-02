@@ -114,10 +114,18 @@
 }
 
 .charts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   gap: 20px;
   margin-top: 20px;
+  overflow-x: auto; /* Para scroll horizontal en pantallas pequeñas */
+}
+
+.charts-grid > * {
+  flex: 1;
+  min-width: 300px; /* Ancho mínimo para cada chart */
+  max-width: 450px; /* Ancho máximo para cada chart */
 }
 
 .dashboard-footer {
@@ -131,7 +139,12 @@
 
 @media (max-width: 768px) {
   .charts-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+  
+  .charts-grid > * {
+    min-width: auto;
+    max-width: none;
   }
   
   .dashboard-header {
@@ -144,8 +157,4 @@
   }
 }
 
-@media (max-width: 768px) {
-  .charts-grid {
-    grid-template-columns: 1fr;
-  }
-}
+

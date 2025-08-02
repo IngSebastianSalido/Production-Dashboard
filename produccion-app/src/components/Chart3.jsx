@@ -5,7 +5,7 @@ import Modal from './Modal';
 import './Chart1.css'; // Reutilizamos los estilos de Chart1
 import { getDefectsData } from '../api/mockData';
 
-const Chart3 = ({ fecha }) => {
+const Chart3 = ({ mesSeleccionado }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState(['Ajuste Incorrecto', 'Material Defectuoso', 'Error de Operador', 'Falla de Máquina', 'Otros']);
@@ -14,7 +14,7 @@ const Chart3 = ({ fecha }) => {
   // Cargar datos del API
   useEffect(() => {
     setLoading(true);
-    getDefectsData(fecha.split(',')[1]) // Extraemos la fecha de la cadena formateada
+    getDefectsData(mesSeleccionado) // Usar directamente el mes seleccionado
       .then(data => {
         setCategories(data.categories);
         setDefectValues(data.defectValues);
@@ -24,7 +24,7 @@ const Chart3 = ({ fecha }) => {
         console.error("Error al cargar datos de defectos:", error);
         setLoading(false);
       });
-  }, [fecha]);
+  }, [mesSeleccionado]);
   
   // Calcular totales para la información detallada
   const totalDefects = defectValues.reduce((a, b) => a + b, 0);
@@ -135,9 +135,8 @@ const Chart3 = ({ fecha }) => {
               }
             }}
           />
-        </div>
-        <div className="chart-details">
-          <p>Fecha: {fecha}</p>
+        </div>        <div className="chart-details">
+          <p>Mes: {mesSeleccionado}</p>
           <h4>Análisis Detallado de Defectos</h4>
           {categories.map((label, index) => {
             const value = defectValues[index];

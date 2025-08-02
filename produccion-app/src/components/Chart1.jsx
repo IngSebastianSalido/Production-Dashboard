@@ -4,7 +4,7 @@ import 'chart.js/auto';
 import './Chart1.css';
 import Modal from './Modal';
 
-const Chart1 = ({ fecha }) => {
+const Chart1 = ({ mesSeleccionado }) => {
   // Estado para los valores editables
   const [metaValues, setMetaValues] = useState(Array(31).fill(1000));
   const [realValues, setRealValues] = useState(Array(31).fill(900));
@@ -16,6 +16,15 @@ const Chart1 = ({ fecha }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const dataGridRef = useRef(null);
   const ITEMS_PER_PAGE = 7; // Number of days to show per page
+  
+  // Sincronizar mesSeleccionado con el estado interno
+  useEffect(() => {
+    if (mesSeleccionado) {
+      const [year, month] = mesSeleccionado.split('-');
+      setSelectedYear(parseInt(year));
+      setSelectedMonth(parseInt(month) - 1); // JavaScript months are 0-indexed
+    }
+  }, [mesSeleccionado]);
   
   // Cargar datos del API cuando cambia el mes o año seleccionado
   useEffect(() => {
@@ -369,14 +378,20 @@ const Chart1 = ({ fecha }) => {
             </select>
           </div>
           <h4>{monthNames[selectedMonth]} {selectedYear}</h4>
-        </div>
-
-        <div className="modal-chart-container">
+        </div>        <div className="modal-chart-container">
           <Bar
             data={chartDataFull}
             options={{
               ...chartOptions,
               maintainAspectRatio: false,
+              responsive: true,
+              layout: {
+                padding: 0
+              },
+              interaction: {
+                intersect: false,
+                mode: 'index'
+              }
             }}
           />
         </div>

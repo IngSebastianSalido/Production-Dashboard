@@ -6,16 +6,15 @@ import Chart2 from '../components/Chart2'; // Usando CycleTimeChart en lugar de 
 import Chart3 from '../components/Chart3';
 
 const ProductionBoard = () => {
-  // Estado para la fecha (por defecto hoy)
-  const getTodayDate = () => {
+  // Estado para mes y año (por defecto mes actual)
+  const getTodayMonth = () => {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return `${year}-${month}`;
   };
   
-  const [fechaSeleccionada, setFechaSeleccionada] = useState(getTodayDate());
+  const [mesSeleccionado, setMesSeleccionado] = useState(getTodayMonth());
   const [loading, setLoading] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
 
@@ -27,13 +26,12 @@ const ProductionBoard = () => {
       setLoading(false);
     }, 800);
   };
-
   // Inicializar y guardar fecha en localStorage
   useEffect(() => {
     // Recuperar fecha guardada o usar la actual
-    const savedDate = localStorage.getItem('fecha');
+    const savedDate = localStorage.getItem('mesSeleccionado');
     if (savedDate) {
-      setFechaSeleccionada(savedDate);
+      setMesSeleccionado(savedDate);
     }
     
     // Cargar datos al iniciar
@@ -42,32 +40,34 @@ const ProductionBoard = () => {
 
   // Cuando cambia la fecha
   useEffect(() => {
-    localStorage.setItem('fecha', fechaSeleccionada);
+    localStorage.setItem('mesSeleccionado', mesSeleccionado);
     loadData();
-  }, [fechaSeleccionada]);
-
-  // Formatear fecha para mostrar
-  const formatDate = (dateString) => {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('es-ES', options);
+  }, [mesSeleccionado]);
+  // Formatear mes para mostrar
+  const formatMonth = (monthString) => {
+    const [year, month] = monthString.split('-');
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return `${monthNames[parseInt(month) - 1]} ${year}`;
   };
   return (
     <div className="production-board-container">
       <h1 className="production-board-title">Panel de Producción</h1>
-      
-      <div className="dashboard-header">
+        <div className="dashboard-header">
         <div className="date-picker">
-          <label htmlFor="fecha">Fecha: </label>
+          <label htmlFor="mes">Mes: </label>
           <input
-            type="date"
-            id="fecha"
-            value={fechaSeleccionada}
-            onChange={(e) => setFechaSeleccionada(e.target.value)}
+            type="month"
+            id="mes"
+            value={mesSeleccionado}
+            onChange={(e) => setMesSeleccionado(e.target.value)}
           />
         </div>
         
         <div className="date-display">
-          {formatDate(fechaSeleccionada)}
+          {formatMonth(mesSeleccionado)}
         </div>
         
         <button 
@@ -97,26 +97,26 @@ const ProductionBoard = () => {
           <div className="loading-spinner"></div>
           <p>Cargando datos...</p>
         </div>
-      ) : (
-        <div className="charts-grid">          {/* Chart 1 */}
+      ) : (        <div className="charts-grid">
+          {/* Chart 1 */}
           <Chart1 
-            fecha={formatDate(fechaSeleccionada)} 
+            mesSeleccionado={mesSeleccionado} 
           />
           
           {/* Chart 2 */}
           <Chart2 
-            fecha={formatDate(fechaSeleccionada)} 
+            mesSeleccionado={mesSeleccionado} 
           />
           
           {/* Chart 3 */}
           <Chart3 
-            fecha={formatDate(fechaSeleccionada)}
+            mesSeleccionado={mesSeleccionado}
           />
         </div>
       )}
       
       <footer className="dashboard-footer">
-        <p>© 2023 Production Dashboard | Datos actualizados en tiempo real</p>
+        <p>© 2025 Production Dashboard</p>
       </footer>
     </div>
   );

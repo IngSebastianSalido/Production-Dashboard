@@ -5,7 +5,7 @@ import Modal from './Modal';
 import './Chart1.css'; // Reutilizamos los estilos de Chart1
 import { getCycleTimeData } from '../api/mockData';
 
-const Chart2 = ({ fecha }) => {
+const Chart2 = ({ mesSeleccionado }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [cycleTimeData, setCycleTimeData] = useState([145, 152, 138, 142, 149, 135, 140]);
@@ -14,7 +14,7 @@ const Chart2 = ({ fecha }) => {
   // Cargar datos del API
   useEffect(() => {
     setLoading(true);
-    getCycleTimeData(fecha.split(',')[1]) // Extraemos la fecha de la cadena formateada
+    getCycleTimeData(mesSeleccionado) // Usar directamente el mes seleccionado
       .then(data => {
         setCycleTimeData(data.cycleTimeData);
         setTargetTimeData(Array(7).fill(data.targetTime));
@@ -24,7 +24,7 @@ const Chart2 = ({ fecha }) => {
         console.error("Error al cargar datos de tiempo de ciclo:", error);
         setLoading(false);
       });
-  }, [fecha]);
+  }, [mesSeleccionado]);
   
   // Generar etiquetas para los últimos 7 días
   const generateLastSevenDays = () => {
@@ -160,9 +160,8 @@ const Chart2 = ({ fecha }) => {
             data={chartData}
             options={chartOptions}
           />
-        </div>
-        <div className="chart-details">
-          <p>Fecha: {fecha}</p>
+        </div>        <div className="chart-details">
+          <p>Mes: {mesSeleccionado}</p>
           <h4>Información Detallada</h4>
           <p>Tiempo de ciclo promedio: {averageCycleTime}s</p>
           <p>Tiempo objetivo: {targetTime}s</p>

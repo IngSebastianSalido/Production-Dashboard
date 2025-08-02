@@ -46,7 +46,7 @@ router.get('/rea-production', (req, res) => {
 
         const estaciones = [];
 
-        for (let i = 2; i < columns.length; i += 2) {
+        for (let i = 3; i < columns.length; i += 2) {
           const station = header[i]?.replace(/ok$/i, '') || `Estacion${i}`;
           const ok = parseInt(columns[i]) || 0;
           const nok = parseInt(columns[i + 1]) || 0;
@@ -166,8 +166,8 @@ router.get('/rea-production-eolo', (req, res) => {
   });
 });
 
-// 🔥🚀🚀🚀 NUEVO ENDPOINT QUE FALTABA: /rea-production-eolo-graph
-// 🚀 Leer HrperHrReport para gráficas (siempre actualizar)
+
+//  Leer HrperHrReport para gráficas (siempre actualizar)
 router.get('/rea-production-eolo-graph', async (req, res) => {
     const { fecha } = req.query;
   
@@ -176,7 +176,7 @@ router.get('/rea-production-eolo-graph', async (req, res) => {
     }
   
     try {
-      // 🔥 Siempre regenerar HrperHrReport.csv, no importa si existe
+      //  Siempre regenerar HrperHrReport.csv, no importa si existe
       await new Promise((resolve, reject) => {
         fs.readFile(reaSourceFilePath, 'utf8', (err, data) => {
           if (err) return reject('Error leyendo ProductionReport original.');
