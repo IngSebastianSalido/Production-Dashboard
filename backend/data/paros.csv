@@ -1488,7 +1488,6 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-04-26;REA;Actuadores;3140CA029;20:00;20:28;28;Equipment Fault;Robots;R70;Gripper/tool adjustments;sensor de gripper no enciende falla al levantar gear.,,,,,,
 2025-04-26;REA;Actuadores;3140CA029;21:13;21:15;2;Quality;Robots;R75;Motion supervision/Joint collision;motion sup,,,,,,
 2025-04-26;REA;Actuadores;3140CA029;21:10;21:12;2;Equipment Fault;Robots;R70;Vacuum system;se cae gear (cambio de ventosas),,,,,,
-2025-04-26;Vacuum system;REA;Actuadores;3140CA029;21:06;21:08;2;Equipment Fault;Robots;R70;Vacuum systemt;se cae gear,,,,,,
 2025-04-26;REA;Actuadores;3140CA029;20:48;20:50;2;Production;710;710;Presence sensor;motor al revez,,,,,,
 2025-04-26;REA;Actuadores;3140CA029;20:42;20:44;2;Production;915;710;Presence sensor;motor al revez,,,,,,
 2025-04-26;REA;Actuadores;3140CA029;19:55;19:58;3;Equipment Fault;CAW;General;Waiting for spare part;se detiene y no avanza,,,,,,
@@ -1523,7 +1522,6 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-04-21;REA;Actuadores;3140CA029;19:47;19:49;2;Maintenance;Robots;R33;Motion supervision/Joint collision;choca en CHW,,,,,,
 2025-04-21;REA;Actuadores;3140CA029;21:19;21:20;1;Production;710;710;Presence sensor;motor invertido,,,,,,
 2025-04-21;REA;Actuadores;3140CA029;21:10;21:11;1;Production;710;710;Presence sensor;motor invertido,,,,,,
-2025-04-21;Motion supervision/Joint collision;REA;Actuadores;3140CA029;17:50;17:52;2;Equipment Fault;Robots;R75;Motion supervision/Joint collision;motion sup al ensamblar,,,,,,
 2025-04-21;REA;Actuadores;3140CA029;15:45;15:47;2;Equipment Fault;Robots;R75;Motion supervision/Joint collision;motion sup al ensamblar,,,,,,
 2025-04-21;REA;Actuadores;3140CA029;15:58;15:59;1;Equipment Fault;Robots;R75;Motion supervision/Joint collision;motion sup al ensamblar,,,,,,
 2025-04-21;REA;Actuadores;3140CA029;16:08;16:10;2;Equipment Fault;Robots;R75;Motion supervision/Joint collision;motion sup al ensamblar,,,,,,
@@ -4280,106 +4278,106 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-07-30;REA;Actuadores;3140CA029;14:21;14:23;2;Equipment Fault;Main conveyor;Main conveyor;RFID Reader;No hace proceso 731 por pallet no detectado, se reinicia ciclo 731,,,,,
 2025-07-26;REA;Actuadores;3140CA029;07:00;13:05;365;Quality;REA;General;Change Over;Liberación Ford 029,,,,,,
 2025-07-26;REA;Actuadores;3140CA029;14:20;14:50;30;Maintenance;CAW;Jig/Index;Blade orienter actuator;Blade derecho no se regresa durante el proceso, se cambia cilindro dañado, presenta fuga en vastago,,,,
-2025-07-30;REA;Actuadores;3140CA029;16:34;16:57;23;Equipment Fault;Main conveyor;Main conveyor;RFID Reader;RFID no leia pallet haciendo error en secuencia de lockings
-2025-07-30;REA;Actuadores;3140CA029;17:02;17:16;14;Maintenance;Main conveyor;Main conveyor;Motor;Se ajusta motor a su posicion por que se sale de flecha
-2025-07-30;REA;Actuadores;3140CA029;17:19;17:22;3;Equipment Fault;Main conveyor;Main conveyor;Belt;Soporte de guias flojo, se ajusta tornilleria
-2025-07-30;REA;Actuadores;3140CA029;18:04;18:15;11;Equipment Fault;MSA;General;PLC ;No responde, se reinica MSA y robot se manda a home
-2025-07-30;REA;Actuadores;3140CA029;18:21;18:24;3;Equipment Fault;Robots;R38;Vacuum system;Se revisa ventojas de robot por que tiraba body, se hace ajuste a tuercas de base
-2025-07-30;REA;Actuadores;3140CA029;19:38;19:43;5;Equipment Fault;730;730;Bowl/Lineal feeder;Prensa colisiona con feed piston porque pin estaba mal acomodado, despues de mandar a home no continua secuencia, se ocupa poner home en hmi para que continue y vuelva a leer sensor inductivo
-2025-07-30;REA;Actuadores;3140CA029;18:44;18:49;5;Material/Logistics;CHW;Consumables;Chip reel;Se acaba chip y no hya repuestoen el area, se busca en racks
-2025-07-30;REA;Actuadores;3140CA029;18:49;18:55;6;Maintenance;CHW;Consumables;Chip reel;Cambio de chip
-2025-07-30;REA;Actuadores;3140CA029;18:55;18:59;4;Equipment Fault;620;620;Alphamatic Module;Se ocupa reiniciar modulo porque prensa tiro scrap y al reiniciar no continua secuencia
-2025-07-30;REA;Actuadores;3140CA029;19:04;19:08;4;Maintenance;Main conveyor;Main conveyor;Belt;Se ajusta puende entre conveyor porque rosaba con cadena
-2025-07-30;REA;Actuadores;3140CA029;19:12;19:14;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;Gripper 4 no abrio correctamente y se alarma
-2025-07-30;REA;Actuadores;3140CA029;19:25;19:27;2;Equipment Fault;USW;St14;Lower Jig;Se limpia goma blanca por rebaba acumulada
-2025-07-30;REA;Actuadores;3140CA029;19:36;19:38;2;Equipment Fault;Conveyors;C36;Presence sensor;Blister atorado por lockings
-2025-07-30;REA;Actuadores;3140CA029;19:39;19:41;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;Gripper 3 no abre correctamente
-2025-07-30;REA;Actuadores;3140CA029;19:41;19:43;2;Equipment Fault;Robots;R65;Motion supervision/Joint collision;motion supervision por manguera
-2025-07-30;REA;Actuadores;3140CA029;19:57;20:04;7;Quality;731;General;NOK material;Pin viene mas grande que lo requerido
-2025-07-30;REA;Actuadores;3140CA029;20:46;20:49;3;Equipment Fault;Robots;R65;Motion supervision/Joint collision;Motion supervision por manguera
-2025-07-30;REA;Actuadores;3140CA029;21:00;21:08;8;Maintenance;REA;General;Checklist;Checklist
-2025-07-30;REA;Actuadores;3140CA029;23:27;23:31;4;Quality;730;730;Alphamatic Module;force exceeded in pick, home manual, revisar feedr piston y reiniciar ciclo
-2025-07-31;REA;Actuadores;3140CA029;00:29;00:30;1;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas
-2025-07-31;REA;Actuadores;3140CA029;00:31;00:32;1;Equipment Fault;Main conveyor;Main conveyor;Lift;lift se quedo abajo
-2025-07-31;REA;Actuadores;3140CA029;00:37;00:38;1;Equipment Fault;Main conveyor;Main conveyor;Singulator NOK;singulator de 730 no abrio
-2025-07-31;REA;Actuadores;3140CA029;00:50;00:53;3;Production;REA;General;Empty rack;Se vacía, restablecer logica en conveyor body
-2025-07-31;REA;Actuadores;3140CA029;01:10;01:20;10;Equipment Fault;730;730;Alphamatic Module;problemas con la prensa no detecta pallet
-2025-07-31;REA;Actuadores;3140CA029;01:35;01:38;3;Equipment Fault;730;730;Alphamatic Module;problemas con la prensa no detecta pallet
-2025-07-31;REA;Actuadores;3140CA029;02:10;02:15;5;Equipment Fault;730;730;Feed piston;ajuste de tope mecanico por pick nok
-2025-07-31;REA;Actuadores;3140CA029;02:15;02:17;2;Quality;REA;General;NOK material;Blister mal formado gear
-2025-07-31;REA;Actuadores;3140CA029;03:27;03:31;4;Maintenance;REA;General;Checklist;checklist
-2025-07-31;REA;Actuadores;3140CA029;05:45;05:49;4;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado, despues de desatorar se atoran otros pallets
-2025-07-31;REA;Actuadores;3140CA029;06:15;06:17;2;Equipment Fault;Robots;R70;Vacuum system;2 veces fallo vacuum, no se cambiaron ventosas, solo play
-2025-07-31;REA;Actuadores;3140CA029;07:00;07:10;10;Maintenance;REA;General;Checklist;checkilis diario
-2025-07-31;REA;Actuadores;3140CA029;08:12;08:15;3;Maintenance;USW;St14;Lower Jig;limpieza y se revisa oring
-2025-07-31;REA;Actuadores;3140CA029;08:21;08:26;5;Maintenance;USW;St11;Jig;limpieza y mtto. al jig.
-2025-07-31;REA;Actuadores;3140CA029;09:45;09:50;5;Production;Conveyors;C65;Presence sensor;blister mal posicionado R70 no puede agarrar Gear.
-2025-07-31;REA;Actuadores;3140CA029;10:51;10:53;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado
-2025-07-31;REA;Actuadores;3140CA029;10:54;10:56;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado
-2025-07-31;REA;Actuadores;3140CA029;11:24;11:26;2;Maintenance;MAT;Consumables;Grease;se termina grasa (cambio)
-2025-07-31;REA;Actuadores;3140CA029;11:32;11:34;2;Equipment Fault;731;731;Presence sensor;pin chueco
-2025-07-31;REA;Actuadores;3140CA029;11:34;11:36;2;Equipment Fault;MAT;St5;Axis not in home;not home
-2025-07-31;REA;Actuadores;3140CA029;12:08;12:10;2;Equipment Fault;MAT;St6;Grease sensor;se solto tapa de grasa
-2025-07-31;REA;Actuadores;3140CA029;12:10;12:15;5;Maintenance;CHW;Consumables;Chip reel;se termina chip
-2025-07-31;REA;Actuadores;3140CA029;13:03;13:07;4;Maintenance;CCC;Consumables;Resin;cambio de resina
-2025-07-31;REA;Actuadores;3140CA029;13:22;13:24;2;Equipment Fault;Robots;R65;Vacuum system;vacuum R65
-2025-07-31;REA;Actuadores;3140CA029;13:58;14:02;4;Equipment Fault;EOL;St4;CRIO NOK;se resetea por alarma de crio
-2025-07-31;REA;Actuadores;3140CA029;12:00;12:08;8;Maintenance;REA;General;Checklist;checklist programado (500 pzs.)
-2025-07-31;REA;Actuadores;3140CA029;15:00;15:22;22;Maintenance;REA;General;Checklist;Checklist, cambio de lente preventivo en CAW
-2025-07-31;REA;Actuadores;3140CA029;15:22;16:15;53;Quality;REA;General;Test approval;Liberacion de soldadura crank assy despues de cmbio preventivo de lente
-2025-07-31;REA;Actuadores;3140CA029;16:27;16:35;8;Equipment Fault;USW;St11;Jig;Scrap alto, revision. Atiende Orlando
-2025-07-31;REA;Actuadores;3140CA029;17:50;17:54;4;Equipment Fault;USW;St14;Lower Jig;Scrap alto, seal blanco dañado, se reemplaza
-2025-07-31;REA;Actuadores;3140CA029;21:31;21:35;4;Quality;USW;General;Scrapbox full;Paro para retirar scrap de usw
-2025-07-31;REA;Actuadores;3140CA029;21:39;21:41;2;Equipment Fault;731;731;Bowl/Lineal feeder;Pin atorado
-2025-07-31;REA;Actuadores;3140CA029;21:42;21:44;2;Equipment Fault;Robots;R65;Motion supervision/Joint collision;Motion supervision
-2025-07-31;REA;Actuadores;3140CA029;22:11;22:15;4;Equipment Fault;USW;St14;Lower Jig;Se revisa goma por scrap consecutivo
-2025-07-31;REA;Actuadores;3140CA029;22:19;22:23;4;Equipment Fault;MSA;MSA;Driver;No continuaba ciclo, se retablece y se manda a home
-2025-07-31;REA;Actuadores;3140CA029;22:24;22:26;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;Pallet atorado por
-2025-07-31;REA;Actuadores;3140CA029;22:26;22:28;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;Pallet atorado por locking
-2025-07-31;REA;Actuadores;3140CA029;22:55;22:58;3;Equipment Fault;Robots;R33;Motion supervision/Joint collision;Colision en jig de CHW, desconocida la causa, se restablece
-2025-07-31;REA;Actuadores;3140CA029;23:19;23:20;1;Production;Aux;710;NOK material;motor en posicion incorrecta
-2025-07-31;REA;Actuadores;3140CA029;23:29;23:31;2;Equipment Fault;Robots;R38;Vacuum system;vacuum off
-2025-07-31;REA;Actuadores;3140CA029;23:07;23:15;8;Equipment Fault;Robots;R38;Vacuum system;vacuum off se mando a main y se reinicio ciclo de st 710
-2025-07-31;REA;Actuadores;3140CA029;22:34;22:48;14;Equipment Fault;MSA;MSA;Driver;driver not in home repetidas veces, guia rota impedia correcto posicionamiento del driver, tenia un sincho, se uso loctite para pegarla
-2025-08-01;REA;Actuadores;3140CA029;00:04;00:05;1;Equipment Fault;Robots;R75;Gripper/tool adjustments;No abrio gripper
-2025-08-01;REA;Actuadores;3140CA029;00:06;00:07;1;Equipment Fault;MAT;St3;Feeder;tornillos atorados en feeder
-2025-08-01;REA;Actuadores;3140CA029;01:24;01:31;7;Equipment Fault;USW;St14;Lower Jig;scraps continuos, mantenimiento a jig
-2025-08-01;REA;Actuadores;3140CA029;00:40;01:11;31;Equipment Fault;Robots;R38;Incorrect pick/place;paros continuos por body caido, bodys acumulados tirados en suelo, se ajusta posicion de pick en conveyor (estaba inclinada y desfasada), guias y cilindros NOK se ajustan, blister queda inclinado al final por workobject nok (no se ajusta, queda pendiente)
-2025-08-01;REA;Actuadores;3140CA029;02:06;02:08;2;Equipment Fault;USW;St14;Lower Jig;limpieza de jig y cambio de goma
-2025-08-01;REA;Actuadores;3140CA029;02:25;02:30;5;Maintenance;REA;General;Checklist;checklist en caw
-2025-08-01;REA;Actuadores;3140CA029;02:55;03:00;5;Equipment Fault;EOL;General;Electrical system;Scraps continuos st4, voltage NOK,  mantenimiento pines jig 1, reiniciar CRIO
-2025-08-01;REA;Actuadores;3140CA029;04:32;04:34;2;Equipment Fault;731;731;Feed piston;pin inclinado, pallets avanzan y se acumulan
-2025-08-01;REA;Actuadores;3140CA029;05:27;05:30;3;Equipment Fault;Robots;R38;Incorrect pick/place;se quedo en posicion de pick, no continuo ciclo
-2025-08-01;REA;Actuadores;3140CA029;06:17;06:20;3;Maintenance;CHW;Consumables;Chip reel;cambio de chip
-2025-08-01;REA;Actuadores;3140CA029;07:00;07:10;10;Maintenance;REA;General;Checklist;checklist diario
-2025-08-01;REA;Actuadores;3140CA029;08:10;08:40;30;Maintenance;Robots;R33;PLC ;alarma MMI " system failure"
-2025-08-01;REA;Actuadores;3140CA029;08:40;09:10;30;Equipment Fault;CCC;General;Safety system;perdio secuencia
-2025-08-01;REA;Actuadores;3140CA029;09:13;09:14;1;Quality;Robots;R75;Gripper/tool adjustments;gripper 1 nok
-2025-08-01;REA;Actuadores;3140CA029;09:26;09:28;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 nok
-2025-08-01;REA;Actuadores;3140CA029;10:47;10:49;2;Equipment Fault;731;731;Presence sensor;no pone pin en posicion correcta
-2025-08-01;REA;Actuadores;3140CA029;11:01;11:03;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 NOK
-2025-08-01;REA;Actuadores;3140CA029;11:09;11:11;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 NOK
-2025-08-01;REA;Actuadores;3140CA029;11:25;11:27;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;Gripper 1 NOK
-2025-08-01;REA;Actuadores;3140CA029;11:48;11:51;3;Maintenance;USW;St14;Lower Jig;limpieza por alto scrap
-2025-08-01;REA;Actuadores;3140CA029;00:05;00:08;3;Maintenance;USW;St11;Branson;alto scrap lubricacion st11
-2025-08-01;REA;Actuadores;3140CA029;12:13;12:15;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 Nok
-2025-08-01;REA;Actuadores;3140CA029;12:29;12:37;8;Maintenance;REA;General;Checklist;checklist programado 500pzs.
-2025-08-01;REA;Actuadores;3140CA029;12:27;12:59;32;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 Nok
-2025-08-01;REA;Actuadores;3140CA029;13:19;13:23;4;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 Nok
-2025-08-01;REA;Actuadores;3140CA029;13:34;13:36;2;Production;MAT;St3;Feeder;sin material (tornillos)
-2025-08-01;REA;Actuadores;3140CA029;13:49;13:54;5;Maintenance;CCC;Consumables;Resin;cambio de resina
-2025-08-01;REA;Actuadores;3140CA029;15:00;15:10;10;Maintenance;REA;General;Checklist;Se realiza checklist
-2025-08-01;REA;Actuadores;3140CA029;15:12;15:15;3;Equipment Fault;USW;St14;Lower Jig;Se revisa goma por scrap consecutivo, goma estaba suelta, se vuelve a pegar
-2025-08-01;REA;Actuadores;3140CA029;15:17;15:20;3;Equipment Fault;731;731;Bowl/Lineal feeder;Pin atorado y mp continua ciclo
-2025-08-01;REA;Actuadores;3140CA029;21:03;21:08;5;Equipment Fault;Robots;R70;Vacuum system;Se cambian ventosas y se limpia st 905
-2025-08-01;REA;Actuadores;3140CA029;21:20;21:24;4;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;Pallets atorados
-2025-08-01;REA;Actuadores;3140CA029;21:24;21:27;3;Quality;CCC;General;Scrapbox full;Scrap box full
-2025-08-01;REA;Actuadores;3140CA029;20:58;21:02;4;Quality;EOL;General;Scrapbox full;Scrap box full
-2025-08-01;REA;Actuadores;3140CA029;21:32;21:37;5;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;Se ajusta altura de sensor inductivo porque no detecta pallet
-2025-08-01;REA;Actuadores;3140CA029;21:39;21:41;2;Equipment Fault;915;915;Missing ogive;Ojiva caida
-2025-08-01;REA;Actuadores;3140CA029;22:09;22:12;3;Equipment Fault;Robots;R65;Motion supervision/Joint collision;Motion supervision por manguera
-2025-08-01;REA;Actuadores;3140CA029;16:50;17:15;25;Production;REA;General;Scheduled production stop;Convivio
-2025-08-01;REA;Actuadores;3140CA029;22:48;22:50;2;Equipment Fault;Main conveyor;Main conveyor;Singulator NOK;pallet adelantado y atrapado por singulator en st730
-2025-08-01;REA;Actuadores;3140CA029;23:02;23:03;1;Equipment Fault;731;731;Feed piston;pin inclinado
-2025-08-01;REA;Actuadores;3140CA029;23:20;23:22;2;Equipment Fault;750;750;Alphamatic Module;no continuo ciclo se quedó en posición de pick
-2025-08-01;REA;Actuadores;3140CA029;23:30;23:31;1;Equipment Fault;731;731;Feed piston;pin inclinado 
+2025-07-30;REA;Actuadores;3140CA029;16:34;16:57;23;Equipment Fault;Main conveyor;Main conveyor;RFID Reader;RFID no leia pallet haciendo error en secuencia de lockings,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;17:02;17:16;14;Maintenance;Main conveyor;Main conveyor;Motor;Se ajusta motor a su posicion por que se sale de flecha,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;17:19;17:22;3;Equipment Fault;Main conveyor;Main conveyor;Belt;Soporte de guias flojo, se ajusta tornilleria,,,,,
+2025-07-30;REA;Actuadores;3140CA029;18:04;18:15;11;Equipment Fault;MSA;General;PLC ;No responde, se reinica MSA y robot se manda a home,,,,,
+2025-07-30;REA;Actuadores;3140CA029;18:21;18:24;3;Equipment Fault;Robots;R38;Vacuum system;Se revisa ventojas de robot por que tiraba body, se hace ajuste a tuercas de base,,,,,
+2025-07-30;REA;Actuadores;3140CA029;19:38;19:43;5;Equipment Fault;730;730;Bowl/Lineal feeder;Prensa colisiona con feed piston porque pin estaba mal acomodado, despues de mandar a home no continua secuencia, se ocupa poner home en hmi para que continue y vuelva a leer sensor inductivo,,,,
+2025-07-30;REA;Actuadores;3140CA029;18:44;18:49;5;Material/Logistics;CHW;Consumables;Chip reel;Se acaba chip y no hya repuestoen el area, se busca en racks,,,,,
+2025-07-30;REA;Actuadores;3140CA029;18:49;18:55;6;Maintenance;CHW;Consumables;Chip reel;Cambio de chip,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;18:55;18:59;4;Equipment Fault;620;620;Alphamatic Module;Se ocupa reiniciar modulo porque prensa tiro scrap y al reiniciar no continua secuencia,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;19:04;19:08;4;Maintenance;Main conveyor;Main conveyor;Belt;Se ajusta puende entre conveyor porque rosaba con cadena,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;19:12;19:14;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;Gripper 4 no abrio correctamente y se alarma,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;19:25;19:27;2;Equipment Fault;USW;St14;Lower Jig;Se limpia goma blanca por rebaba acumulada,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;19:36;19:38;2;Equipment Fault;Conveyors;C36;Presence sensor;Blister atorado por lockings,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;19:39;19:41;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;Gripper 3 no abre correctamente,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;19:41;19:43;2;Equipment Fault;Robots;R65;Motion supervision/Joint collision;motion supervision por manguera,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;19:57;20:04;7;Quality;731;General;NOK material;Pin viene mas grande que lo requerido,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;20:46;20:49;3;Equipment Fault;Robots;R65;Motion supervision/Joint collision;Motion supervision por manguera,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;21:00;21:08;8;Maintenance;REA;General;Checklist;Checklist,,,,,,
+2025-07-30;REA;Actuadores;3140CA029;23:27;23:31;4;Quality;730;730;Alphamatic Module;force exceeded in pick, home manual, revisar feedr piston y reiniciar ciclo,,,,
+2025-07-31;REA;Actuadores;3140CA029;00:29;00:30;1;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;00:31;00:32;1;Equipment Fault;Main conveyor;Main conveyor;Lift;lift se quedo abajo,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;00:37;00:38;1;Equipment Fault;Main conveyor;Main conveyor;Singulator NOK;singulator de 730 no abrio,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;00:50;00:53;3;Production;REA;General;Empty rack;Se vacía, restablecer logica en conveyor body,,,,,
+2025-07-31;REA;Actuadores;3140CA029;01:10;01:20;10;Equipment Fault;730;730;Alphamatic Module;problemas con la prensa no detecta pallet,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;01:35;01:38;3;Equipment Fault;730;730;Alphamatic Module;problemas con la prensa no detecta pallet,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;02:10;02:15;5;Equipment Fault;730;730;Feed piston;ajuste de tope mecanico por pick nok,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;02:15;02:17;2;Quality;REA;General;NOK material;Blister mal formado gear,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;03:27;03:31;4;Maintenance;REA;General;Checklist;checklist,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;05:45;05:49;4;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado, despues de desatorar se atoran otros pallets,,,,,
+2025-07-31;REA;Actuadores;3140CA029;06:15;06:17;2;Equipment Fault;Robots;R70;Vacuum system;2 veces fallo vacuum, no se cambiaron ventosas, solo play,,,,
+2025-07-31;REA;Actuadores;3140CA029;07:00;07:10;10;Maintenance;REA;General;Checklist;checkilis diario,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;08:12;08:15;3;Maintenance;USW;St14;Lower Jig;limpieza y se revisa oring,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;08:21;08:26;5;Maintenance;USW;St11;Jig;limpieza y mtto. al jig.,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;09:45;09:50;5;Production;Conveyors;C65;Presence sensor;blister mal posicionado R70 no puede agarrar Gear.,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;10:51;10:53;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;10:54;10:56;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;11:24;11:26;2;Maintenance;MAT;Consumables;Grease;se termina grasa (cambio),,,,,,
+2025-07-31;REA;Actuadores;3140CA029;11:32;11:34;2;Equipment Fault;731;731;Presence sensor;pin chueco,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;11:34;11:36;2;Equipment Fault;MAT;St5;Axis not in home;not home,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;12:08;12:10;2;Equipment Fault;MAT;St6;Grease sensor;se solto tapa de grasa,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;12:10;12:15;5;Maintenance;CHW;Consumables;Chip reel;se termina chip,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;13:03;13:07;4;Maintenance;CCC;Consumables;Resin;cambio de resina,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;13:22;13:24;2;Equipment Fault;Robots;R65;Vacuum system;vacuum R65,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;13:58;14:02;4;Equipment Fault;EOL;St4;CRIO NOK;se resetea por alarma de crio,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;12:00;12:08;8;Maintenance;REA;General;Checklist;checklist programado (500 pzs.),,,,,,
+2025-07-31;REA;Actuadores;3140CA029;15:00;15:22;22;Maintenance;REA;General;Checklist;Checklist, cambio de lente preventivo en CAW,,,,,
+2025-07-31;REA;Actuadores;3140CA029;15:22;16:15;53;Quality;REA;General;Test approval;Liberacion de soldadura crank assy despues de cmbio preventivo de lente,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;16:27;16:35;8;Equipment Fault;USW;St11;Jig;Scrap alto, revision. Atiende Orlando,,,,,
+2025-07-31;REA;Actuadores;3140CA029;17:50;17:54;4;Equipment Fault;USW;St14;Lower Jig;Scrap alto, seal blanco dañado, se reemplaza,,,,
+2025-07-31;REA;Actuadores;3140CA029;21:31;21:35;4;Quality;USW;General;Scrapbox full;Paro para retirar scrap de usw,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;21:39;21:41;2;Equipment Fault;731;731;Bowl/Lineal feeder;Pin atorado,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;21:42;21:44;2;Equipment Fault;Robots;R65;Motion supervision/Joint collision;Motion supervision,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;22:11;22:15;4;Equipment Fault;USW;St14;Lower Jig;Se revisa goma por scrap consecutivo,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;22:19;22:23;4;Equipment Fault;MSA;MSA;Driver;No continuaba ciclo, se retablece y se manda a home,,,,,
+2025-07-31;REA;Actuadores;3140CA029;22:24;22:26;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;Pallet atorado por,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;22:26;22:28;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;Pallet atorado por locking,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;22:55;22:58;3;Equipment Fault;Robots;R33;Motion supervision/Joint collision;Colision en jig de CHW, desconocida la causa, se restablece,,,,
+2025-07-31;REA;Actuadores;3140CA029;23:19;23:20;1;Production;Aux;710;NOK material;motor en posicion incorrecta,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;23:29;23:31;2;Equipment Fault;Robots;R38;Vacuum system;vacuum off,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;23:07;23:15;8;Equipment Fault;Robots;R38;Vacuum system;vacuum off se mando a main y se reinicio ciclo de st 710,,,,,,
+2025-07-31;REA;Actuadores;3140CA029;22:34;22:48;14;Equipment Fault;MSA;MSA;Driver;driver not in home repetidas veces, guia rota impedia correcto posicionamiento del driver, tenia un sincho, se uso loctite para pegarla,,,
+2025-08-01;REA;Actuadores;3140CA029;00:04;00:05;1;Equipment Fault;Robots;R75;Gripper/tool adjustments;No abrio gripper,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;00:06;00:07;1;Equipment Fault;MAT;St3;Feeder;tornillos atorados en feeder,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;01:24;01:31;7;Equipment Fault;USW;St14;Lower Jig;scraps continuos, mantenimiento a jig,,,,,
+2025-08-01;REA;Actuadores;3140CA029;00:40;01:11;31;Equipment Fault;Robots;R38;Incorrect pick/place;paros continuos por body caido, bodys acumulados tirados en suelo, se ajusta posicion de pick en conveyor (estaba inclinada y desfasada), guias y cilindros NOK se ajustan, blister queda inclinado al final por workobject nok (no se ajusta, queda pendiente),
+2025-08-01;REA;Actuadores;3140CA029;02:06;02:08;2;Equipment Fault;USW;St14;Lower Jig;limpieza de jig y cambio de goma,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;02:25;02:30;5;Maintenance;REA;General;Checklist;checklist en caw,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;02:55;03:00;5;Equipment Fault;EOL;General;Electrical system;Scraps continuos st4, voltage NOK,  mantenimiento pines jig 1, reiniciar CRIO,,,
+2025-08-01;REA;Actuadores;3140CA029;04:32;04:34;2;Equipment Fault;731;731;Feed piston;pin inclinado, pallets avanzan y se acumulan,,,,,
+2025-08-01;REA;Actuadores;3140CA029;05:27;05:30;3;Equipment Fault;Robots;R38;Incorrect pick/place;se quedo en posicion de pick, no continuo ciclo,,,,,
+2025-08-01;REA;Actuadores;3140CA029;06:17;06:20;3;Maintenance;CHW;Consumables;Chip reel;cambio de chip,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;07:00;07:10;10;Maintenance;REA;General;Checklist;checklist diario,,,,,,
+"2025-08-01;REA;Actuadores;3140CA029;08:10;08:40;30;Maintenance;Robots;R33;PLC ;alarma MMI "" system failure""",,,,,,
+2025-08-01;REA;Actuadores;3140CA029;08:40;09:10;30;Equipment Fault;CCC;General;Safety system;perdio secuencia,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;09:13;09:14;1;Quality;Robots;R75;Gripper/tool adjustments;gripper 1 nok,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;09:26;09:28;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 nok,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;10:47;10:49;2;Equipment Fault;731;731;Presence sensor;no pone pin en posicion correcta,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;11:01;11:03;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 NOK,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;11:09;11:11;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 NOK,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;11:25;11:27;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;Gripper 1 NOK,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;11:48;11:51;3;Maintenance;USW;St14;Lower Jig;limpieza por alto scrap,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;00:05;00:08;3;Maintenance;USW;St11;Branson;alto scrap lubricacion st11,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;12:13;12:15;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 Nok,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;12:29;12:37;8;Maintenance;REA;General;Checklist;checklist programado 500pzs.,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;12:27;12:59;32;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 Nok,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;13:19;13:23;4;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 1 Nok,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;13:34;13:36;2;Production;MAT;St3;Feeder;sin material (tornillos),,,,,,
+2025-08-01;REA;Actuadores;3140CA029;13:49;13:54;5;Maintenance;CCC;Consumables;Resin;cambio de resina,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;15:00;15:10;10;Maintenance;REA;General;Checklist;Se realiza checklist,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;15:12;15:15;3;Equipment Fault;USW;St14;Lower Jig;Se revisa goma por scrap consecutivo, goma estaba suelta, se vuelve a pegar,,,,
+2025-08-01;REA;Actuadores;3140CA029;15:17;15:20;3;Equipment Fault;731;731;Bowl/Lineal feeder;Pin atorado y mp continua ciclo,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;21:03;21:08;5;Equipment Fault;Robots;R70;Vacuum system;Se cambian ventosas y se limpia st 905,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;21:20;21:24;4;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;Pallets atorados,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;21:24;21:27;3;Quality;CCC;General;Scrapbox full;Scrap box full,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;20:58;21:02;4;Quality;EOL;General;Scrapbox full;Scrap box full,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;21:32;21:37;5;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;Se ajusta altura de sensor inductivo porque no detecta pallet,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;21:39;21:41;2;Equipment Fault;915;915;Missing ogive;Ojiva caida,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;22:09;22:12;3;Equipment Fault;Robots;R65;Motion supervision/Joint collision;Motion supervision por manguera,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;16:50;17:15;25;Production;REA;General;Scheduled production stop;Convivio,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;22:48;22:50;2;Equipment Fault;Main conveyor;Main conveyor;Singulator NOK;pallet adelantado y atrapado por singulator en st730,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;23:02;23:03;1;Equipment Fault;731;731;Feed piston;pin inclinado,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;23:20;23:22;2;Equipment Fault;750;750;Alphamatic Module;no continuo ciclo se quedó en posición de pick,,,,,,
+2025-08-01;REA;Actuadores;3140CA029;23:30;23:31;1;Equipment Fault;731;731;Feed piston;pin inclinado ,,,,,,

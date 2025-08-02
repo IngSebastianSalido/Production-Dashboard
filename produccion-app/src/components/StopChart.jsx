@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
-const StopChart = ({ fecha }) => {
+const StopChart = ({ fecha, area }) => {
   const [chartData, setChartData] = useState(null);
   const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000'; // Asegúrate de que la URL sea válida
 
@@ -15,27 +15,89 @@ const StopChart = ({ fecha }) => {
         }
         const data = await response.json();
 
-        const filteredData = data.filter(paro => paro[0] === fecha);
+        // Calcular la fecha del día siguiente para el rango de 7am a 7am
+        const fechaActual = new Date(fecha);
+        const fechaSiguiente = new Date(fechaActual);
+        fechaSiguiente.setDate(fechaSiguiente.getDate() + 1);
+        
+        const fechaActualStr = fechaActual.toISOString().split('T')[0];
+        const fechaSiguienteStr = fechaSiguiente.toISOString().split('T')[0];
 
-        const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
+        // Filtrar por fecha y área (turno de 7am a 7am del día siguiente)
+        const filteredData = data.filter(paro => {
+          const fechaParo = paro[0];
+          const areaParo = paro[1];
+          const horaParo = paro[4];
+          
+          // Filtrar por área si se especifica
+          if (area && areaParo !== area) {
+            return false;
+          }
+          
+          // Lógica para turno de 7am a 7am del día siguiente
+          if (fechaParo === fechaActualStr) {
+            // Paros del día actual desde las 7am
+            const [hora, minuto] = horaParo.split(':').map(Number);
+            return hora >= 7;
+          } else if (fechaParo === fechaSiguienteStr) {
+            // Paros del día siguiente hasta las 7am
+            const [hora, minuto] = horaParo.split(':').map(Number);
+            return hora < 7;
+          }
+          
+          return false;
+        });
+
+        // Crear array de horas para el turno de 7am a 7am (24 horas)
+        const hours = [];
+        for (let i = 0; i < 24; i++) {
+          const hora = (7 + i) % 24;
+          const label = `${hora.toString().padStart(2, '0')}:00`;
+          hours.push(label);
+        }
+        
         const totalMinutes = Array(24).fill(60);
         const stopMinutes = Array(24).fill(0);
 
         filteredData.forEach(paro => {
-          let horaParo = new Date(`1970-01-01T${paro[4]}:00Z`);
+          const fechaParo = paro[0];
+          const horaParo = paro[4];
           const diferenciaMinutos = parseInt(paro[6], 10);
+          
+          // Parsear la hora del paro
+          const [hora, minuto] = horaParo.split(':').map(Number);
+          
+          // Calcular el índice en el array de horas del turno
+          let horaIndex;
+          if (fechaParo === fechaActualStr) {
+            // Paro del día actual (7am en adelante)
+            if (hora >= 7) {
+              horaIndex = hora - 7;
+            } else {
+              return; // Saltar paros antes de las 7am del día actual
+            }
+          } else {
+            // Paro del día siguiente (antes de las 7am)
+            if (hora < 7) {
+              horaIndex = 17 + hora; // 17 = 24 - 7
+            } else {
+              return; // Saltar paros después de las 7am del día siguiente
+            }
+          }
+          
           let remainingMinutes = diferenciaMinutos;
+          let currentHour = horaIndex;
+          let currentMinute = minuto;
 
-          while (remainingMinutes > 0) {
-            const currentHour = horaParo.getUTCHours();
-            const currentMinute = horaParo.getUTCMinutes();
+          while (remainingMinutes > 0 && currentHour < 24) {
             const availableMinutesInHour = 60 - currentMinute;
             const minutesToAdd = Math.min(availableMinutesInHour, remainingMinutes);
 
             stopMinutes[currentHour] += minutesToAdd;
             remainingMinutes -= minutesToAdd;
 
-            horaParo.setUTCMinutes(horaParo.getUTCMinutes() + minutesToAdd);
+            currentHour++;
+            currentMinute = 0; // Reset minutos para la siguiente hora
           }
         });
 
@@ -66,7 +128,7 @@ const StopChart = ({ fecha }) => {
     if (fecha) {
       fetchData();
     }
-  }, [fecha, serverApiUrl]);
+  }, [fecha, area, serverApiUrl]);
 
   if (!chartData) {
     return <div>Cargando datos...</div>;
@@ -74,7 +136,10 @@ const StopChart = ({ fecha }) => {
 
   return (
     <div>
-      <h2>Minutos de Paro por Hora</h2>
+      <h2>
+        Minutos de Paro por Hora (Turno 7am-7am)
+        {area && ` - Área: ${area}`}
+      </h2>
       <Bar
         data={chartData}
         options={{
