@@ -158,6 +158,8 @@ app.post('/api/paros', (req, res) => {
         hora_arranque,
         descripcion,
         categoria,
+        cruza_medianoche = false, // Nuevo campo
+        fecha_arranque, // Fecha de arranque cuando cruza medianoche
     } = req.body;
 
     console.log("Datos recibidos en el backend (POST /api/paros):", req.body);
@@ -167,9 +169,24 @@ app.post('/api/paros', (req, res) => {
     }
 
     // Calcular la diferencia de tiempo en minutos
-    const horaParoDate = new Date(`1970-01-01T${hora_paro}:00Z`);
-    const horaArranqueDate = new Date(`1970-01-01T${hora_arranque}:00Z`);
-    const diferenciaMinutos = Math.round((horaArranqueDate - horaParoDate) / 60000);
+    let diferenciaMinutos;
+    
+    if (cruza_medianoche) {
+        // Cuando cruza medianoche, calcular la diferencia considerando el cambio de día
+        const horaParoDate = new Date(`1970-01-01T${hora_paro}:00Z`);
+        const horaArranqueDate = new Date(`1970-01-02T${hora_arranque}:00Z`); // Día siguiente
+        diferenciaMinutos = Math.round((horaArranqueDate - horaParoDate) / 60000);
+    } else {
+        // Mismo día
+        const horaParoDate = new Date(`1970-01-01T${hora_paro}:00Z`);
+        const horaArranqueDate = new Date(`1970-01-01T${hora_arranque}:00Z`);
+        diferenciaMinutos = Math.round((horaArranqueDate - horaParoDate) / 60000);
+    }
+    
+    // Validar que el tiempo de paro no sea negativo
+    if (diferenciaMinutos <= 0) {
+        return res.status(400).send('El tiempo de paro no puede ser negativo o cero. Verifica las horas ingresadas.');
+    }
 
     // Leer el archivo CSV de paros
     fs.readFile(stopsFilePath, 'utf8', (err, data) => {
@@ -178,8 +195,45 @@ app.post('/api/paros', (req, res) => {
             return res.status(500).send('No se pudo leer el archivo de paros.');
         }
 
-        const nuevoRegistro = `${fecha};${area};${linea};${pn};${hora_paro};${hora_arranque};${diferenciaMinutos};${categoria};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion}`;
-        const contenidoActualizado = data.trim() + '\n' + nuevoRegistro;
+        let registrosToAdd = [];
+        
+        if (cruza_medianoche) {
+            // Para paros que cruzan medianoche, crear dos registros:
+            // 1. Registro del día inicial (desde hora_paro hasta 23:59)
+            // 2. Registro del día siguiente (desde 00:00 hasta hora_arranque)
+            
+            const [horaParoHour, horaParoMin] = hora_paro.split(':').map(Number);
+            const [horaArranqueHour, horaArranqueMin] = hora_arranque.split(':').map(Number);
+            
+            // Calcular minutos del primer día (desde hora_paro hasta medianoche)
+            const minutosHastaMedianoche = (23 * 60 + 59) - (horaParoHour * 60 + horaParoMin) + 1;
+            
+            // Calcular minutos del segundo día (desde medianoche hasta hora_arranque)
+            const minutosDesdeMedianoche = horaArranqueHour * 60 + horaArranqueMin;
+            
+            // Registro del primer día
+            const comentarioMedianoche1 = ' [Paro cruza medianoche - Parte 1]';
+            const registro1 = `${fecha};${area};${linea};${pn};${hora_paro};23:59;${minutosHastaMedianoche};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion}${comentarioMedianoche1};${categoria}`;
+            
+            // Registro del segundo día
+            const fechaArranque = fecha_arranque || (() => {
+                const fechaSiguiente = new Date(fecha);
+                fechaSiguiente.setDate(fechaSiguiente.getDate() + 1);
+                return fechaSiguiente.toLocaleDateString('en-CA');
+            })();
+            
+            const comentarioMedianoche2 = ' [Paro cruza medianoche - Parte 2]';
+            const registro2 = `${fechaArranque};${area};${linea};${pn};00:00;${hora_arranque};${minutosDesdeMedianoche};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion}${comentarioMedianoche2};${categoria}`;
+            
+            registrosToAdd = [registro1, registro2];
+        } else {
+            // Paro normal del mismo día
+            const nuevoRegistro = `${fecha};${area};${linea};${pn};${hora_paro};${hora_arranque};${diferenciaMinutos};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion};${categoria}`;
+            registrosToAdd = [nuevoRegistro];
+        }
+
+        // Agregar todos los registros al archivo
+        const contenidoActualizado = data.trim() + '\n' + registrosToAdd.join('\n');
 
         // Guardar el nuevo paro en el archivo CSV
         fs.writeFile(stopsFilePath, contenidoActualizado, (err) => {
@@ -187,12 +241,10 @@ app.post('/api/paros', (req, res) => {
                 console.error('Error al guardar el paro:', err);
                 return res.status(500).send('Error al guardar el paro.');
             }
+            console.log("Registros guardados correctamente:", registrosToAdd);
             res.send('Paro registrado correctamente');
         });
     });
-
-    const nuevoRegistro = `${fecha};${area};${linea};${pn};${hora_paro};${hora_arranque};${diferenciaMinutos};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion};${categoria}`;
-    console.log("Registro que se guardará en el archivo CSV:", nuevoRegistro);
 });
 
 // Endpoint para obtener los paros registrados

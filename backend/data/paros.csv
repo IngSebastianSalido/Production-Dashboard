@@ -4381,3 +4381,6 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-08-01;REA;Actuadores;3140CA029;23:02;23:03;1;Equipment Fault;731;731;Feed piston;pin inclinado,,,,,,
 2025-08-01;REA;Actuadores;3140CA029;23:20;23:22;2;Equipment Fault;750;750;Alphamatic Module;no continuo ciclo se quedó en posición de pick,,,,,,
 2025-08-01;REA;Actuadores;3140CA029;23:30;23:31;1;Equipment Fault;731;731;Feed piston;pin inclinado ,,,,,,
+2025-08-02;REA;Actuadores;3140CA029;23:12;00:20;-1372;Mantenimiento;Press_620;General;Bowl/Lineal feeder;TESTTTTT
+2025-08-02;REA;Actuadores;3140CA029;23:17;23:59;43;CCC;St6;Thermocamara;TESTTTTTT [Paro cruza medianoche - Parte 1];Material/Logística
+2025-08-02;REA;Actuadores;3140CA029;00:00;00:30;30;CCC;St6;Thermocamara;TESTTTTTT [Paro cruza medianoche - Parte 2];Material/Logística

@@ -34,14 +34,24 @@ const StopChart = ({ fecha, area }) => {
             return false;
           }
           
+          // Manejar paros que cruzan medianoche (formato antiguo)
+          if (fechaParo.includes(' a ')) {
+            const [fechaInicio] = fechaParo.split(' a ');
+            if (fechaInicio === fechaActualStr) {
+              const [hora] = horaParo.split(':').map(Number);
+              return hora >= 7;
+            }
+            return false;
+          }
+          
           // Lógica para turno de 7am a 7am del día siguiente
           if (fechaParo === fechaActualStr) {
             // Paros del día actual desde las 7am
-            const [hora, minuto] = horaParo.split(':').map(Number);
+            const [hora] = horaParo.split(':').map(Number);
             return hora >= 7;
           } else if (fechaParo === fechaSiguienteStr) {
             // Paros del día siguiente hasta las 7am
-            const [hora, minuto] = horaParo.split(':').map(Number);
+            const [hora] = horaParo.split(':').map(Number);
             return hora < 7;
           }
           
@@ -62,10 +72,53 @@ const StopChart = ({ fecha, area }) => {
         filteredData.forEach(paro => {
           const fechaParo = paro[0];
           const horaParo = paro[4];
+          const horaArranque = paro[5];
           const diferenciaMinutos = parseInt(paro[6], 10);
           
           // Parsear la hora del paro
           const [hora, minuto] = horaParo.split(':').map(Number);
+          
+          // Manejar paros que cruzan medianoche (formato antiguo con "a")
+          if (fechaParo.includes(' a ')) {
+            // Este es un paro que cruza medianoche en formato antiguo
+            // Necesitamos calcular correctamente las horas
+            const [horaArr, minArr] = horaArranque.split(':').map(Number);
+            
+            if (hora >= 7) {
+              // Parte del primer día (desde hora_paro hasta medianoche)
+              let horaIndex = hora - 7;
+              let remainingMinutes = (23 * 60 + 59) - (hora * 60 + minuto) + 1;
+              let currentHour = horaIndex;
+              let currentMinute = minuto;
+
+              while (remainingMinutes > 0 && currentHour < 24) {
+                const availableMinutesInHour = 60 - currentMinute;
+                const minutesToAdd = Math.min(availableMinutesInHour, remainingMinutes);
+                stopMinutes[currentHour] += minutesToAdd;
+                remainingMinutes -= minutesToAdd;
+                currentHour++;
+                currentMinute = 0;
+              }
+            }
+            
+            if (horaArr < 7) {
+              // Parte del segundo día (desde medianoche hasta hora_arranque)
+              let horaIndex = 17 + horaArr; // 17 = 24 - 7
+              let remainingMinutes = horaArr * 60 + minArr;
+              let currentHour = 17; // Comienza en la hora 17 del turno (00:00)
+              let currentMinute = 0;
+
+              while (remainingMinutes > 0 && currentHour < 24) {
+                const availableMinutesInHour = 60 - currentMinute;
+                const minutesToAdd = Math.min(availableMinutesInHour, remainingMinutes);
+                stopMinutes[currentHour] += minutesToAdd;
+                remainingMinutes -= minutesToAdd;
+                currentHour++;
+                currentMinute = 0;
+              }
+            }
+            return;
+          }
           
           // Calcular el índice en el array de horas del turno
           let horaIndex;

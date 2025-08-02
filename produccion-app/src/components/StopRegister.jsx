@@ -13,6 +13,7 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
     hora_paro: '',
     hora_arranque: '', // Restaurar hora de arranque
     descripcion: '',
+    cruza_medianoche: false, // Nuevo campo para manejar paros que cruzan medianoche
   });
 
   useEffect(() => {
@@ -25,10 +26,32 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
     }));
   }, []);
 
+  // Función para validar tiempos
+  const validateTimes = (horaParo, horaArranque, cruzaMedianoche) => {
+    if (!horaParo || !horaArranque) return true; // Si alguna hora está vacía, no validar aún
+    
+    const [horaParoHour, horaParoMin] = horaParo.split(':').map(Number);
+    const [horaArranqueHour, horaArranqueMin] = horaArranque.split(':').map(Number);
+    
+    const paroMinutes = horaParoHour * 60 + horaParoMin;
+    const arranqueMinutes = horaArranqueHour * 60 + horaArranqueMin;
+    
+    if (cruzaMedianoche) {
+      // Si cruza medianoche, la hora de arranque debe ser menor que la de paro
+      // (porque el arranque es al día siguiente)
+      return arranqueMinutes < paroMinutes;
+    } else {
+      // Mismo día: arranque debe ser mayor que paro
+      return arranqueMinutes > paroMinutes;
+    }
+  };
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    
     setFormData((prevFormData) => {
-      const newFormData = { ...prevFormData, [name]: value };
+      const newFormData = { ...prevFormData, [name]: newValue };
 
       if (name === 'area') {
         newFormData.linea = '';
@@ -40,8 +63,23 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
         localStorage.removeItem('pn');
       }
 
-      if (name !== 'estacion' && name !== 'modoFalla' && name !== 'categoria' && name !== 'hora_paro' && name !== 'hora_arranque' && name !== 'descripcion' && name !== 'descripcionModoFalla') {
-        localStorage.setItem(name, value);
+      // Validar tiempos cuando se cambia hora_paro, hora_arranque o cruza_medianoche
+      if (name === 'hora_paro' || name === 'hora_arranque' || name === 'cruza_medianoche') {
+        const horaParo = name === 'hora_paro' ? newValue : newFormData.hora_paro;
+        const horaArranque = name === 'hora_arranque' ? newValue : newFormData.hora_arranque;
+        const cruzaMedianoche = name === 'cruza_medianoche' ? newValue : newFormData.cruza_medianoche;
+        
+        if (horaParo && horaArranque && !validateTimes(horaParo, horaArranque, cruzaMedianoche)) {
+          if (cruzaMedianoche) {
+            alert('⚠️ ALERTA: Cuando el paro cruza medianoche, la hora de arranque debe ser menor que la hora de paro (arranque al día siguiente)');
+          } else {
+            alert('⚠️ ALERTA: La hora de arranque no puede ser anterior o igual a la hora de paro. Verifica si el paro cruza medianoche.');
+          }
+        }
+      }
+
+      if (name !== 'estacion' && name !== 'modoFalla' && name !== 'categoria' && name !== 'hora_paro' && name !== 'hora_arranque' && name !== 'descripcion' && name !== 'descripcionModoFalla' && name !== 'cruza_medianoche') {
+        localStorage.setItem(name, newValue);
       }
 
       return newFormData;
@@ -54,13 +92,35 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
       alert('La categoría es obligatoria');
       return;
     }
+    
+    // Validación final de tiempos antes de enviar
+    if (formData.hora_paro && formData.hora_arranque) {
+      if (!validateTimes(formData.hora_paro, formData.hora_arranque, formData.cruza_medianoche)) {
+        if (formData.cruza_medianoche) {
+          alert('⚠️ ERROR: Cuando el paro cruza medianoche, la hora de arranque debe ser menor que la hora de paro. Por favor corrige los tiempos.');
+        } else {
+          alert('⚠️ ERROR: La hora de arranque no puede ser anterior o igual a la hora de paro. Si el paro cruza medianoche, marca la casilla correspondiente.');
+        }
+        return;
+      }
+    }
+    
     try {
+      // Preparar datos para envío, incluyendo fecha de arranque si cruza medianoche
+      const dataToSend = { ...formData };
+      if (formData.cruza_medianoche) {
+        const fechaParo = new Date(formData.fecha);
+        const fechaArranque = new Date(fechaParo);
+        fechaArranque.setDate(fechaArranque.getDate() + 1);
+        dataToSend.fecha_arranque = fechaArranque.toLocaleDateString('en-CA');
+      }
+      
       const response = await fetch(`${serverApiUrl}/api/paros`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (response.ok) {
@@ -74,6 +134,7 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
           hora_paro: '',
           hora_arranque: '',
           descripcion: '',
+          cruza_medianoche: false,
         }));
         onRegister();
       } else {
@@ -133,6 +194,18 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
           <div style={styles.formGroup}>
             <label>Hora de Arranque:</label>
             <input type="time" name="hora_arranque" value={formData.hora_arranque} onChange={handleChange} style={styles.input} />
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.checkboxLabel}>
+              <input 
+                type="checkbox" 
+                name="cruza_medianoche" 
+                checked={formData.cruza_medianoche} 
+                onChange={handleChange} 
+                style={styles.checkbox}
+              />
+              El paro cruza medianoche (arranque al día siguiente)
+            </label>
           </div>
         </div>
 
@@ -238,6 +311,19 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
     alignSelf: 'center',
+  },
+  checkboxLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: '14px',
+    color: '#666',
+    marginTop: '5px',
+  },
+  checkbox: {
+    width: '16px',
+    height: '16px',
+    cursor: 'pointer',
   },
 
 };
