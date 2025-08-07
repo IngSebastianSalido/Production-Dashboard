@@ -213,7 +213,7 @@ app.post('/api/paros', (req, res) => {
             
             // Registro del primer día
             const comentarioMedianoche1 = ' [Paro cruza medianoche - Parte 1]';
-            const registro1 = `${fecha};${area};${linea};${pn};${hora_paro};23:59;${minutosHastaMedianoche};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion}${comentarioMedianoche1};${categoria}`;
+            const registro1 = `${fecha};${area};${linea};${pn};${hora_paro};23:59;${minutosHastaMedianoche};${categoria};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion}${comentarioMedianoche1}`;
             
             // Registro del segundo día
             const fechaArranque = fecha_arranque || (() => {
@@ -223,12 +223,12 @@ app.post('/api/paros', (req, res) => {
             })();
             
             const comentarioMedianoche2 = ' [Paro cruza medianoche - Parte 2]';
-            const registro2 = `${fechaArranque};${area};${linea};${pn};00:00;${hora_arranque};${minutosDesdeMedianoche};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion}${comentarioMedianoche2};${categoria}`;
+            const registro2 = `${fechaArranque};${area};${linea};${pn};00:00;${hora_arranque};${minutosDesdeMedianoche};${categoria};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion}${comentarioMedianoche2}`;
             
             registrosToAdd = [registro1, registro2];
         } else {
             // Paro normal del mismo día
-            const nuevoRegistro = `${fecha};${area};${linea};${pn};${hora_paro};${hora_arranque};${diferenciaMinutos};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion};${categoria}`;
+            const nuevoRegistro = `${fecha};${area};${linea};${pn};${hora_paro};${hora_arranque};${diferenciaMinutos};${categoria};${estacion};${modoFalla || ''};${descripcionModoFalla || ''};${descripcion}`;
             registrosToAdd = [nuevoRegistro];
         }
 
