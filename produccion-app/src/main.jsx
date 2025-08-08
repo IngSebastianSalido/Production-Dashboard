@@ -10,6 +10,7 @@ import Navbar from './components/NavBar';
 import REA from './pages/REA';
 import PPTPage from './pages/PPTPage'; // Importar la nueva página de presentación
 import ProductionBoard from './pages/ProductionBoard'; // Importar la página de ProductionBoard
+import Reports from './pages/Reports'; // Nueva página Reports
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Route path="/grafica-paros" element={<StopChartPage />} />
   <Route path="/presentacion" element={<PPTPage />} /> 
   <Route path="/production-board" element={<ProductionBoard />} /> 
+  <Route path="/reports" element={<Reports />} /> {/* Ruta mínima para Reports */}
 </Routes>
 
     </div>

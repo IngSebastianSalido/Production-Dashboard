@@ -12,6 +12,9 @@ const Navbar = () => {
         <li style={styles.navItem}>
           <Link to="/" style={styles.navLink}>REA</Link>
         </li>
+                <li style={styles.navItem}>
+          <Link to="/reports" style={styles.navLink}>Reports</Link>
+        </li>
         <li style={styles.navItem}>
           <Link to="/grafica-paros" style={styles.navLink}>StopChart</Link>
         </li>
@@ -24,6 +27,7 @@ const Navbar = () => {
         <li style={styles.navItem}>
           <Link to="/presentacion" style={styles.navLink}>Presentación</Link>
         </li>
+
       </ul>
     </nav>
   );
