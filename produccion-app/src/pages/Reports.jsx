@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReportsChart from '../components/ReportsChart';
+import ReportsOEEWrapper from '../components/ReportsOEEWrapper';
 import * as XLSX from 'xlsx';
 
 const Reports = () => {
@@ -54,9 +55,21 @@ const Reports = () => {
   const handleExport = async () => {
     const wb = XLSX.utils.book_new();
 
-    // Pestaña 1: Totales generales
-    const totalOk = data.reduce((sum, d) => sum + (d.ok || 0), 0);
-    const totalNok = data.reduce((sum, d) => sum + (d.nok || 0), 0);
+    // Pestaña 1: Totales generales -> siempre usar la agregación de TODAS las recetas
+    let allData = data;
+    try {
+      const respAll = await axios.get(`${serverApiUrl}/api/reports/production-summary`, {
+        params: { from, to },
+      });
+      allData = respAll.data?.machines || [];
+    } catch (err) {
+      // si falla la petición, seguimos con los datos actuales (por ejemplo si no hay conexión)
+      console.error('Error obteniendo datos generales para Excel:', err);
+      allData = data;
+    }
+
+    const totalOk = allData.reduce((sum, d) => sum + (d.ok || 0), 0);
+    const totalNok = allData.reduce((sum, d) => sum + (d.nok || 0), 0);
     const total = totalOk + totalNok;
     const scrapPercentage = total > 0 ? ((totalNok / total) * 100).toFixed(2) : 0;
 
@@ -64,14 +77,14 @@ const Reports = () => {
       ['Filtro', 'Valor'],
       ['Desde', from],
       ['Hasta', to],
-      ['Receta', recipe || 'Todas'],
+      ['Receta', 'Todas'],
       [],
       ['Máquina', 'OK', 'NOK', 'Total', 'Scrap %'],
-      ...data.map(d => [d.machine, d.ok, d.nok, (d.ok || 0) + (d.nok || 0), ((d.ok + d.nok) > 0 ? (d.nok / (d.ok + d.nok)) * 100 : 0).toFixed(2)])
+      ...allData.map(d => [d.machine, d.ok, d.nok, (d.ok || 0) + (d.nok || 0), ((d.ok + d.nok) > 0 ? (d.nok / (d.ok + d.nok)) * 100 : 0).toFixed(2)])
     ];
 
     const wsGeneral = XLSX.utils.aoa_to_sheet(generalTotals);
-    XLSX.utils.book_append_sheet(wb, wsGeneral, 'Totales Generales');
+  XLSX.utils.book_append_sheet(wb, wsGeneral, 'Totales Generales');
 
     // Helper: generate valid and unique sheet names (<=31 chars, no invalid chars)
     const usedSheetNames = new Set(['Totales Generales']);
@@ -123,7 +136,88 @@ const Reports = () => {
       })
     );
 
+    // Pestaña: Totales por Día (por máquina, TODAS las recetas) -> debe ser segunda pestaña
+    try {
+      // omitimos recipe para asegurar TODAS las recetas
+      const respDays = await axios.get(`${serverApiUrl}/api/reports/production-by-day`, {
+        params: { from, to },
+      });
+      const machineNames = respDays.data?.machines || [];
+      const days = respDays.data?.days || [];
+
+      // Construir encabezado: Fecha, then for each machine -> '<Name> OK', '<Name> NOK'
+      const header = ['Fecha'];
+      machineNames.forEach(name => {
+        header.push(`${name} OK`);
+        header.push(`${name} NOK`);
+      });
+
+      // Construir filas: para cada day tomar oks and noks arrays
+      const rows = days.map(d => {
+        const row = [d.date];
+        const oks = d.oks || [];
+        const noks = d.noks || [];
+        for (let i = 0; i < machineNames.length; i++) {
+          row.push(oks[i] || 0);
+          row.push(noks[i] || 0);
+        }
+        return row;
+      });
+
+      const daysTable = [
+        ['Filtro', 'Valor'],
+        ['Desde', from],
+        ['Hasta', to],
+        ['Recetas', 'Todas'],
+        [],
+        header,
+        ...rows
+      ];
+
+      const wsDays = XLSX.utils.aoa_to_sheet(daysTable);
+      const daySheetName = makeSheetName('Totales por Día');
+      XLSX.utils.book_append_sheet(wb, wsDays, daySheetName);
+      // Reorder sheets to ensure Totales Generales first and Totales por Día second
+      if (wb.SheetNames && Array.isArray(wb.SheetNames)) {
+        const idx = wb.SheetNames.indexOf(daySheetName);
+        if (idx > 1) {
+          wb.SheetNames.splice(idx, 1);
+          wb.SheetNames.splice(1, 0, daySheetName);
+        }
+      }
+    } catch (err) {
+      console.error('Error obteniendo totales por día para Excel:', err);
+    }
+
     XLSX.writeFile(wb, 'ReporteProduccionCompleto.xlsx');
+  };
+
+  // Descargar copia del ProductionReport.csv actual
+  const handleDownloadProductionCsv = async () => {
+    try {
+      const resp = await axios.get(`${serverApiUrl}/api/reports/download-production-csv`, {
+        responseType: 'blob',
+      });
+      const blob = new Blob([resp.data], { type: resp.headers['content-type'] || 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      // intentar extraer filename desde headers
+      const disposition = resp.headers['content-disposition'];
+      let filename = 'ProductionReport_Copy.csv';
+      if (disposition) {
+        const match = disposition.match(/filename\*?=([^;]+)/);
+        if (match) filename = decodeURIComponent(match[1].replace(/['"\\]/g, '')).trim();
+      }
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error descargando ProductionReport:', err);
+      alert('Error descargando ProductionReport. Revisa la consola.');
+    }
   };
 
   return (
@@ -152,19 +246,27 @@ const Reports = () => {
           <select value={view} onChange={e => setView(e.target.value)} style={styles.select}>
             <option>Totals</option>
             <option>Scrap Percentage</option>
-          </select>
+            <option>OEE</option>
+            </select>
         </div>
       </div>
 
-      {data.length > 0 ? (
-        <>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
-            <button onClick={handleExport} style={styles.exportBtn}>Exportar Excel</button>
-          </div>
-          <div style={styles.card}>
-            <ReportsChart data={data} view={view} />
-          </div>
-        </>
+      {/* Botones: descargar siempre disponible; exportar solo si hay datos */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
+        <button onClick={handleDownloadProductionCsv} style={{...styles.exportBtn, background: '#1565c0', marginLeft: 8}}>Descargar ProductionReport</button>
+        {data.length > 0 && (
+          <button onClick={handleExport} style={styles.exportBtn}>Exportar Excel</button>
+        )}
+      </div>
+
+      {view === 'OEE' ? (
+        <div style={styles.card}>
+          <ReportsOEEWrapper from={from} to={to} recipe={recipe} data={data} recipes={recipes} />
+        </div>
+      ) : data.length > 0 ? (
+        <div style={styles.card}>
+          <ReportsChart data={data} view={view} />
+        </div>
       ) : (
         <p>Selecciona rango y filtros para ver el reporte.</p>
       )}
