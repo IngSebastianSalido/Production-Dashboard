@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Doughnut } from 'react-chartjs-2';
+import { startOfDay, endOfDay, parseYYYYMMDD } from '../utils/dateUtils';
 
 // Simple OEE wrapper component that fetches needed data and computes
 // Disponibilidad, Calidad y Eficiencia. It also shows a table per "corte" (production resets)
@@ -11,6 +12,7 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
   const [machinesSummary, setMachinesSummary] = useState([]);
   const [daysByMachine, setDaysByMachine] = useState([]);
   const [stops, setStops] = useState([]);
+  const [oeeAverages, setOeeAverages] = useState(null);
 
   useEffect(() => {
     if (!from || !to) return;
@@ -21,17 +23,24 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
   const fetchAll = async () => {
     setLoading(true);
     try {
-      const [summaryResp, daysResp, stopsResp] = await Promise.all([
+      const [summaryResp, cutsResp, stopsResp] = await Promise.all([
         axios.get(`${serverApiUrl}/api/reports/production-summary`, { params: { from, to, recipe: recipe || undefined } }),
-        axios.get(`${serverApiUrl}/api/reports/production-by-day`, { params: { from, to, recipe: recipe || undefined } }),
+        axios.get(`${serverApiUrl}/api/rea-production-eolo-cuts-oee`, { params: { from, to, ratePerHour: 154 } }),
         axios.get(`${serverApiUrl}/api/paros`),
       ]);
 
       setMachinesSummary(summaryResp.data.machines || []);
-      setDaysByMachine(daysResp.data.days || []);
+  // cutsResp.data.cuts -> array of enriched cuts (startISO,endISO,pn,piezasTotales,durationMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,stations)
+  setDaysByMachine(cutsResp.data.cuts || []);
+      // store backend-provided averages (fractions 0..1)
+      setOeeAverages(cutsResp.data.summary || null);
+      return cutsResp.data.summary || null;
       setStops(parseStops(stopsResp.data || []));
+      // unreachable but keep structure
+      return null;
     } catch (err) {
       console.error('Error fetching OEE data', err);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -56,9 +65,10 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
 
   const computeRangeDays = () => {
     try {
-      const dFrom = new Date(from + 'T00:00:00');
-      const dTo = new Date(to + 'T23:59:59');
-      const ms = dTo - dFrom;
+      const dFrom = startOfDay(from);
+      const dTo = endOfDay(to);
+      if (!dFrom || !dTo) return 1;
+      const ms = dTo.getTime() - dFrom.getTime();
       const days = Math.max(1, Math.ceil((ms + 1) / (1000 * 60 * 60 * 24)));
       return days;
     } catch (e) { return 1; }
@@ -66,15 +76,16 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
 
   const sumDowntime = () => {
     // stops rows format (from backend) -> [fecha,area,linea,pn,hora_paro,hora_arranque,diferencia_minutos,...]
-    const fromDate = new Date(from + 'T00:00:00');
-    const toDate = new Date(to + 'T23:59:59');
+    const fromDate = startOfDay(from);
+    const toDate = endOfDay(to);
     let total = 0;
     stops.forEach(cols => {
       const fecha = cols[0];
       const min = parseInt(cols[6]) || 0;
       if (!fecha) return;
-      const d = new Date(fecha + 'T00:00:00');
-      if (d >= fromDate && d <= toDate) total += min;
+      const d = parseYYYYMMDD(fecha);
+      if (!d) return;
+      if (d.getTime() >= fromDate.getTime() && d.getTime() <= toDate.getTime()) total += min;
     });
     return total;
   };
@@ -112,9 +123,11 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
       console.warn('No se pudo cargar opciones para rate', e);
     }
 
-    // total produced pieces (use sum of last machine ok + nok)
+    // total produced pieces: sum of piezasTotales across cuts (enriched endpoint provides piezasTotales)
     let totalFinal = 0;
-    if (machinesSummary && machinesSummary.length) {
+    if (daysByMachine && daysByMachine.length) {
+      totalFinal = daysByMachine.reduce((s, d) => s + (d.piezasTotales || 0), 0);
+    } else if (machinesSummary && machinesSummary.length) {
       const last = machinesSummary[machinesSummary.length - 1];
       totalFinal = (last.ok || 0) + (last.nok || 0);
     }
@@ -141,9 +154,20 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
       if (!from || !to) return;
       setLoading(true);
       try {
-        await fetchAll();
-        const res = await computeTotals();
-        setOeeSummary(res);
+        const backendSummary = await fetchAll();
+        if (backendSummary) {
+          // backend provides averages as fractions (0..1) -> convert to percent and build oeeSummary shape
+          setOeeSummary({
+            disponibilidad: Number((backendSummary.disponibilidadAvg * 100).toFixed(2)),
+            downtimeMin: undefined,
+            tiempoDisponibleMin: undefined,
+            quality: { ok: undefined, nok: undefined, percentage: Number((backendSummary.calidadAvg * 100).toFixed(2)) },
+            eficiencia: { rate: 154, totalFinal: undefined, porcentaje: Number((backendSummary.eficienciaAvg * 100).toFixed(2)) }
+          });
+        } else {
+          const res = await computeTotals();
+          setOeeSummary(res);
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -188,17 +212,39 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
         </div>
       </div>
 
-      <h3 style={{ marginTop: 18 }}>Cortes / Producciones por día</h3>
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 8 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h3 style={{ marginTop: 18 }}>Cortes / Producciones (por timestamp)</h3>
+        <div>
+          <button style={{ ...styles.btn, marginRight: 8 }} onClick={async () => {
+            try {
+              setLoading(true);
+              // Trigger generation and fetch enriched CSV on server, endpoint will also return JSON
+              await axios.get(`${serverApiUrl}/api/rea-production-eolo-cuts-oee`, { params: { from, to, ratePerHour: 154 } });
+              // Then download the generated CSV from static folder
+              const resp = await axios.get(`${serverApiUrl}/static/EOL_Cuts_OEE.csv`, { responseType: 'blob' });
+              const blob = new Blob([resp.data], { type: resp.headers['content-type'] || 'text/csv' });
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url; a.download = `EOL_Cuts_OEE_${from || 'all'}_${to || 'all'}.csv`; document.body.appendChild(a); a.click(); a.remove(); window.URL.revokeObjectURL(url);
+            } catch (err) {
+              console.error('Error generando/descargando CSV OEE', err);
+              alert('Error generando o descargando CSV OEE. Revisa la consola.');
+            } finally { setLoading(false); }
+          }}>Descargar CSV OEE</button>
+        </div>
+      </div>
+  <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 8 }}>
         <thead>
           <tr>
             <th style={th}>Fecha</th>
+            <th style={th}>Hora</th>
             <th style={th}>PN</th>
+            <th style={th}>Piezas Producidas</th>
             <th style={th}>Downtime (min)</th>
             <th style={th}>Disponibilidad %</th>
-            <th style={th}>OK (final)</th>
-            <th style={th}>NOK (final)</th>
-            <th style={th}>Calidad %</th>
+            <th style={th}>OK (EOL)</th>
+            <th style={th}>NOK (EOL)</th>
+            <th style={th}>Change Over</th>
             <th style={th}>Rate</th>
             <th style={th}>Eficiencia %</th>
           </tr>
@@ -208,31 +254,31 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
             <tr><td colSpan={9} style={{ color: '#ccc', padding: 8 }}>No hay cortes para el rango seleccionado</td></tr>
           ) : (
             daysByMachine.map((d, idx) => {
-              // d: { date, oks: [], noks: [] }
-              // sum across machines for final OK/NOK
-              const totalOk = (d.oks || []).reduce((s, v) => s + (v || 0), 0);
-              const totalNok = (d.noks || []).reduce((s, v) => s + (v || 0), 0);
-              const qualityPerc = (totalOk + totalNok) > 0 ? (totalOk / (totalOk + totalNok)) * 100 : 0;
-              // downtime per day from stops
-              const downtimeDay = stops.filter(s => s[0] === d.date).reduce((suma, row) => suma + (parseInt(row[6]) || 0), 0);
-              const tiempoDisponible = 24 * 60;
-              const disponibilidadDia = ((tiempoDisponible - downtimeDay) / tiempoDisponible) * 100;
+              // the enriched endpoint returns: startISO,endISO,pn,piezasTotales,durationMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,estaciones
+              const totalOk = d.eolOk || ((d.estaciones || []).reduce((s, st) => s + (st.ok || 0), 0));
+              const totalNok = d.eolNok || ((d.estaciones || []).reduce((s, st) => s + (st.nok || 0), 0));
+              const rate = oeeSummary?.eficiencia?.rate || 154;
+              // eficiencia per cut: piezasTotales / (rate * durationHours)
+              const durationHours = Math.max(1/60, (d.durationMinutes || 0) / 60);
+              const efficiencyPct = rate > 0 ? ((d.piezasTotales || 0) / (rate * durationHours)) * 100 : 0;
 
-              // rate lookup naive: try recipe or first PN
-              const pn = recipe || (machinesSummary && machinesSummary.length ? machinesSummary[0].pn : '');
-              // we'll attempt to fetch rate synchronously is expensive; reuse previous opt fetch would be better but keep simple
+              // Display human-friendly fecha/hora: prefer startISO parsed
+              let startDateStr = '';
+              try { const sd = new Date(d.startISO || d.startFecha + 'T' + (d.startHora || '00:00:00')); startDateStr = sd.toLocaleDateString() + ' ' + sd.toLocaleTimeString(); } catch (e) { startDateStr = (d.startFecha || '') + ' ' + (d.startHora || ''); }
 
               return (
                 <tr key={idx} style={{ borderTop: '1px solid #444' }}>
-                  <td style={td}>{d.date}</td>
-                  <td style={td}>{pn || '-'}</td>
-                  <td style={td}>{downtimeDay}</td>
-                  <td style={td}>{disponibilidadDia.toFixed(2)}</td>
+                  <td style={td}>{startDateStr.split(' ')[0]}</td>
+                  <td style={td}>{startDateStr.split(' ').slice(1).join(' ')}</td>
+                  <td style={td}>{d.pn || '-'}</td>
+                  <td style={td}>{d.piezasTotales}</td>
+                  <td style={td}>{d.downtimeMinutes != null ? d.downtimeMinutes : '-'}</td>
+                  <td style={td}>{typeof d.disponibilidad === 'number' ? (d.disponibilidad * 100).toFixed(2) : '-'}</td>
                   <td style={td}>{totalOk}</td>
                   <td style={td}>{totalNok}</td>
-                  <td style={td}>{qualityPerc.toFixed(2)}</td>
-                  <td style={td}>{oeeSummary.eficiencia.rate || '-'}</td>
-                  <td style={td}>{oeeSummary.eficiencia.porcentaje}</td>
+                  <td style={td}>{d.changeOver || (d.changeOver === false ? 'No' : '-')}</td>
+                  <td style={td}>{rate || '-'}</td>
+                  <td style={td}>{Number(efficiencyPct).toFixed(2)}</td>
                 </tr>
               );
             })
@@ -247,5 +293,17 @@ const th = {
   textAlign: 'left', padding: '8px 10px', color: '#ddd', borderBottom: '1px solid #555'
 };
 const td = { padding: '8px 10px', color: '#fff' };
+
+const styles = {
+  btn: {
+    background: '#1976d2',
+    color: '#fff',
+    border: 'none',
+    borderRadius: 6,
+    padding: '8px 12px',
+    fontWeight: 600,
+    cursor: 'pointer'
+  }
+};
 
 export default ReportsOEEWrapper;

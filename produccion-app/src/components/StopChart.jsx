@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
+import { parseYYYYMMDD, formatYYYYMMDD } from '../utils/dateUtils';
 
 const StopChart = ({ fecha, area }) => {
   const [chartData, setChartData] = useState(null);
@@ -15,13 +16,14 @@ const StopChart = ({ fecha, area }) => {
         }
         const data = await response.json();
 
-        // Calcular la fecha del día siguiente para el rango de 7am a 7am
-        const fechaActual = new Date(fecha);
-        const fechaSiguiente = new Date(fechaActual);
-        fechaSiguiente.setDate(fechaSiguiente.getDate() + 1);
+  // Calcular la fecha del día siguiente para el rango de 7am a 7am usando parser seguro
+  const fechaActual = parseYYYYMMDD(fecha);
+  if (!fechaActual) return;
+  const fechaSiguiente = new Date(fechaActual);
+  fechaSiguiente.setDate(fechaSiguiente.getDate() + 1);
         
-        const fechaActualStr = fechaActual.toISOString().split('T')[0];
-        const fechaSiguienteStr = fechaSiguiente.toISOString().split('T')[0];
+  const fechaActualStr = formatYYYYMMDD(fechaActual);
+  const fechaSiguienteStr = formatYYYYMMDD(fechaSiguiente);
 
         // Filtrar por fecha y área (turno de 7am a 7am del día siguiente)
         const filteredData = data.filter(paro => {
@@ -35,7 +37,7 @@ const StopChart = ({ fecha, area }) => {
           }
           
           // Manejar paros que cruzan medianoche (formato antiguo)
-          if (fechaParo.includes(' a ')) {
+          if (String(fechaParo).includes(' a ')) {
             const [fechaInicio] = fechaParo.split(' a ');
             if (fechaInicio === fechaActualStr) {
               const [hora] = horaParo.split(':').map(Number);

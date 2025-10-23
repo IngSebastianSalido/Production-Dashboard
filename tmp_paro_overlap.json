@@ -1,0 +1,174 @@
+{
+  "targetCount": 9,
+  "results": [
+    {
+      "paro": {
+        "fecha": "2025-10-16",
+        "pn": "3140CA028",
+        "start": "2025-10-17T06:13:00.000Z",
+        "end": "2025-10-17T06:25:00.000Z",
+        "descripcion": "Checklist checklist diario (CAW,EOL)"
+      },
+      "overlappingCuts": [
+        {
+          "cutStart": "2025-10-17T05:33:21.000Z",
+          "cutEnd": "2025-10-17T14:03:21.000Z",
+          "pn": "WG REA STELLANTIS CA028",
+          "piezasTotales": 656,
+          "overlapMinutes": 12
+        }
+      ]
+    },
+    {
+      "paro": {
+        "fecha": "2025-10-16",
+        "pn": "3140CA028",
+        "start": "2025-10-17T05:15:00.000Z",
+        "end": "2025-10-17T05:17:00.000Z",
+        "descripcion": "Lock NOK pallet atorado en locking de St915"
+      },
+      "overlappingCuts": [
+        {
+          "cutStart": "2025-10-16T20:57:21.000Z",
+          "cutEnd": "2025-10-17T05:32:21.000Z",
+          "pn": "WG REA STELLANTIS CA028",
+          "piezasTotales": 248,
+          "overlapMinutes": 2
+        }
+      ]
+    },
+    {
+      "paro": {
+        "fecha": "2025-10-16",
+        "pn": "3140CA028",
+        "start": "2025-10-17T06:48:00.000Z",
+        "end": "2025-10-17T06:59:00.000Z",
+        "descripcion": "CRIO NOK reset de crio y ajuste de St2 [Paro cruza medianoche - Parte 1]"
+      },
+      "overlappingCuts": [
+        {
+          "cutStart": "2025-10-17T05:33:21.000Z",
+          "cutEnd": "2025-10-17T14:03:21.000Z",
+          "pn": "WG REA STELLANTIS CA028",
+          "piezasTotales": 656,
+          "overlapMinutes": 11
+        }
+      ]
+    },
+    {
+      "paro": {
+        "fecha": "2025-10-16",
+        "pn": "3140CA028",
+        "start": "2025-10-16T07:00:00.000Z",
+        "end": "2025-10-16T07:30:00.000Z",
+        "descripcion": "CRIO NOK reset de crio y ajuste de St2 [Paro cruza medianoche - Parte 2]"
+      },
+      "overlappingCuts": [
+        {
+          "cutStart": "2025-10-16T05:31:18.000Z",
+          "cutEnd": "2025-10-16T14:01:20.000Z",
+          "pn": "WG REA STELLANTIS CA027",
+          "piezasTotales": 940,
+          "overlapMinutes": 30
+        }
+      ]
+    },
+    {
+      "paro": {
+        "fecha": "2025-10-16",
+        "pn": "3140CA028",
+        "start": "2025-10-16T20:53:00.000Z",
+        "end": "2025-10-16T22:00:00.000Z",
+        "descripcion": "Change Over Change Over de 027 a 028."
+      },
+      "overlappingCuts": [
+        {
+          "cutStart": "2025-10-16T20:02:21.000Z",
+          "cutEnd": "2025-10-16T20:56:21.000Z",
+          "pn": "WG REA STELLANTIS CA027 REWORK EOL",
+          "piezasTotales": 109,
+          "overlapMinutes": 3
+        },
+        {
+          "cutStart": "2025-10-16T20:57:21.000Z",
+          "cutEnd": "2025-10-17T05:32:21.000Z",
+          "pn": "WG REA STELLANTIS CA028",
+          "piezasTotales": 248,
+          "overlapMinutes": 63
+        }
+      ]
+    },
+    {
+      "paro": {
+        "fecha": "2025-10-16",
+        "pn": "3140CA028",
+        "start": "2025-10-16T09:18:00.000Z",
+        "end": "2025-10-16T09:25:00.000Z",
+        "descripcion": "Ingun actuator cilindro no cierra por rebaba acumulada."
+      },
+      "overlappingCuts": [
+        {
+          "cutStart": "2025-10-16T05:31:18.000Z",
+          "cutEnd": "2025-10-16T14:01:20.000Z",
+          "pn": "WG REA STELLANTIS CA027",
+          "piezasTotales": 940,
+          "overlapMinutes": 7
+        }
+      ]
+    },
+    {
+      "paro": {
+        "fecha": "2025-10-16",
+        "pn": "3140CA028",
+        "start": "2025-10-16T09:37:00.000Z",
+        "end": "2025-10-16T09:43:00.000Z",
+        "descripcion": "Jig cambio de cinta, y se revisa pieza de scrap"
+      },
+      "overlappingCuts": [
+        {
+          "cutStart": "2025-10-16T05:31:18.000Z",
+          "cutEnd": "2025-10-16T14:01:20.000Z",
+          "pn": "WG REA STELLANTIS CA027",
+          "piezasTotales": 940,
+          "overlapMinutes": 6
+        }
+      ]
+    },
+    {
+      "paro": {
+        "fecha": "2025-10-16",
+        "pn": "3140CA028",
+        "start": "2025-10-16T22:00:00.000Z",
+        "end": "2025-10-17T01:20:00.000Z",
+        "descripcion": "Change Over Espernado liberacion"
+      },
+      "overlappingCuts": [
+        {
+          "cutStart": "2025-10-16T20:57:21.000Z",
+          "cutEnd": "2025-10-17T05:32:21.000Z",
+          "pn": "WG REA STELLANTIS CA028",
+          "piezasTotales": 248,
+          "overlapMinutes": 200
+        }
+      ]
+    },
+    {
+      "paro": {
+        "fecha": "2025-10-16",
+        "pn": "3140CA028",
+        "start": "2025-10-17T02:10:00.000Z",
+        "end": "2025-10-17T05:00:00.000Z",
+        "descripcion": "TBD Scrap 33-60% st4, st2, repetitivo"
+      },
+      "overlappingCuts": [
+        {
+          "cutStart": "2025-10-16T20:57:21.000Z",
+          "cutEnd": "2025-10-17T05:32:21.000Z",
+          "pn": "WG REA STELLANTIS CA028",
+          "piezasTotales": 248,
+          "overlapMinutes": 170
+        }
+      ]
+    }
+  ]
+}

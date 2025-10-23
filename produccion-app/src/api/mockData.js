@@ -59,7 +59,12 @@ export const getCycleTimeData = (fecha) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       // Simulamos que los datos dependen de la fecha
-      const seed = new Date(fecha).getDate();
+      // Evitar new Date(fecha) directo (pasa en equipos con distinto locale). Extraer día de forma robusta
+      let seed = 1;
+      try {
+        const parts = String(fecha).split(/[-\/]/);
+        seed = Number(parts[2]) || 1;
+      } catch (e) { seed = 1; }
       
       // Tiempo objetivo fijo
       const targetTime = 140;
@@ -86,7 +91,11 @@ export const getDefectsData = (fecha) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       // Simulamos que los datos dependen de la fecha
-      const seed = new Date(fecha).getDate();
+      let seed = 1;
+      try {
+        const parts = String(fecha).split(/[-\/]/);
+        seed = Number(parts[2]) || 1;
+      } catch (e) { seed = 1; }
       
       // Categorías de defectos
       const categories = [

@@ -31,10 +31,18 @@ const hrPerHrPath = process.env.HRPERHR_FILE_PATH
   ? path.resolve(process.env.HRPERHR_FILE_PATH)
   : path.join(__dirname, 'data', 'HrperHrReport.csv');
 
-// Rutas a los archivos CSV
-const productionFilePath = path.resolve(process.env.PRODUCTION_FILE_PATH);
-const stopsFilePath = path.resolve(process.env.STOPS_FILE_PATH);
-const optionsFilePath = path.resolve(process.env.OPTIONS_FILE_PATH);
+// Rutas a los archivos CSV (usar defaults dentro de backend/data cuando no está en .env)
+const productionFilePath = process.env.PRODUCTION_FILE_PATH
+    ? path.resolve(process.env.PRODUCTION_FILE_PATH)
+    : path.join(__dirname, 'data', 'ProductionReport.csv');
+
+const stopsFilePath = process.env.STOPS_FILE_PATH
+    ? path.resolve(process.env.STOPS_FILE_PATH)
+    : path.join(__dirname, 'data', 'stops.csv');
+
+const optionsFilePath = process.env.OPTIONS_FILE_PATH
+    ? path.resolve(process.env.OPTIONS_FILE_PATH)
+    : path.join(__dirname, 'options.json');
 // Ruta al archivo de categories (si no está en .env, usar backend/categories.json)
 const categoriesFilePath = process.env.CATEGORIES_FILE_PATH
     ? path.resolve(process.env.CATEGORIES_FILE_PATH)
@@ -92,3 +100,33 @@ app.listen(PORT, HOST, () => {
 });
 
 // Las rutas para reports desde timestamps fueron movidas a `backend/routes/reportsTimestamps.js`
+
+// Auto-generate EOL_Cuts.csv and EOL_Cuts_OEE.csv on server start (non-blocking)
+// Set AUTO_GENERATE_EOL=false to disable. Default: enabled.
+try {
+    if (process.env.AUTO_GENERATE_EOL === undefined || String(process.env.AUTO_GENERATE_EOL).toLowerCase() !== 'false') {
+        const child_process = require('child_process');
+        const scriptPath = path.join(__dirname, 'scripts', 'generate_eol_cuts.js');
+        if (fs.existsSync(scriptPath)) {
+            // Use Node executable (process.execPath) to run the script so it runs in the same Node version
+            const rate = process.env.DEFAULT_RATE_PER_HOUR || '154';
+            const args = [scriptPath, `--rate=${rate}`];
+            const outLog = path.join(__dirname, 'scripts', 'debug_generate.log');
+            const outStream = fs.createWriteStream(outLog, { flags: 'a' });
+            outStream.write(`\n[${new Date().toISOString()}] Starting generate_eol_cuts.js with args: ${args.join(' ')}\n`);
+            const child = child_process.spawn(process.execPath, args, { cwd: __dirname, env: process.env, stdio: ['ignore', 'pipe', 'pipe'] });
+            child.stdout.pipe(outStream, { end: false });
+            child.stderr.pipe(outStream, { end: false });
+            child.on('exit', (code) => {
+                outStream.write(`\n[${new Date().toISOString()}] generate_eol_cuts.js exited with code ${code}\n`);
+                outStream.end();
+            });
+        } else {
+            console.warn('Auto-generation disabled: script generate_eol_cuts.js not found at', path.join(__dirname, 'scripts'));
+        }
+    } else {
+        console.log('AUTO_GENERATE_EOL=false -> skipping automatic generation of EOL_Cuts');
+    }
+} catch (err) {
+    console.warn('Error starting auto-generation of EOL cuts:', err && err.message ? err.message : String(err));
+}

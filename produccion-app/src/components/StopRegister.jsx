@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { parseYYYYMMDD, formatYYYYMMDD } from '../utils/dateUtils';
 
 const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
   const [formData, setFormData] = useState({
@@ -18,9 +19,10 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
 
   useEffect(() => {
     const now = new Date();
+    const todayStr = formatYYYYMMDD(now);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      fecha: now.toLocaleDateString('en-CA'),
+      fecha: todayStr,
       hora_paro: now.toTimeString().slice(0, 5),
       hora_arranque: '', // Inicializar hora de arranque como vacío
     }));
@@ -109,10 +111,12 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
       // Preparar datos para envío, incluyendo fecha de arranque si cruza medianoche
       const dataToSend = { ...formData };
       if (formData.cruza_medianoche) {
-        const fechaParo = new Date(formData.fecha);
-        const fechaArranque = new Date(fechaParo);
-        fechaArranque.setDate(fechaArranque.getDate() + 1);
-        dataToSend.fecha_arranque = fechaArranque.toLocaleDateString('en-CA');
+        const fechaParo = parseYYYYMMDD(formData.fecha);
+        if (fechaParo) {
+          const fechaArranque = new Date(fechaParo);
+          fechaArranque.setDate(fechaArranque.getDate() + 1);
+          dataToSend.fecha_arranque = formatYYYYMMDD(fechaArranque);
+        }
       }
       
       const response = await fetch(`${serverApiUrl}/api/paros`, {
