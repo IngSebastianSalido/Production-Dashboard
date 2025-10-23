@@ -244,6 +244,7 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
             <th style={th}>Disponibilidad %</th>
             <th style={th}>OK (EOL)</th>
             <th style={th}>NOK (EOL)</th>
+            <th style={th}>Calidad %</th>
             <th style={th}>Change Over</th>
             <th style={th}>Rate</th>
             <th style={th}>Eficiencia %</th>
@@ -251,7 +252,7 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
         </thead>
         <tbody>
           {daysByMachine.length === 0 ? (
-            <tr><td colSpan={9} style={{ color: '#ccc', padding: 8 }}>No hay cortes para el rango seleccionado</td></tr>
+            <tr><td colSpan={12} style={{ color: '#ccc', padding: 8 }}>No hay cortes para el rango seleccionado</td></tr>
           ) : (
             daysByMachine.map((d, idx) => {
               // the enriched endpoint returns: startISO,endISO,pn,piezasTotales,durationMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,estaciones
@@ -266,6 +267,11 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
               let startDateStr = '';
               try { const sd = new Date(d.startISO || d.startFecha + 'T' + (d.startHora || '00:00:00')); startDateStr = sd.toLocaleDateString() + ' ' + sd.toLocaleTimeString(); } catch (e) { startDateStr = (d.startFecha || '') + ' ' + (d.startHora || ''); }
 
+              // compute quality percent per cut: prefer backend-provided d.calidad (fraction 0..1) or derive from OK/NOK
+              const qualityPct = (typeof d.calidad === 'number')
+                ? (d.calidad * 100)
+                : ((totalOk + totalNok) > 0 ? (totalOk / (totalOk + totalNok)) * 100 : 0);
+
               return (
                 <tr key={idx} style={{ borderTop: '1px solid #444' }}>
                   <td style={td}>{startDateStr.split(' ')[0]}</td>
@@ -276,6 +282,7 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
                   <td style={td}>{typeof d.disponibilidad === 'number' ? (d.disponibilidad * 100).toFixed(2) : '-'}</td>
                   <td style={td}>{totalOk}</td>
                   <td style={td}>{totalNok}</td>
+                  <td style={td}>{Number(qualityPct).toFixed(2)}</td>
                   <td style={td}>{d.changeOver || (d.changeOver === false ? 'No' : '-')}</td>
                   <td style={td}>{rate || '-'}</td>
                   <td style={td}>{Number(efficiencyPct).toFixed(2)}</td>

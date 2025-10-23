@@ -903,13 +903,12 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
     // write an enriched CSV for debugging/export
     try {
       const outPath = path.join(__dirname, '../data/EOL_Cuts_OEE.csv');
-      const outHeader = 'startISO,endISO,pn,piezasTotales,durationMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,calidadPercent,eolOk,eolNok,changeOver,stations_json\n';
+      const outHeader = 'startISO,endISO,pn,piezasTotales,durationMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,changeOver,stations_json\n';
       let outContent = outHeader;
       for (const e of enriched) {
         const calidadCell = (e.calidad === null) ? '' : e.calidad.toFixed(4);
-        const calidadPctCell = (e.calidadPercent === null) ? '' : e.calidadPercent.toFixed(2);
         const changeOverCell = (e.changeOver ? String(e.changeOver) : 'No');
-        const row = `${e.startISO},${e.endISO},"${(e.pn||'').replace(/"/g,'')}",${e.piezasTotales},${e.durationMinutes},${e.downtimeMinutes},${e.disponibilidad.toFixed(4)},${e.eficiencia.toFixed(4)},${calidadCell},${calidadPctCell},${e.eolOk||0},${e.eolNok||0},${changeOverCell},"${JSON.stringify(e.estaciones).replace(/"/g,'""')}"\n`;
+        const row = `${e.startISO},${e.endISO},"${(e.pn||'').replace(/"/g,'')}",${e.piezasTotales},${e.durationMinutes},${e.downtimeMinutes},${e.disponibilidad.toFixed(4)},${e.eficiencia.toFixed(4)},${calidadCell},${e.eolOk||0},${e.eolNok||0},${changeOverCell},"${JSON.stringify(e.estaciones).replace(/"/g,'""')}"\n`;
         outContent += row;
       }
       fs.writeFileSync(outPath, outContent, 'utf8');
