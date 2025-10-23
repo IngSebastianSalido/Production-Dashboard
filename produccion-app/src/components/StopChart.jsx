@@ -25,138 +25,118 @@ const StopChart = ({ fecha, area }) => {
   const fechaActualStr = formatYYYYMMDD(fechaActual);
   const fechaSiguienteStr = formatYYYYMMDD(fechaSiguiente);
 
-        // Filtrar por fecha y área (turno de 7am a 7am del día siguiente)
-        const filteredData = data.filter(paro => {
-          const fechaParo = paro[0];
-          const areaParo = paro[1];
-          const horaParo = paro[4];
-          
-          // Filtrar por área si se especifica
-          if (area && areaParo !== area) {
-            return false;
-          }
-          
-          // Manejar paros que cruzan medianoche (formato antiguo)
-          if (String(fechaParo).includes(' a ')) {
-            const [fechaInicio] = fechaParo.split(' a ');
-            if (fechaInicio === fechaActualStr) {
-              const [hora] = horaParo.split(':').map(Number);
-              return hora >= 7;
-            }
-            return false;
-          }
-          
-          // Lógica para turno de 7am a 7am del día siguiente
-          if (fechaParo === fechaActualStr) {
-            // Paros del día actual desde las 7am
-            const [hora] = horaParo.split(':').map(Number);
-            return hora >= 7;
-          } else if (fechaParo === fechaSiguienteStr) {
-            // Paros del día siguiente hasta las 7am
-            const [hora] = horaParo.split(':').map(Number);
-            return hora < 7;
-          }
-          
-          return false;
-        });
+        // Filter rows and map into normalized records with start/end Date objects clipped to the shift window
+        // Shift window: fecha 07:00 local -> fecha+1 07:00 local
+        const shiftStart = new Date(fechaActual);
+        shiftStart.setHours(7, 0, 0, 0);
+        const shiftEnd = new Date(fechaSiguiente);
+        shiftEnd.setHours(7, 0, 0, 0);
 
-        // Crear array de horas para el turno de 7am a 7am (24 horas)
+        const normalized = [];
+
+        for (const row of data) {
+          try {
+            // Trim items and accept both ; and , separators
+            const cols = row.map(c => (typeof c === 'string' ? c.trim() : c));
+            const fechaParoRaw = cols[0];
+            const areaParo = cols[1];
+            const horaParoRaw = cols[4];
+            const horaArranqueRaw = cols[5];
+            const diferenciaRaw = cols[6];
+
+            if (!fechaParoRaw || !horaParoRaw || !horaArranqueRaw) continue;
+            if (area && areaParo !== area) continue;
+
+            // Legacy row that stores a range like "YYYY-MM-DD a YYYY-MM-DD" in fecha column
+            if (String(fechaParoRaw).includes(' a ')) {
+              // In this case, repo already splits it when saved; try to handle gracefully by using the first date
+              const [startDateStr] = String(fechaParoRaw).split(' a ').map(s => s.trim());
+              // Build start and end using the provided times
+              const startDate = parseYYYYMMDD(startDateStr);
+              if (!startDate) continue;
+              const [hStart, mStart] = horaParoRaw.split(':').map(Number);
+              const [hEnd, mEnd] = horaArranqueRaw.split(':').map(Number);
+              const paroStart = new Date(startDate);
+              paroStart.setHours(hStart, isNaN(mStart) ? 0 : mStart, 0, 0);
+              // end might be next day
+              const paroEnd = new Date(startDate);
+              paroEnd.setDate(paroEnd.getDate() + (hEnd < hStart || (hEnd === hStart && (isNaN(mEnd) ? 0 : mEnd) < (isNaN(mStart) ? 0 : mStart)) ? 1 : 0));
+              paroEnd.setHours(hEnd, isNaN(mEnd) ? 0 : mEnd, 0, 0);
+
+              normalized.push({ start: paroStart, end: paroEnd });
+              continue;
+            }
+
+            // Normal case: fecha like YYYY-MM-DD
+            const fechaParo = parseYYYYMMDD(String(fechaParoRaw));
+            if (!fechaParo) continue;
+            const [hStart, mStart] = String(horaParoRaw).split(':').map(Number);
+            const [hEnd, mEnd] = String(horaArranqueRaw).split(':').map(Number);
+            if (Number.isNaN(hStart) || Number.isNaN(hEnd)) continue;
+
+            const paroStart = new Date(fechaParo);
+            paroStart.setHours(hStart, isNaN(mStart) ? 0 : mStart, 0, 0);
+
+            const paroEnd = new Date(fechaParo);
+            // If end time is less or equal start, assume it crossed midnight to next day
+            if (hEnd < hStart || (hEnd === hStart && (isNaN(mEnd) ? 0 : mEnd) <= (isNaN(mStart) ? 0 : mStart))) {
+              paroEnd.setDate(paroEnd.getDate() + 1);
+            }
+            paroEnd.setHours(hEnd, isNaN(mEnd) ? 0 : mEnd, 0, 0);
+
+            normalized.push({ start: paroStart, end: paroEnd });
+          } catch (err) {
+            // ignore malformed rows
+            continue;
+          }
+        }
+
+        // Now compute minutes of overlap between each paro and the shift window, distributed per-hour
         const hours = [];
         for (let i = 0; i < 24; i++) {
           const hora = (7 + i) % 24;
           const label = `${hora.toString().padStart(2, '0')}:00`;
           hours.push(label);
         }
-        
+
         const totalMinutes = Array(24).fill(60);
         const stopMinutes = Array(24).fill(0);
 
-        filteredData.forEach(paro => {
-          const fechaParo = paro[0];
-          const horaParo = paro[4];
-          const horaArranque = paro[5];
-          const diferenciaMinutos = parseInt(paro[6], 10);
-          
-          // Parsear la hora del paro
-          const [hora, minuto] = horaParo.split(':').map(Number);
-          
-          // Manejar paros que cruzan medianoche (formato antiguo con "a")
-          if (fechaParo.includes(' a ')) {
-            // Este es un paro que cruza medianoche en formato antiguo
-            // Necesitamos calcular correctamente las horas
-            const [horaArr, minArr] = horaArranque.split(':').map(Number);
-            
-            if (hora >= 7) {
-              // Parte del primer día (desde hora_paro hasta medianoche)
-              let horaIndex = hora - 7;
-              let remainingMinutes = (23 * 60 + 59) - (hora * 60 + minuto) + 1;
-              let currentHour = horaIndex;
-              let currentMinute = minuto;
+        function addMinutesToHourBucket(dtStart, dtEnd) {
+          // clip to shift
+          const s = new Date(Math.max(dtStart.getTime(), shiftStart.getTime()));
+          const e = new Date(Math.min(dtEnd.getTime(), shiftEnd.getTime()));
+          if (e <= s) return; // no overlap with shift
 
-              while (remainingMinutes > 0 && currentHour < 24) {
-                const availableMinutesInHour = 60 - currentMinute;
-                const minutesToAdd = Math.min(availableMinutesInHour, remainingMinutes);
-                stopMinutes[currentHour] += minutesToAdd;
-                remainingMinutes -= minutesToAdd;
-                currentHour++;
-                currentMinute = 0;
-              }
-            }
-            
-            if (horaArr < 7) {
-              // Parte del segundo día (desde medianoche hasta hora_arranque)
-              let horaIndex = 17 + horaArr; // 17 = 24 - 7
-              let remainingMinutes = horaArr * 60 + minArr;
-              let currentHour = 17; // Comienza en la hora 17 del turno (00:00)
-              let currentMinute = 0;
+          // iterate by hour boundaries within the shift window
+          let cursor = new Date(s);
+          while (cursor < e) {
+            // compute current hour index in 0..23 for shift (7 -> 0)
+            const hourOfDay = cursor.getHours();
+            const bucketIndex = (hourOfDay - 7 + 24) % 24;
 
-              while (remainingMinutes > 0 && currentHour < 24) {
-                const availableMinutesInHour = 60 - currentMinute;
-                const minutesToAdd = Math.min(availableMinutesInHour, remainingMinutes);
-                stopMinutes[currentHour] += minutesToAdd;
-                remainingMinutes -= minutesToAdd;
-                currentHour++;
-                currentMinute = 0;
-              }
+            // end of this hour (or shift end)
+            const endOfHour = new Date(cursor);
+            endOfHour.setMinutes(59, 59, 999);
+            const segmentEnd = new Date(Math.min(endOfHour.getTime(), e.getTime()));
+
+            const minutes = Math.ceil((segmentEnd.getTime() - cursor.getTime()) / 60000);
+            if (minutes > 0 && bucketIndex >= 0 && bucketIndex < 24) {
+              stopMinutes[bucketIndex] += minutes;
             }
-            return;
+
+            // move cursor to start of next minute after segmentEnd
+            cursor = new Date(segmentEnd.getTime() + 1);
           }
-          
-          // Calcular el índice en el array de horas del turno
-          let horaIndex;
-          if (fechaParo === fechaActualStr) {
-            // Paro del día actual (7am en adelante)
-            if (hora >= 7) {
-              horaIndex = hora - 7;
-            } else {
-              return; // Saltar paros antes de las 7am del día actual
-            }
-          } else {
-            // Paro del día siguiente (antes de las 7am)
-            if (hora < 7) {
-              horaIndex = 17 + hora; // 17 = 24 - 7
-            } else {
-              return; // Saltar paros después de las 7am del día siguiente
-            }
-          }
-          
-          let remainingMinutes = diferenciaMinutos;
-          let currentHour = horaIndex;
-          let currentMinute = minuto;
+        }
 
-          while (remainingMinutes > 0 && currentHour < 24) {
-            const availableMinutesInHour = 60 - currentMinute;
-            const minutesToAdd = Math.min(availableMinutesInHour, remainingMinutes);
-
-            stopMinutes[currentHour] += minutesToAdd;
-            remainingMinutes -= minutesToAdd;
-
-            currentHour++;
-            currentMinute = 0; // Reset minutos para la siguiente hora
-          }
+        normalized.forEach(({ start, end }) => {
+          // Basic sanity: skip zero/negative length
+          if (!(end > start)) return;
+          addMinutesToHourBucket(start, end);
         });
 
-        const runningMinutes = totalMinutes.map((total, i) => total - stopMinutes[i]);
+        const runningMinutes = totalMinutes.map((total, i) => Math.max(0, total - Math.min(total, Math.round(stopMinutes[i]))));
 
         setChartData({
           labels: hours,
