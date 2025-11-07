@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 
 module.exports = (stopsFilePath) => {
   const router = express.Router();
@@ -135,6 +136,63 @@ module.exports = (stopsFilePath) => {
         res.send('Paro eliminado correctamente');
       });
     });
+  });
+
+  // Endpoint para crear un respaldo del archivo de paros
+  // Crea una copia en el mismo directorio con sufijo de fecha y hora
+  // Ejemplo: paros_2025-05-08_14-30-00.csv
+  router.post('/paros/backup', (req, res) => {
+    try {
+      if (!fs.existsSync(stopsFilePath)) {
+        return res.status(404).json({ error: 'Archivo de paros no encontrado' });
+      }
+      const requestedDir = (req.body && req.body.backupDir) || (req.query && req.query.backupDir);
+      const envDir = process.env.STOPS_BACKUP_DIR;
+      const targetDir = requestedDir || envDir || path.dirname(stopsFilePath);
+
+      // Validar o crear el directorio destino
+      try {
+        if (fs.existsSync(targetDir)) {
+          const st = fs.statSync(targetDir);
+          if (!st.isDirectory()) {
+            return res.status(400).json({ error: 'La ruta de destino no es un directorio' });
+          }
+        } else {
+          fs.mkdirSync(targetDir, { recursive: true });
+        }
+      } catch (prepErr) {
+        console.error('No se pudo preparar el directorio de respaldo:', prepErr);
+        return res.status(500).json({ error: 'No se pudo preparar el directorio de respaldo' });
+      }
+      const ext = path.extname(stopsFilePath);
+      const base = path.basename(stopsFilePath, ext);
+
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const timestamp = [
+        now.getFullYear(),
+        pad(now.getMonth() + 1),
+        pad(now.getDate())
+      ].join('-') + '_' + [pad(now.getHours()), pad(now.getMinutes()), pad(now.getSeconds())].join('-');
+
+      const backupName = `${base}_${timestamp}${ext}`;
+      const backupPath = path.join(targetDir, backupName);
+
+      fs.copyFile(stopsFilePath, backupPath, (err) => {
+        if (err) {
+          console.error('Error al crear el respaldo de paros:', err);
+          return res.status(500).json({ error: 'No se pudo crear el respaldo' });
+        }
+        return res.json({
+          message: 'Respaldo creado correctamente',
+          backupFile: backupName,
+          backupPath
+        });
+      });
+    } catch (e) {
+      console.error('Excepción al respaldar paros:', e);
+      return res.status(500).json({ error: 'Error inesperado al crear respaldo' });
+    }
   });
 
   return router;

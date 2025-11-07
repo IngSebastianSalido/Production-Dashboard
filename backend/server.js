@@ -101,6 +101,108 @@ app.listen(PORT, HOST, () => {
 
 // Las rutas para reports desde timestamps fueron movidas a `backend/routes/reportsTimestamps.js`
 
+// ------------------------- RESPALDO AUTOMÁTICO DE PAROS -------------------------
+// Configuración por variables de entorno:
+// - STOPS_AUTO_BACKUP: (true/false) habilita respaldo automático diario. Default: true
+// - STOPS_BACKUP_TIME: HH:mm para la hora local. Default: 23:59
+// - STOPS_BACKUP_DIR: directorio destino; si no se define, se usa el mismo directorio del archivo de paros
+try {
+    const autoBackupEnabled = process.env.STOPS_AUTO_BACKUP === undefined
+        ? true
+        : String(process.env.STOPS_AUTO_BACKUP).toLowerCase() !== 'false';
+
+    const backupTime = process.env.STOPS_BACKUP_TIME || '23:59';
+
+    function ensureDir(dirPath) {
+        try {
+            if (fs.existsSync(dirPath)) {
+                const st = fs.statSync(dirPath);
+                if (!st.isDirectory()) throw new Error('Ruta no es directorio');
+            } else {
+                fs.mkdirSync(dirPath, { recursive: true });
+            }
+            return true;
+        } catch (e) {
+            console.warn('No se pudo preparar directorio de respaldo:', dirPath, '-', e && e.message ? e.message : String(e));
+            return false;
+        }
+    }
+
+    function formatTimestamp(d) {
+        const pad = (n) => String(n).padStart(2, '0');
+        return [
+            d.getFullYear(),
+            pad(d.getMonth() + 1),
+            pad(d.getDate())
+        ].join('-') + '_' + [pad(d.getHours()), pad(d.getMinutes()), pad(d.getSeconds())].join('-');
+    }
+
+    function createStopsBackup({ targetDir } = {}) {
+        return new Promise((resolve, reject) => {
+            try {
+                if (!fs.existsSync(stopsFilePath)) {
+                    return reject(new Error('Archivo de paros no encontrado'));
+                }
+                const dir = targetDir || process.env.STOPS_BACKUP_DIR || path.dirname(stopsFilePath);
+                if (!ensureDir(dir)) {
+                    return reject(new Error('No se pudo preparar el directorio de respaldo'));
+                }
+                const ext = path.extname(stopsFilePath);
+                const base = path.basename(stopsFilePath, ext);
+                const backupName = `${base}_${formatTimestamp(new Date())}${ext}`;
+                const backupPath = path.join(dir, backupName);
+                fs.copyFile(stopsFilePath, backupPath, (err) => {
+                    if (err) return reject(err);
+                    resolve({ backupName, backupPath });
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    function parseTimeToNextDate(timeStr) {
+        // timeStr: 'HH:mm' en hora local
+        const [hh, mm] = String(timeStr).split(':').map((v) => parseInt(v, 10));
+        if (Number.isNaN(hh) || Number.isNaN(mm)) throw new Error('STOPS_BACKUP_TIME inválido');
+        const now = new Date();
+        const next = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hh, mm, 0, 0);
+        if (next <= now) {
+            next.setDate(next.getDate() + 1);
+        }
+        return next;
+    }
+
+    function scheduleNextBackup() {
+        try {
+            const next = parseTimeToNextDate(backupTime);
+            const ms = next.getTime() - Date.now();
+            console.log(`Backup de paros programado para: ${next.toString()} (en ${(ms/1000/60).toFixed(1)} min)`);
+            setTimeout(async () => {
+                try {
+                    const { backupPath } = await createStopsBackup();
+                    console.log('Respaldo de paros creado automáticamente en', backupPath);
+                } catch (e) {
+                    console.warn('Fallo al crear respaldo automático de paros:', e && e.message ? e.message : String(e));
+                } finally {
+                    // Programar el siguiente respaldo tras ejecutar el actual
+                    scheduleNextBackup();
+                }
+            }, ms);
+        } catch (e) {
+            console.warn('No se pudo programar respaldo automático de paros:', e && e.message ? e.message : String(e));
+        }
+    }
+
+    if (autoBackupEnabled) {
+        scheduleNextBackup();
+    } else {
+        console.log('STOPS_AUTO_BACKUP=false -> respaldo automático deshabilitado');
+    }
+} catch (e) {
+    console.warn('Error al configurar respaldo automático de paros:', e && e.message ? e.message : String(e));
+}
+
 // Auto-generate EOL_Cuts.csv and EOL_Cuts_OEE.csv on server start (non-blocking)
 // Set AUTO_GENERATE_EOL=false to disable. Default: enabled.
 try {

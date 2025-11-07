@@ -48,6 +48,17 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
     }
   };
 
+  // Calcula la duración en minutos entre hora_paro y hora_arranque
+  const computeDurationMinutes = (horaParo, horaArranque, cruzaMedianoche) => {
+    if (!horaParo || !horaArranque) return 0;
+    const [h1, m1] = horaParo.split(':').map(Number);
+    const [h2, m2] = horaArranque.split(':').map(Number);
+    const start = (isNaN(h1) ? 0 : h1) * 60 + (isNaN(m1) ? 0 : m1);
+    let end = (isNaN(h2) ? 0 : h2) * 60 + (isNaN(m2) ? 0 : m2);
+    if (cruzaMedianoche || end <= start) end += 24 * 60; // considerar cruce de medianoche
+    return end - start;
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
@@ -104,6 +115,17 @@ const StopRegister = ({ serverApiUrl, options, categories, onRegister }) => {
           alert('⚠️ ERROR: La hora de arranque no puede ser anterior o igual a la hora de paro. Si el paro cruza medianoche, marca la casilla correspondiente.');
         }
         return;
+      }
+
+      // Confirmación si la duración es mayor a 60 minutos
+      const minutes = computeDurationMinutes(
+        formData.hora_paro,
+        formData.hora_arranque,
+        formData.cruza_medianoche
+      );
+      if (minutes > 60) {
+        const proceed = window.confirm(`El paro dura ${minutes} minutos (> 60). ¿Deseas continuar con el registro?`);
+        if (!proceed) return; // usuario decide seguir editando
       }
     }
     

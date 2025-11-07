@@ -564,8 +564,9 @@ router.get('/rea-production-eolo-cuts', async (req, res) => {
         cutStationSums[sd.station].nok += sd.nok;
       });
 
-      // if this registro is marked as reset, close the cut at previous registro (k-1)
-      if (d._isReset) {
+      // close the cut at previous registro (k-1) if we detect either a reset or a recipe (PN) change
+      const recipeChanged = (k > 0) && (String(deltas[k].pn || '') !== String(deltas[k-1].pn || ''));
+      if (d._isReset || recipeChanged) {
         const startRec = deltas[cutStartIdx];
         const endRec = deltas[k-1] || deltas[cutStartIdx];
         const estacionesArr = Object.keys(cutStationSums).map(s => ({ station: s, ok: cutStationSums[s].ok, nok: cutStationSums[s].nok }));
@@ -884,7 +885,7 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
     }
 
     // Apply optional from/to filtering (expect YYYY-MM-DD strings). Filter by cut start date.
-    const { from: qFrom, to: qTo } = req.query;
+    const { from: qFrom, to: qTo, recipe: qRecipe } = req.query;
     let finalCuts = enriched;
     if (qFrom || qTo) {
       let fromDate = qFrom ? new Date(`${qFrom}T00:00:00`) : null;
@@ -898,6 +899,11 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
         if (toDate && s > toDate) return false;
         return true;
       });
+    }
+
+    // Optional recipe filter: keep only cuts whose PN matches the requested recipe
+    if (qRecipe) {
+      finalCuts = finalCuts.filter(c => String(c.pn || '') === String(qRecipe));
     }
 
     // write an enriched CSV for debugging/export

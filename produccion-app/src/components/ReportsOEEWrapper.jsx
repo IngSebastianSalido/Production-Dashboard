@@ -25,7 +25,7 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
     try {
       const [summaryResp, cutsResp, stopsResp] = await Promise.all([
         axios.get(`${serverApiUrl}/api/reports/production-summary`, { params: { from, to, recipe: recipe || undefined } }),
-        axios.get(`${serverApiUrl}/api/rea-production-eolo-cuts-oee`, { params: { from, to, ratePerHour: 154 } }),
+        axios.get(`${serverApiUrl}/api/rea-production-eolo-cuts-oee`, { params: { from, to, recipe: recipe || undefined, ratePerHour: 154 } }),
         axios.get(`${serverApiUrl}/api/paros`),
       ]);
 
@@ -33,11 +33,10 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
   // cutsResp.data.cuts -> array of enriched cuts (startISO,endISO,pn,piezasTotales,durationMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,stations)
   setDaysByMachine(cutsResp.data.cuts || []);
       // store backend-provided averages (fractions 0..1)
-      setOeeAverages(cutsResp.data.summary || null);
-      return cutsResp.data.summary || null;
+      const backendSummary = cutsResp.data.summary || null;
+      setOeeAverages(backendSummary);
       setStops(parseStops(stopsResp.data || []));
-      // unreachable but keep structure
-      return null;
+      return backendSummary;
     } catch (err) {
       console.error('Error fetching OEE data', err);
       return null;
@@ -148,6 +147,13 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
   };
 
   const [oeeSummary, setOeeSummary] = useState(null);
+  // Table filters
+  const [filterPN, setFilterPN] = useState('');
+  const [filterChangeOver, setFilterChangeOver] = useState(''); // '', 'Si', 'No'
+  const [filterMinPiezas, setFilterMinPiezas] = useState('');
+  const [filterMinDisp, setFilterMinDisp] = useState(''); // %
+  const [filterMinEfic, setFilterMinEfic] = useState(''); // %
+  const [filterMinCal, setFilterMinCal] = useState(''); // %
 
   useEffect(() => {
     const run = async () => {
@@ -191,6 +197,26 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
     ],
   });
 
+  // Apply client-side filters to cuts list
+  const filteredCuts = (daysByMachine || []).filter(d => {
+    if (filterPN && !String(d.pn || '').toLowerCase().includes(filterPN.toLowerCase())) return false;
+    if (filterChangeOver && String(d.changeOver || 'No') !== filterChangeOver) return false;
+    if (filterMinPiezas && (d.piezasTotales || 0) < Number(filterMinPiezas)) return false;
+    if (filterMinDisp && typeof d.disponibilidad === 'number' && (d.disponibilidad * 100) < Number(filterMinDisp)) return false;
+    if (filterMinEfic && typeof d.eficiencia === 'number' && (d.eficiencia * 100) < Number(filterMinEfic)) return false;
+    // d.calidad might be null; compute from EOL if needed
+    let calPct = null;
+    if (typeof d.calidad === 'number') calPct = d.calidad * 100;
+    else {
+      const totalOkCalc = d.eolOk || ((d.estaciones || []).reduce((s, st) => s + (st.ok || 0), 0));
+      const totalNokCalc = d.eolNok || ((d.estaciones || []).reduce((s, st) => s + (st.nok || 0), 0));
+      calPct = (totalOkCalc + totalNokCalc) > 0 ? (totalOkCalc / (totalOkCalc + totalNokCalc)) * 100 : null;
+    }
+    if (filterMinCal && calPct !== null && calPct < Number(filterMinCal)) return false;
+    return true;
+  });
+  const hasActiveFilters = !!(filterPN || filterChangeOver || filterMinPiezas || filterMinDisp || filterMinEfic || filterMinCal);
+
   return (
     <div>
       <h2>OEE - {from} → {to}</h2>
@@ -212,25 +238,76 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
         </div>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3 style={{ marginTop: 18 }}>Cortes / Producciones (por timestamp)</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+        <div>
+          <h3 style={{ marginTop: 18, marginBottom: 8 }}>
+            Cortes / Producciones (por timestamp)
+            <span style={{ color: '#aaa', fontSize: 13, marginLeft: 10 }}>
+              Mostrando {filteredCuts.length} de {daysByMachine.length}
+            </span>
+          </h3>
+          {hasActiveFilters && (
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
+              {filterPN && <span style={chip}>PN contiene: "{filterPN}"</span>}
+              {filterChangeOver && <span style={chip}>Change Over: {filterChangeOver}</span>}
+              {filterMinPiezas && <span style={chip}>Min Piezas: {filterMinPiezas}</span>}
+              {filterMinDisp && <span style={chip}>Disp ≥ {filterMinDisp}%</span>}
+              {filterMinEfic && <span style={chip}>Efic ≥ {filterMinEfic}%</span>}
+              {filterMinCal && <span style={chip}>Cal ≥ {filterMinCal}%</span>}
+              <button style={{ ...styles.btn, background: '#555' }} onClick={() => {
+                setFilterPN(''); setFilterChangeOver(''); setFilterMinPiezas(''); setFilterMinDisp(''); setFilterMinEfic(''); setFilterMinCal('');
+              }}>Limpiar filtros</button>
+            </div>
+          )}
+        </div>
         <div>
           <button style={{ ...styles.btn, marginRight: 8 }} onClick={async () => {
             try {
               setLoading(true);
               // Trigger generation and fetch enriched CSV on server, endpoint will also return JSON
-              await axios.get(`${serverApiUrl}/api/rea-production-eolo-cuts-oee`, { params: { from, to, ratePerHour: 154 } });
+              await axios.get(`${serverApiUrl}/api/rea-production-eolo-cuts-oee`, { params: { from, to, recipe: recipe || undefined, ratePerHour: 154 } });
               // Then download the generated CSV from static folder
               const resp = await axios.get(`${serverApiUrl}/static/EOL_Cuts_OEE.csv`, { responseType: 'blob' });
               const blob = new Blob([resp.data], { type: resp.headers['content-type'] || 'text/csv' });
               const url = window.URL.createObjectURL(blob);
               const a = document.createElement('a');
-              a.href = url; a.download = `EOL_Cuts_OEE_${from || 'all'}_${to || 'all'}.csv`; document.body.appendChild(a); a.click(); a.remove(); window.URL.revokeObjectURL(url);
+              a.href = url; a.download = `EOL_Cuts_OEE_${from || 'all'}_${to || 'all'}${recipe ? '_' + recipe : ''}.csv`; document.body.appendChild(a); a.click(); a.remove(); window.URL.revokeObjectURL(url);
             } catch (err) {
               console.error('Error generando/descargando CSV OEE', err);
               alert('Error generando o descargando CSV OEE. Revisa la consola.');
             } finally { setLoading(false); }
           }}>Descargar CSV OEE</button>
+        </div>
+      </div>
+      {/* Filters toolbar */}
+      <div style={filtersWrap}>
+        <div style={filterItemSm}>
+          <label style={labelSm}>PN</label>
+          <input value={filterPN} onChange={e => setFilterPN(e.target.value)} placeholder="Buscar PN..." style={inputSm} />
+        </div>
+        <div style={filterItemSm}>
+          <label style={labelSm}>Change Over</label>
+          <select value={filterChangeOver} onChange={e => setFilterChangeOver(e.target.value)} style={inputSm}>
+            <option value="">Todos</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div style={filterItemSm}>
+          <label style={labelSm}>Min Piezas</label>
+          <input type="number" min="0" value={filterMinPiezas} onChange={e => setFilterMinPiezas(e.target.value)} placeholder="0" style={inputSm} />
+        </div>
+        <div style={filterItemSm}>
+          <label style={labelSm}>Disp ≥ %</label>
+          <input type="number" min="0" max="100" value={filterMinDisp} onChange={e => setFilterMinDisp(e.target.value)} placeholder="%" style={inputSm} />
+        </div>
+        <div style={filterItemSm}>
+          <label style={labelSm}>Efic ≥ %</label>
+          <input type="number" min="0" max="100" value={filterMinEfic} onChange={e => setFilterMinEfic(e.target.value)} placeholder="%" style={inputSm} />
+        </div>
+        <div style={filterItemSm}>
+          <label style={labelSm}>Cal ≥ %</label>
+          <input type="number" min="0" max="100" value={filterMinCal} onChange={e => setFilterMinCal(e.target.value)} placeholder="%" style={inputSm} />
         </div>
       </div>
   <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 8 }}>
@@ -251,10 +328,10 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
           </tr>
         </thead>
         <tbody>
-          {daysByMachine.length === 0 ? (
+          {filteredCuts.length === 0 ? (
             <tr><td colSpan={12} style={{ color: '#ccc', padding: 8 }}>No hay cortes para el rango seleccionado</td></tr>
           ) : (
-            daysByMachine.map((d, idx) => {
+            filteredCuts.map((d, idx) => {
               // the enriched endpoint returns: startISO,endISO,pn,piezasTotales,durationMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,estaciones
               const totalOk = d.eolOk || ((d.estaciones || []).reduce((s, st) => s + (st.ok || 0), 0));
               const totalNok = d.eolNok || ((d.estaciones || []).reduce((s, st) => s + (st.nok || 0), 0));
@@ -312,5 +389,11 @@ const styles = {
     cursor: 'pointer'
   }
 };
+
+const labelSm = { color: '#ccc', fontSize: 12, marginBottom: 4 };
+const inputSm = { padding: '6px 8px', borderRadius: 6, border: '1px solid #444', background: '#222', color: '#fff', minWidth: 160 };
+const chip = { background: '#444', color: '#eee', borderRadius: 20, padding: '4px 10px', fontSize: 12 };
+const filtersWrap = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, alignItems: 'end', marginBottom: 8 };
+const filterItemSm = { display: 'flex', flexDirection: 'column' };
 
 export default ReportsOEEWrapper;
