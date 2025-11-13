@@ -3,6 +3,69 @@ import axios from 'axios';
 import { Doughnut } from 'react-chartjs-2';
 import { startOfDay, endOfDay, parseYYYYMMDD } from '../utils/dateUtils';
 
+const getCutRecipeString = (cut = {}) => String(cut.recipe || cut.receta || cut.pn || '');
+const isReworkEntry = (cut = {}) => getCutRecipeString(cut).toLowerCase().includes('rework');
+const getEolTotals = (cut = {}) => {
+  const stations = Array.isArray(cut.estaciones) ? cut.estaciones : [];
+  const stationOk = stations.reduce((sum, st) => sum + (Number(st.ok) || 0), 0);
+  const stationNok = stations.reduce((sum, st) => sum + (Number(st.nok) || 0), 0);
+  const ok = Number(cut.eolOk);
+  const nok = Number(cut.eolNok);
+  return {
+    ok: !Number.isNaN(ok) ? ok : stationOk,
+    nok: !Number.isNaN(nok) ? nok : stationNok,
+  };
+};
+const summarizeCutsForDisplay = (cuts, ratePerHour) => {
+  const safeRate = Number(ratePerHour) || 0;
+  if (!Array.isArray(cuts) || cuts.length === 0) {
+    return {
+      disponibilidad: 0,
+      downtimeMin: 0,
+      tiempoDisponibleMin: 0,
+      quality: { ok: 0, nok: 0, percentage: 0 },
+      eficiencia: { rate: safeRate, totalFinal: 0, porcentaje: 0 },
+    };
+  }
+
+  const totals = cuts.reduce(
+    (acc, cut) => {
+      const duration = Number(cut.durationMinutes) || 0;
+      const downtime = Number(cut.downtimeMinutes) || 0;
+      acc.duration += duration;
+      acc.downtime += downtime;
+      acc.available += Math.max(0, duration - downtime);
+      const { ok, nok } = getEolTotals(cut);
+      acc.ok += ok;
+      acc.nok += nok;
+      acc.pieces += Number(cut.piezasTotales) || 0;
+      return acc;
+    },
+    { duration: 0, downtime: 0, available: 0, ok: 0, nok: 0, pieces: 0 }
+  );
+
+  const disponibilidadPct = totals.duration > 0 ? (totals.available / totals.duration) * 100 : 0;
+  const qualityPct = (totals.ok + totals.nok) > 0 ? (totals.ok / (totals.ok + totals.nok)) * 100 : 0;
+  const expectedPieces = safeRate > 0 ? safeRate * (totals.duration / 60) : 0;
+  const eficienciaPct = expectedPieces > 0 ? (totals.pieces / expectedPieces) * 100 : 0;
+
+  return {
+    disponibilidad: Number(disponibilidadPct.toFixed(2)),
+    downtimeMin: Math.round(totals.downtime),
+    tiempoDisponibleMin: Math.round(totals.duration),
+    quality: {
+      ok: totals.ok,
+      nok: totals.nok,
+      percentage: Number(qualityPct.toFixed(2)),
+    },
+    eficiencia: {
+      rate: safeRate,
+      totalFinal: totals.pieces,
+      porcentaje: Number(eficienciaPct.toFixed(2)),
+    },
+  };
+};
+
 // Simple OEE wrapper component that fetches needed data and computes
 // Disponibilidad, Calidad y Eficiencia. It also shows a table per "corte" (production resets)
 
@@ -154,6 +217,7 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
   const [filterMinDisp, setFilterMinDisp] = useState(''); // %
   const [filterMinEfic, setFilterMinEfic] = useState(''); // %
   const [filterMinCal, setFilterMinCal] = useState(''); // %
+  const [filterRework, setFilterRework] = useState('');
 
   useEffect(() => {
     const run = async () => {
@@ -184,9 +248,6 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
     // eslint-disable-next-line
   }, [from, to, recipe]);
 
-  if (!from || !to) return <div>Selecciona un rango de fechas para ver OEE.</div>;
-  if (loading || !oeeSummary) return <div>Cargando métricas OEE...</div>;
-
   const donutOptions = (value, label) => ({
     labels: [label, 'Resto'],
     datasets: [
@@ -204,6 +265,9 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
     if (filterMinPiezas && (d.piezasTotales || 0) < Number(filterMinPiezas)) return false;
     if (filterMinDisp && typeof d.disponibilidad === 'number' && (d.disponibilidad * 100) < Number(filterMinDisp)) return false;
     if (filterMinEfic && typeof d.eficiencia === 'number' && (d.eficiencia * 100) < Number(filterMinEfic)) return false;
+    const isRework = isReworkEntry(d);
+    if (filterRework === 'only' && !isRework) return false;
+    if (filterRework === 'exclude' && isRework) return false;
     // d.calidad might be null; compute from EOL if needed
     let calPct = null;
     if (typeof d.calidad === 'number') calPct = d.calidad * 100;
@@ -215,26 +279,35 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
     if (filterMinCal && calPct !== null && calPct < Number(filterMinCal)) return false;
     return true;
   });
-  const hasActiveFilters = !!(filterPN || filterChangeOver || filterMinPiezas || filterMinDisp || filterMinEfic || filterMinCal);
+  const hasActiveFilters = !!(filterPN || filterChangeOver || filterMinPiezas || filterMinDisp || filterMinEfic || filterMinCal || filterRework);
+  const oeeRate = oeeSummary?.eficiencia?.rate || 154;
+  const filteredSummary =
+    Array.isArray(daysByMachine) && daysByMachine.length > 0
+      ? summarizeCutsForDisplay(filteredCuts, oeeRate)
+      : null;
+  const circleSummary = filteredSummary || oeeSummary;
+
+  if (!from || !to) return <div>Selecciona un rango de fechas para ver OEE.</div>;
+  if (loading || !oeeSummary) return <div>Cargando metricas OEE...</div>;
 
   return (
     <div>
       <h2>OEE - {from} → {to}</h2>
       <div style={{ display: 'flex', gap: 18, alignItems: 'center', marginBottom: 18 }}>
         <div style={{ width: 180, textAlign: 'center' }}>
-          <Doughnut data={donutOptions(oeeSummary.disponibilidad, 'Disponibilidad %')} />
-          <div style={{ color: '#fff', marginTop: 8 }}>Disponibilidad: {oeeSummary.disponibilidad}%</div>
-          <div style={{ color: '#ccc', fontSize: 12 }}>Downtime: {oeeSummary.downtimeMin} min</div>
+          <Doughnut data={donutOptions(circleSummary.disponibilidad, 'Disponibilidad %')} />
+          <div style={{ color: '#fff', marginTop: 8 }}>Disponibilidad: {circleSummary.disponibilidad}%</div>
+          <div style={{ color: '#ccc', fontSize: 12 }}>Downtime: {circleSummary.downtimeMin != null ? circleSummary.downtimeMin : 'N/A'} min</div>
         </div>
         <div style={{ width: 180, textAlign: 'center' }}>
-          <Doughnut data={donutOptions(oeeSummary.quality.percentage, 'Calidad %')} />
-          <div style={{ color: '#fff', marginTop: 8 }}>Calidad: {oeeSummary.quality.percentage}%</div>
-          <div style={{ color: '#ccc', fontSize: 12 }}>OK: {oeeSummary.quality.ok} - NOK: {oeeSummary.quality.nok}</div>
+          <Doughnut data={donutOptions(circleSummary.quality.percentage, 'Calidad %')} />
+          <div style={{ color: '#fff', marginTop: 8 }}>Calidad: {circleSummary.quality.percentage}%</div>
+          <div style={{ color: '#ccc', fontSize: 12 }}>OK: {circleSummary.quality.ok ?? '-'} - NOK: {circleSummary.quality.nok ?? '-'}</div>
         </div>
         <div style={{ width: 180, textAlign: 'center' }}>
-          <Doughnut data={donutOptions(oeeSummary.eficiencia.porcentaje, 'Eficiencia %')} />
-          <div style={{ color: '#fff', marginTop: 8 }}>Eficiencia: {oeeSummary.eficiencia.porcentaje}%</div>
-          <div style={{ color: '#ccc', fontSize: 12 }}>Rate: {oeeSummary.eficiencia.rate} /h - Piezas: {oeeSummary.eficiencia.totalFinal}</div>
+          <Doughnut data={donutOptions(circleSummary.eficiencia.porcentaje, 'Eficiencia %')} />
+          <div style={{ color: '#fff', marginTop: 8 }}>Eficiencia: {circleSummary.eficiencia.porcentaje}%</div>
+          <div style={{ color: '#ccc', fontSize: 12 }}>Rate: {circleSummary.eficiencia.rate} /h - Piezas: {circleSummary.eficiencia.totalFinal ?? '-'}</div>
         </div>
       </div>
 
@@ -251,11 +324,13 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
               {filterPN && <span style={chip}>PN contiene: "{filterPN}"</span>}
               {filterChangeOver && <span style={chip}>Change Over: {filterChangeOver}</span>}
               {filterMinPiezas && <span style={chip}>Min Piezas: {filterMinPiezas}</span>}
-              {filterMinDisp && <span style={chip}>Disp ≥ {filterMinDisp}%</span>}
-              {filterMinEfic && <span style={chip}>Efic ≥ {filterMinEfic}%</span>}
-              {filterMinCal && <span style={chip}>Cal ≥ {filterMinCal}%</span>}
+              {filterMinDisp && <span style={chip}>Disp {'>='} {filterMinDisp}%</span>}
+              {filterMinEfic && <span style={chip}>Efic {'>='} {filterMinEfic}%</span>}
+              {filterMinCal && <span style={chip}>Cal {'>='} {filterMinCal}%</span>}
+              {filterRework === 'only' && <span style={chip}>Solo Rework</span>}
+              {filterRework === 'exclude' && <span style={chip}>Sin Rework</span>}
               <button style={{ ...styles.btn, background: '#555' }} onClick={() => {
-                setFilterPN(''); setFilterChangeOver(''); setFilterMinPiezas(''); setFilterMinDisp(''); setFilterMinEfic(''); setFilterMinCal('');
+                setFilterPN(''); setFilterChangeOver(''); setFilterMinPiezas(''); setFilterMinDisp(''); setFilterMinEfic(''); setFilterMinCal(''); setFilterRework('');
               }}>Limpiar filtros</button>
             </div>
           )}
@@ -280,37 +355,51 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
         </div>
       </div>
       {/* Filters toolbar */}
-      <div style={filtersWrap}>
-        <div style={filterItemSm}>
-          <label style={labelSm}>PN</label>
-          <input value={filterPN} onChange={e => setFilterPN(e.target.value)} placeholder="Buscar PN..." style={inputSm} />
+      <div style={filtersPanel}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+          <span style={{ color: '#fff', fontWeight: 600 }}>Filtros</span>
+          <span style={{ color: '#888', fontSize: 12 }}>Ajusta los criterios para ver solo los cortes relevantes.</span>
         </div>
-        <div style={filterItemSm}>
-          <label style={labelSm}>Change Over</label>
-          <select value={filterChangeOver} onChange={e => setFilterChangeOver(e.target.value)} style={inputSm}>
-            <option value="">Todos</option>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-          </select>
-        </div>
-        <div style={filterItemSm}>
-          <label style={labelSm}>Min Piezas</label>
-          <input type="number" min="0" value={filterMinPiezas} onChange={e => setFilterMinPiezas(e.target.value)} placeholder="0" style={inputSm} />
-        </div>
-        <div style={filterItemSm}>
-          <label style={labelSm}>Disp ≥ %</label>
-          <input type="number" min="0" max="100" value={filterMinDisp} onChange={e => setFilterMinDisp(e.target.value)} placeholder="%" style={inputSm} />
-        </div>
-        <div style={filterItemSm}>
-          <label style={labelSm}>Efic ≥ %</label>
-          <input type="number" min="0" max="100" value={filterMinEfic} onChange={e => setFilterMinEfic(e.target.value)} placeholder="%" style={inputSm} />
-        </div>
-        <div style={filterItemSm}>
-          <label style={labelSm}>Cal ≥ %</label>
-          <input type="number" min="0" max="100" value={filterMinCal} onChange={e => setFilterMinCal(e.target.value)} placeholder="%" style={inputSm} />
+        <div style={filtersWrap}>
+          <div style={filterItemSm}>
+            <label style={labelSm}>PN</label>
+            <input value={filterPN} onChange={e => setFilterPN(e.target.value)} placeholder="Buscar PN..." style={inputSm} />
+          </div>
+          <div style={filterItemSm}>
+            <label style={labelSm}>Change Over</label>
+            <select value={filterChangeOver} onChange={e => setFilterChangeOver(e.target.value)} style={inputSm}>
+              <option value="">Todos</option>
+              <option value="Si">Si</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div style={filterItemSm}>
+            <label style={labelSm}>Min Piezas</label>
+            <input type="number" min="0" value={filterMinPiezas} onChange={e => setFilterMinPiezas(e.target.value)} placeholder="0" style={inputSm} />
+          </div>
+          <div style={filterItemSm}>
+            <label style={labelSm}>Disp {'>='} %</label>
+            <input type="number" min="0" max="100" value={filterMinDisp} onChange={e => setFilterMinDisp(e.target.value)} placeholder="%" style={inputSm} />
+          </div>
+          <div style={filterItemSm}>
+            <label style={labelSm}>Efic {'>='} %</label>
+            <input type="number" min="0" max="100" value={filterMinEfic} onChange={e => setFilterMinEfic(e.target.value)} placeholder="%" style={inputSm} />
+          </div>
+          <div style={filterItemSm}>
+            <label style={labelSm}>Cal {'>='} %</label>
+            <input type="number" min="0" max="100" value={filterMinCal} onChange={e => setFilterMinCal(e.target.value)} placeholder="%" style={inputSm} />
+          </div>
+          <div style={filterItemSm}>
+            <label style={labelSm}>Rework</label>
+            <select value={filterRework} onChange={e => setFilterRework(e.target.value)} style={inputSm}>
+              <option value="">Todos</option>
+              <option value="only">Solo Rework</option>
+              <option value="exclude">Sin Rework</option>
+            </select>
+          </div>
         </div>
       </div>
-  <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 8 }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 12 }}>
         <thead>
           <tr>
             <th style={th}>Fecha</th>
@@ -333,9 +422,8 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
           ) : (
             filteredCuts.map((d, idx) => {
               // the enriched endpoint returns: startISO,endISO,pn,piezasTotales,durationMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,estaciones
-              const totalOk = d.eolOk || ((d.estaciones || []).reduce((s, st) => s + (st.ok || 0), 0));
-              const totalNok = d.eolNok || ((d.estaciones || []).reduce((s, st) => s + (st.nok || 0), 0));
-              const rate = oeeSummary?.eficiencia?.rate || 154;
+              const { ok: totalOk, nok: totalNok } = getEolTotals(d);
+              const rate = oeeRate;
               // eficiencia per cut: piezasTotales / (rate * durationHours)
               const durationHours = Math.max(1/60, (d.durationMinutes || 0) / 60);
               const efficiencyPct = rate > 0 ? ((d.piezasTotales || 0) / (rate * durationHours)) * 100 : 0;
@@ -391,9 +479,10 @@ const styles = {
 };
 
 const labelSm = { color: '#ccc', fontSize: 12, marginBottom: 4 };
-const inputSm = { padding: '6px 8px', borderRadius: 6, border: '1px solid #444', background: '#222', color: '#fff', minWidth: 160 };
+const inputSm = { padding: '6px 8px', borderRadius: 6, border: '1px solid #444', background: '#222', color: '#fff', minWidth: 160, width: '100%' };
 const chip = { background: '#444', color: '#eee', borderRadius: 20, padding: '4px 10px', fontSize: 12 };
-const filtersWrap = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, alignItems: 'end', marginBottom: 8 };
-const filterItemSm = { display: 'flex', flexDirection: 'column' };
+const filtersPanel = { marginTop: 18, padding: '16px 20px', background: '#1b1f27', borderRadius: 12, border: '1px solid #2a2f3a', boxShadow: '0 10px 25px rgba(0,0,0,0.35)' };
+const filtersWrap = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, alignItems: 'end', marginTop: 12 };
+const filterItemSm = { display: 'flex', flexDirection: 'column', gap: 6 };
 
 export default ReportsOEEWrapper;

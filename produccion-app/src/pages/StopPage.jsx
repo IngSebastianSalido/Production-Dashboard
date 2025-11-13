@@ -47,7 +47,11 @@ const StopPage = () => {
       />
       <div className="table-container">
         <h1>Stops Management</h1>
-        <EditableTable />
+        <EditableTable
+          serverApiUrl={serverApiUrl}
+          options={options}
+          categories={categories}
+        />
       </div>
     </div>
   );

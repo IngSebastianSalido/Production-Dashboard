@@ -1,11 +1,25 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import MaterialTable from '@material-table/core';
 import { parseYYYYMMDD } from '../utils/dateUtils';
+import Modal from './Modal';
+import StopRegister from './StopRegister';
+import './EditableTable.css';
 
-const EditableTable = () => {
+const EditableTable = ({ options: optionsProp, categories: categoriesProp, serverApiUrl: serverApiUrlProp }) => {
   const [stops, setStops] = useState([]);
   const [loading, setLoading] = useState(true); // Track loading state
-  const serverApiUrl = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editInitialData, setEditInitialData] = useState(null);
+  const [rowBeingEdited, setRowBeingEdited] = useState(null);
+  const [savingEdit, setSavingEdit] = useState(false);
+  const serverApiUrl = serverApiUrlProp || import.meta.env.VITE_SERVER_API_URL || 'http://localhost:3000';
+  const formOptions = {
+    areas: optionsProp?.areas ?? [],
+    lineas: optionsProp?.lineas ?? [],
+    estaciones: optionsProp?.estaciones ?? [],
+    modosFalla: optionsProp?.modosFalla ?? [],
+  };
+  const formCategories = Array.isArray(categoriesProp) ? categoriesProp : [];
 
   // Filtros avanzados (barra superior)
   const [filters, setFilters] = useState({
@@ -63,135 +77,204 @@ const EditableTable = () => {
     }
   };
 
-const handleRowUpdate = async (newData, oldData, resolve) => {
-  try {
-    // Confirmación si la duración supera 60 minutos (considerando posible cruce de medianoche)
-    const computeMinutes = (hp, ha) => {
-      if (!hp || !ha) return 0;
-      const [h1, m1] = String(hp).split(':').map(Number);
-      const [h2, m2] = String(ha).split(':').map(Number);
-      const start = (isNaN(h1) ? 0 : h1) * 60 + (isNaN(m1) ? 0 : m1);
-      let end = (isNaN(h2) ? 0 : h2) * 60 + (isNaN(m2) ? 0 : m2);
-      if (end <= start) end += 24 * 60; // tratar como siguiente día si es menor o igual
-      return end - start;
-    };
+  const crossesMidnight = (horaParo, horaArranque) => {
+    if (!horaParo || !horaArranque) return false;
+    const [h1, m1] = String(horaParo).split(':').map(Number);
+    const [h2, m2] = String(horaArranque).split(':').map(Number);
+    if (Number.isNaN(h1) || Number.isNaN(h2)) return false;
+    if (h2 < h1) return true;
+    if (h2 === h1) {
+      const startMin = Number.isNaN(m1) ? 0 : m1;
+      const endMin = Number.isNaN(m2) ? 0 : m2;
+      return endMin <= startMin;
+    }
+    return false;
+  };
 
-    if (newData.hora_paro && newData.hora_arranque) {
-      const minutes = computeMinutes(newData.hora_paro, newData.hora_arranque);
-      if (minutes > 60) {
-        const proceed = window.confirm(`El paro dura ${minutes} minutos (> 60). ¿Deseas continuar con la actualización?`);
-        if (!proceed) {
-          resolve();
-          return;
-        }
+  const normalizeFechaValue = (fechaStr) => {
+    if (!fechaStr) return '';
+    if (String(fechaStr).includes(' a ')) {
+      const [fromStr] = String(fechaStr).split(' a ').map((s) => s.trim());
+      return fromStr;
+    }
+    return String(fechaStr).trim();
+  };
+
+  const mapRowToFormData = (row) => ({
+    fecha: normalizeFechaValue(row.fecha),
+    area: row.area || '',
+    linea: row.linea || '',
+    pn: row.pn || '',
+    estacion: row.estacion || '',
+    modoFalla: row.modo_falla || '',
+    descripcionModoFalla: row.descripcion_modo_falla || '',
+    categoria: row.categoria || '',
+    hora_paro: row.hora_paro || '',
+    hora_arranque: row.hora_arranque || '',
+    descripcion: row.descripcion || '',
+    cruza_medianoche: row.cruza_medianoche ?? crossesMidnight(row.hora_paro, row.hora_arranque),
+  });
+
+  const openEditModal = (rowData) => {
+    setRowBeingEdited(rowData);
+    setEditInitialData(mapRowToFormData(rowData));
+    setEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setEditModalOpen(false);
+    setEditInitialData(null);
+    setRowBeingEdited(null);
+  };
+
+  const handleEditSubmit = async (updatedForm) => {
+    if (!rowBeingEdited) return;
+    setSavingEdit(true);
+    try {
+      const deleteResponse = await fetch(`${serverApiUrl}/api/paros`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fecha: rowBeingEdited.fecha,
+          area: rowBeingEdited.area,
+          linea: rowBeingEdited.linea,
+          pn: rowBeingEdited.pn,
+          hora_paro: rowBeingEdited.hora_paro,
+        }),
+      });
+
+      if (!deleteResponse.ok) {
+        const message = await deleteResponse.text();
+        throw new Error(message || 'No se pudo eliminar el registro original');
       }
+
+      const createResponse = await fetch(`${serverApiUrl}/api/paros`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedForm),
+      });
+
+      if (!createResponse.ok) {
+        const message = await createResponse.text();
+        throw new Error(message || 'No se pudo guardar el registro actualizado');
+      }
+
+      alert('Paro actualizado correctamente');
+      closeEditModal();
+      fetchStops();
+    } catch (error) {
+      console.error('Error al actualizar el registro:', error);
+      alert(`Error al actualizar el registro: ${error.message || error}`);
+    } finally {
+      setSavingEdit(false);
     }
+  };
 
-    // Transformar los nombres de los campos para que coincidan con los esperados por el backend
-    const transformedData = {
-      ...newData,
-      modoFalla: newData.modo_falla || oldData.modo_falla || '', // Transformar a camelCase
-      descripcionModoFalla: newData.descripcion_modo_falla || oldData.descripcion_modo_falla || '', // Transformar a camelCase
-    };
+  const compactCellStyle = (minWidth = 120, align = 'center') => ({
+    minWidth,
+    whiteSpace: 'nowrap',
+    color: '#f8fafc',
+    fontSize: '0.95rem',
+    textAlign: align,
+  });
 
-    console.log("Datos transformados enviados al backend (POST):", transformedData);
+  const wrapCellStyle = (minWidth = 200) => ({
+    minWidth,
+    whiteSpace: 'normal',
+    wordBreak: 'break-word',
+    color: '#f8fafc',
+    fontSize: '0.95rem',
+  });
 
-    // Eliminar el registro original
-    const deleteResponse = await fetch(`${serverApiUrl}/api/paros`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
+  const columns = [
+    {
+      title: 'Fecha',
+      field: 'fecha',
+      editable: 'never',
+      render: (rowData) => rowData.fecha || 'N/A',
+      cellStyle: compactCellStyle(130),
+      headerStyle: { minWidth: 130 },
+    },
+    { title: 'Área', field: 'area', cellStyle: compactCellStyle(140), headerStyle: { minWidth: 140 } },
+    { title: 'Línea', field: 'linea', cellStyle: compactCellStyle(140), headerStyle: { minWidth: 140 } },
+    { title: 'PN', field: 'pn', cellStyle: compactCellStyle(130), headerStyle: { minWidth: 130 } },
+    { title: 'Hora de Paro', field: 'hora_paro', cellStyle: compactCellStyle(130), headerStyle: { minWidth: 130 } },
+    { title: 'Hora de Arranque', field: 'hora_arranque', cellStyle: compactCellStyle(150), headerStyle: { minWidth: 150 } },
+    {
+      title: 'Duración (min)',
+      field: 'diferencia_minutos',
+      cellStyle: compactCellStyle(150),
+      headerStyle: { minWidth: 150 },
+    },
+    { title: 'Categoría', field: 'categoria', cellStyle: compactCellStyle(150), headerStyle: { minWidth: 150 } },
+    { title: 'Estación', field: 'estacion', cellStyle: compactCellStyle(150), headerStyle: { minWidth: 150 } },
+    {
+      title: 'Modo de Falla',
+      field: 'modo_falla',
+      cellStyle: compactCellStyle(160),
+      headerStyle: { minWidth: 160 },
+      editComponent: (props) => (
+        <input
+          type="text"
+          value={props.value || ''}
+          onChange={(e) => {
+            console.log('Nuevo valor para Modo de Falla:', e.target.value);
+            props.onChange(e.target.value);
+          }}
+        />
+      ),
+    },
+    {
+      title: 'Descripción Modo Falla',
+      field: 'descripcion_modo_falla',
+      cellStyle: wrapCellStyle(220),
+      headerStyle: { minWidth: 220 },
+      editComponent: (props) => (
+        <input
+          type="text"
+          value={props.value || ''}
+          onChange={(e) => {
+            console.log('Nuevo valor para Descripción Modo Falla:', e.target.value);
+            props.onChange(e.target.value);
+          }}
+        />
+      ),
+    },
+    {
+      title: 'Descripción',
+      field: 'descripcion',
+      cellStyle: wrapCellStyle(220),
+      headerStyle: { minWidth: 220 },
+    },
+    {
+      title: 'Acciones',
+      field: 'actions',
+      sorting: false,
+      filtering: false,
+      cellStyle: {
+        minWidth: 140,
+        textAlign: 'center',
       },
-      body: JSON.stringify({
-        fecha: oldData.fecha,
-        area: oldData.area,
-        linea: oldData.linea,
-        pn: oldData.pn,
-        hora_paro: oldData.hora_paro,
-      }),
-    });
-
-    if (!deleteResponse.ok) {
-      console.error('Error al eliminar el registro:', await deleteResponse.text());
-      resolve();
-      return;
-    }
-
-    // Crear un nuevo registro con los datos transformados
-    const createResponse = await fetch(`${serverApiUrl}/api/paros`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(transformedData),
-    });
-
-    if (!createResponse.ok) {
-      console.error('Error al crear el nuevo registro:', await createResponse.text());
-      resolve();
-      return;
-    }
-
-    // Actualizar la tabla en el frontend
-    const updatedStops = [...stops];
-    const index = oldData.tableData.id;
-    updatedStops[index] = newData;
-    setStops(updatedStops);
-
-    resolve();
-  } catch (error) {
-    console.error('Error al actualizar el registro:', error);
-    resolve();
-  }
-};
-
-const columns = [
-  { title: 'Fecha', field: 'fecha', render: (rowData) => rowData.fecha || 'N/A' },
-  { title: 'Área', field: 'area', width: '10%' },
-  { title: 'Línea', field: 'linea', width: '10%' },
-  { title: 'PN', field: 'pn', width: '10%' },
-  { title: 'Hora de Paro', field: 'hora_paro', width: '10%' },
-  { title: 'Hora de Arranque', field: 'hora_arranque', width: '10%' },
-  { title: 'Duración (min)', field: 'diferencia_minutos', width: '10%' },
-  { title: 'Categoría', field: 'categoria', width: '10%' },
-
-  { title: 'Estación', field: 'estacion', width: '10%' },
-  {
-    title: 'Modo de Falla',
-    field: 'modo_falla',
-    width: '10%',
-    editComponent: (props) => (
-      <input
-        type="text"
-        value={props.value || ''}
-        onChange={(e) => {
-          console.log('Nuevo valor para Modo de Falla:', e.target.value);
-          props.onChange(e.target.value);
-        }}
-      />
-    ),
-  },
-  {
-    title: 'Descripción Modo Falla',
-    field: 'descripcion_modo_falla',
-    width: '20%',
-    editComponent: (props) => (
-      <input
-        type="text"
-        value={props.value || ''}
-        onChange={(e) => {
-          console.log('Nuevo valor para Descripción Modo Falla:', e.target.value);
-          props.onChange(e.target.value);
-        }}
-      />
-    ),
-  },
-  { title: 'Descripción', field: 'descripcion', width: '20%' },
-
-];
-
-  console.log("Columns:", columns);
-
+      headerStyle: { minWidth: 140 },
+      render: (rowData) => (
+        <button
+          type="button"
+          className="table-action-button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openEditModal(rowData);
+          }}
+        >
+          Editar
+        </button>
+      ),
+    },
+  ];
   // Opciones únicas para selects de filtros
   const areaOptions = useMemo(
     () => Array.from(new Set(stops.map((s) => s.area).filter(Boolean))).sort(),
@@ -295,169 +378,194 @@ const columns = [
     duracionMax: '',
   });
 
-  return loading ? (
-    <p>Loading stops data...</p>
-  ) : (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      {/* Barra de filtros en recuadro */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-        gap: 12,
-        alignItems: 'end',
-        padding: 12,
-        border: '1px solid #444',
-        borderRadius: 8,
-        background: '#222'
-      }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Desde</label>
-          <input
-            type="date"
-            value={filters.from}
-            onChange={(e) => setFilters((f) => ({ ...f, from: e.target.value }))}
-          />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Hasta</label>
-          <input
-            type="date"
-            value={filters.to}
-            onChange={(e) => setFilters((f) => ({ ...f, to: e.target.value }))}
-          />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Área</label>
-          <select
-            value={filters.area}
-            onChange={(e) => setFilters((f) => ({ ...f, area: e.target.value, linea: '', pn: '', estacion: '', modo_falla: '' }))}
-          >
-            <option value="">Todas</option>
-            {areaOptions.map((a) => (
-              <option key={a} value={a}>{a}</option>
-            ))}
-          </select>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Línea</label>
-          <select
-            value={filters.linea}
-            onChange={(e) => setFilters((f) => ({ ...f, linea: e.target.value, pn: '', estacion: '', modo_falla: '' }))}
-          >
-            <option value="">Todas</option>
-            {lineaOptions.map((l) => (
-              <option key={l} value={l}>{l}</option>
-            ))}
-          </select>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>PN</label>
-          <select
-            value={filters.pn}
-            onChange={(e) => setFilters((f) => ({ ...f, pn: e.target.value }))}
-          >
-            <option value="">Todos</option>
-            {pnOptions.map((p) => (
-              <option key={p} value={p}>{p}</option>
-            ))}
-          </select>
-        </div>
-        {/* Duración (min) - mantener orden de columnas */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Duración mín (min)</label>
-          <input
-            type="number"
-            min={0}
-            step={1}
-            placeholder="0"
-            value={filters.duracionMin}
-            onChange={(e) => setFilters((f) => ({ ...f, duracionMin: e.target.value }))}
-          />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Duración máx (min)</label>
-          <input
-            type="number"
-            min={0}
-            step={1}
-            placeholder=""
-            value={filters.duracionMax}
-            onChange={(e) => setFilters((f) => ({ ...f, duracionMax: e.target.value }))}
-          />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Categoría</label>
-          <select
-            value={filters.categoria}
-            onChange={(e) => setFilters((f) => ({ ...f, categoria: e.target.value }))}
-          >
-            <option value="">Todas</option>
-            {categoriaOptions.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Estación</label>
-          <select
-            value={filters.estacion}
-            onChange={(e) => setFilters((f) => ({ ...f, estacion: e.target.value, modo_falla: '' }))}
-          >
-            <option value="">Todas</option>
-            {estacionOptions.map((e1) => (
-              <option key={e1} value={e1}>{e1}</option>
-            ))}
-          </select>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Modo de Falla</label>
-          <select
-            value={filters.modo_falla}
-            onChange={(e) => setFilters((f) => ({ ...f, modo_falla: e.target.value }))}
-          >
-            <option value="">Todos</option>
-            {modoFallaOptions.map((m) => (
-              <option key={m} value={m}>{m}</option>
-            ))}
-          </select>
-        </div>
-        <button onClick={clearFilters} style={{ height: 36 }}>Limpiar</button>
-      </div>
+  if (loading) {
+    return <p className="stops-loading">Cargando paros...</p>;
+  }
 
-      {/* Tabla con scroll horizontal y altura máxima */}
-      <div style={{ overflowX: 'auto' }}>
+  return (
+    <div className="stops-dashboard">
+      <section className="filters-card">
+        <div className="filters-header">
+          <div>
+            <p className="filters-title">Filtros avanzados</p>
+            <p className="filters-subtitle">Agrega filtros para refinar la lista de paros.</p>
+          </div>
+          <button type="button" className="ghost-button" onClick={clearFilters}>
+            Limpiar
+          </button>
+        </div>
+        <div className="filters-grid">
+          <div className="filter-group">
+            <label htmlFor="filter-from">Desde</label>
+            <input
+              id="filter-from"
+              className="filter-input"
+              type="date"
+              value={filters.from}
+              onChange={(e) => setFilters((f) => ({ ...f, from: e.target.value }))}
+            />
+          </div>
+          <div className="filter-group">
+            <label htmlFor="filter-to">Hasta</label>
+            <input
+              id="filter-to"
+              className="filter-input"
+              type="date"
+              value={filters.to}
+              onChange={(e) => setFilters((f) => ({ ...f, to: e.target.value }))}
+            />
+          </div>
+          <div className="filter-group">
+            <label htmlFor="filter-area">Área</label>
+            <select
+              id="filter-area"
+              className="filter-input"
+              value={filters.area}
+              onChange={(e) =>
+                setFilters((f) => ({ ...f, area: e.target.value, linea: '', pn: '', estacion: '', modo_falla: '' }))
+              }
+            >
+              <option value="">Todas</option>
+              {areaOptions.map((a) => (
+                <option key={a} value={a}>{a}</option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-group">
+            <label htmlFor="filter-linea">Línea</label>
+            <select
+              id="filter-linea"
+              className="filter-input"
+              value={filters.linea}
+              onChange={(e) =>
+                setFilters((f) => ({ ...f, linea: e.target.value, pn: '', estacion: '', modo_falla: '' }))
+              }
+            >
+              <option value="">Todas</option>
+              {lineaOptions.map((l) => (
+                <option key={l} value={l}>{l}</option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-group">
+            <label htmlFor="filter-pn">PN</label>
+            <select
+              id="filter-pn"
+              className="filter-input"
+              value={filters.pn}
+              onChange={(e) => setFilters((f) => ({ ...f, pn: e.target.value }))}
+            >
+              <option value="">Todos</option>
+              {pnOptions.map((p) => (
+                <option key={p} value={p}>{p}</option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-group">
+            <label htmlFor="filter-duration-min">Duración mín (min)</label>
+            <input
+              id="filter-duration-min"
+              className="filter-input"
+              type="number"
+              min={0}
+              step={1}
+              placeholder="0"
+              value={filters.duracionMin}
+              onChange={(e) => setFilters((f) => ({ ...f, duracionMin: e.target.value }))}
+            />
+          </div>
+          <div className="filter-group">
+            <label htmlFor="filter-duration-max">Duración máx (min)</label>
+            <input
+              id="filter-duration-max"
+              className="filter-input"
+              type="number"
+              min={0}
+              step={1}
+              placeholder=""
+              value={filters.duracionMax}
+              onChange={(e) => setFilters((f) => ({ ...f, duracionMax: e.target.value }))}
+            />
+          </div>
+          <div className="filter-group">
+            <label htmlFor="filter-category">Categoría</label>
+            <select
+              id="filter-category"
+              className="filter-input"
+              value={filters.categoria}
+              onChange={(e) => setFilters((f) => ({ ...f, categoria: e.target.value }))}
+            >
+              <option value="">Todas</option>
+              {categoriaOptions.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-group">
+            <label htmlFor="filter-station">Estación</label>
+            <select
+              id="filter-station"
+              className="filter-input"
+              value={filters.estacion}
+              onChange={(e) => setFilters((f) => ({ ...f, estacion: e.target.value, modo_falla: '' }))}
+            >
+              <option value="">Todas</option>
+              {estacionOptions.map((e1) => (
+                <option key={e1} value={e1}>{e1}</option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-group">
+            <label htmlFor="filter-mode">Modo de Falla</label>
+            <select
+              id="filter-mode"
+              className="filter-input"
+              value={filters.modo_falla}
+              onChange={(e) => setFilters((f) => ({ ...f, modo_falla: e.target.value }))}
+            >
+              <option value="">Todos</option>
+              {modoFallaOptions.map((m) => (
+                <option key={m} value={m}>{m}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section className="stops-table-card">
         <MaterialTable
           title="Stops Management"
           columns={columns}
           data={filteredStops}
-          editable={{
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve) => {
-                handleRowUpdate(newData, oldData, resolve);
-              }),
-          }}
           options={{
-            filtering: false, // usamos la barra superior, no la fila de filtros
-            actionsColumnIndex: -1,
+            filtering: false,
             columnsButton: true,
             search: true,
-            padding: 'dense',
+            padding: 'normal',
             headerStyle: {
-              backgroundColor: '#007BFF',
-              color: '#FFF',
-              fontWeight: 'bold',
-              textAlign: 'center',
+              background: 'linear-gradient(90deg, #0f62fe 0%, #3a86ff 50%, #06b6d4 100%)',
+              color: '#fff',
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
               position: 'sticky',
               top: 0,
               zIndex: 1,
             },
-            rowStyle: {
-              backgroundColor: '#333',
+            rowStyle: (rowData) => ({
+              backgroundColor: rowData.tableData.id % 2 === 0 ? '#0b1221' : '#101b33',
+              color: '#f1f5f9',
+            }),
+            searchFieldStyle: {
+              backgroundColor: '#0b1221',
+              borderRadius: 10,
+              color: '#f1f5f9',
+              minWidth: 220,
             },
             pageSize: 10,
             pageSizeOptions: [10, 20, 50],
             maxBodyHeight: '60vh',
-            tableLayout: 'fixed',
+            tableLayout: 'auto',
           }}
           localization={{
             toolbar: {
@@ -471,7 +579,7 @@ const columns = [
               editRow: { deleteText: '¿Eliminar este registro?', cancelTooltip: 'Cancelar', saveTooltip: 'Guardar' },
             },
             pagination: {
-              labelRowsSelect: 'filas',
+              labelRowsPerPage: 'Filas por página',
               labelDisplayedRows: '{from}-{to} de {count}',
               firstTooltip: 'Primera página',
               previousTooltip: 'Anterior',
@@ -480,7 +588,27 @@ const columns = [
             },
           }}
         />
-      </div>
+      </section>
+
+      <Modal
+        isOpen={editModalOpen}
+        onClose={savingEdit ? () => {} : closeEditModal}
+        title="Editar paro"
+      >
+        {editInitialData && (
+          <StopRegister
+            serverApiUrl={serverApiUrl}
+            options={formOptions}
+            categories={formCategories}
+            initialData={editInitialData}
+            mode="edit"
+            onRegister={handleEditSubmit}
+            onCancel={closeEditModal}
+            submitLabel="Actualizar Paro"
+            isSubmitting={savingEdit}
+          />
+        )}
+      </Modal>
     </div>
   );
 };
