@@ -1,6 +1,6 @@
 .stops-loading {
   text-align: center;
-  color: #cbd5f5;
+  color: #ccc;
   font-weight: 500;
   padding: 2rem 0;
 }
@@ -12,11 +12,11 @@
 }
 
 .filters-card {
-  background: linear-gradient(135deg, #0a1124 0%, #0f1b33 50%, #0a1226 100%);
-  border: 1px solid #1f2b44;
-  border-radius: 24px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
   padding: 20px 24px;
-  box-shadow: 0 20px 45px rgba(5, 10, 20, 0.45);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .filters-header {
@@ -32,13 +32,13 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #94a3b8;
+  color: #fff;
 }
 
 .filters-subtitle {
   margin: 4px 0 0;
   font-size: 0.9rem;
-  color: #cbd5f5;
+  color: #ccc;
 }
 
 .filters-grid {
@@ -54,85 +54,108 @@
 }
 
 .filter-group label {
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #7c8db5;
+  color: #ccc;
   margin-bottom: 6px;
+  font-weight: 500;
 }
 
 .filter-input {
-  border: 1px solid #243652;
-  border-radius: 14px;
+  border: 1px solid #444;
+  border-radius: 5px;
   padding: 10px 12px;
   font-size: 0.95rem;
-  background: #0f1a2e;
-  color: #f8fafc;
+  background: #333;
+  color: #fff;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .filter-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+  border-color: #007BFF;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 .filter-input option {
-  background: #0f1a2e;
-  color: #f8fafc;
+  background: #333;
+  color: #fff;
 }
 
-.ghost-button {
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  background: transparent;
-  color: #e2e8f0;
-  border-radius: 999px;
-  padding: 8px 18px;
+.ghost-button {#444;
+  background: #333;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 .ghost-button:hover {
-  border-color: #38bdf8;
+  background-color: #555#38bdf8;
   color: #38bdf8;
   transform: translateY(-1px);
 }
 
 .stops-table-card {
-  background: rgba(10, 15, 32, 0.85);
-  border: 1px solid #1c2840;
-  border-radius: 24px;
-  padding: 16px 20px 24px;
-  box-shadow: 0 16px 35px rgba(7, 12, 24, 0.55);
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   overflow-x: auto;
   width: 100%;
+  margin-top: 20px;
 }
 
 .stops-table-card .MuiTable-root {
   min-width: 1150px;
+  border-collapse: collapse;
 }
 
 .stops-table-card .MuiPaper-root {
   background: transparent !important;
-  color: #e2e8f0;
+  color: #fff;
   box-shadow: none;
 }
 
 .stops-table-card .MuiTableCell-root {
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border: 1px solid #444;
+  padding: 10px;
+  color: #fff;
+}
+
+.stops-table-card .MuiTableCell-head {
+  background-color: #007BFF;
+  color: white;
+  font-weight: 600;
+  border: 1px solid #444;
+}
+
+.stops-table-card .MuiTableRow-root:nth-child(even) {
+  background-color: #2e2e2e;
+}
+
+.stops-table-card .MuiTableRow-root:nth-child(odd) {
+  background-color: #3e3e3e;
 }
 
 .stops-table-card .MuiToolbar-root {
-  color: #cbd5f5;
+  color: #fff;
+  background-color: #2a2a2a;
+  border-radius: 8px 8px 0 0;
 }
 
 .stops-table-card .MuiInputBase-root {
-  color: #f8fafc;
+  color: #fff;
 }
 
 .stops-table-card .MuiTablePagination-root {
-  color: #94a3b8;
+  color: #fff;
+  background-color: #2a2a2a;
+  border-radius: 0 0 8px 8px;
 }
 
 .table-action-button {
@@ -140,25 +163,26 @@
   align-items: center;
   justify-content: center;
   padding: 6px 14px;
-  border-radius: 999px;
-  background: linear-gradient(120deg, #06b6d4, #3b82f6);
-  color: #0f172a;
+  border-radius: 5px;
+  background: #007BFF;
+  color: white;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  border: none;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 .table-action-button:hover {
+  background-color: #0056b3;
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
 }
 
 .table-action-button:active {
   transform: translateY(0);
-  box-shadow: none;
+  background-color: #004085;
 }
 
 @media (max-width: 768px) {

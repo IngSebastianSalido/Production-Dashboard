@@ -37,16 +37,28 @@ const StopPage = () => {
   };
 
   return (
-    <div>
-      <h1>Registrar Paro de Línea</h1>
-      <StopRegister
-        serverApiUrl={serverApiUrl}
-        options={options}
-        categories={categories}
-        onRegister={handleRegister}
-      />
-      <div className="table-container">
-        <h1>Stops Management</h1>
+    <div className="main-container">
+      <div className="page-header">
+        <h1 className="page-title">Gestión de Paros de Línea</h1>
+        <p className="page-subtitle">Registro y administración de paros de producción</p>
+      </div>
+      
+      <div className="panel">
+        <div className="panel-header">
+          <h2>Registrar Nuevo Paro</h2>
+        </div>
+        <StopRegister
+          serverApiUrl={serverApiUrl}
+          options={options}
+          categories={categories}
+          onRegister={handleRegister}
+        />
+      </div>
+      
+      <div className="panel">
+        <div className="panel-header">
+          <h2>Tabla de Paros</h2>
+        </div>
         <EditableTable
           serverApiUrl={serverApiUrl}
           options={options}

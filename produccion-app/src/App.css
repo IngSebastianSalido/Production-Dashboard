@@ -1,153 +1,973 @@
-/* Ajustes para centrar los elementos */
-body {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #1a1a1a;
-  color: white;
-  font-family: Arial, sans-serif;
-}
+/* ============================================
+   ESTILOS PRINCIPALES - ESTILO OEE
+   ============================================ */
 
-#root {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-x: hidden;
-}
-
+/* Contenedor principal de páginas */
 .main-container {
-  width: 90%;
-  max-width: 2000px;
-  margin: 5px auto;
-  padding: 0px;
-  text-align: center;
-}
-
-h1 {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 2.5em;
-  font-weight: bold;
-}
-
-/* Formularios */
-form {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 30px;
   padding: 20px;
-  background-color: #2e2e2e;
-  border-radius: 10px;
-  border: 1px solid #444;
+  max-width: 1800px;
+  margin: 0 auto;
+  min-height: calc(100vh - 60px);
+  color: #fff;
 }
 
-.form-row {
+/* Header de página con título y subtítulo */
+.page-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
   justify-content: space-between;
-  width: 100%;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #1976d2;
+  padding-bottom: 15px;
 }
 
-input {
-  padding: 8px;
-  border: 1px solid #444;
-  border-radius: 5px;
-  background-color: #333;
-  color: white;
-  width: 100%;
-  max-width: 300px;
-}
-
-/* Botones */
-button {
-  padding: 10px 20px;
-  background-color: #007BFF;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
+.page-title {
+  color: #fff;
+  fontSize: 32px;
   font-weight: bold;
+  margin-bottom: 8px;
+  margin-top: 0;
 }
 
-button:hover {
-  background-color: #0056b3;
+.page-subtitle {
+  color: #aaa;
+  fontSize: 14px;
+  margin: 0;
 }
 
-/* Tablas */
-.table-container {
-  width: 100%;
-  margin-top: 30px;
+/* Títulos de sección */
+.section-title {
+  color: #fff;
+  fontSize: 24px;
+  font-weight: 600;
+  margin: 20px 0 15px 0;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.section-subtitle {
+  color: #aaa;
+  fontSize: 13px;
+  margin: 0 0 15px 0;
 }
 
-th, td {
-  padding: 10px;
-  border: 1px solid #444;
-}
+/* ============================================
+   SECCIONES Y PANELES
+   ============================================ */
 
-th {
-  background-color: #007BFF;
-  color: white;
-}
-
-tr:nth-child(even) {
-  background-color: #2e2e2e;
-}
-
-tr:nth-child(odd) {
-  background-color: #3e3e3e;
-}
-
-/* Estilos para mejorar el tamaño y apariencia de la tabla */
-.table-container {
-  width: 100%; /* Ocupa todo el ancho disponible */
-  max-width: 2000px; /* Ajusta el ancho máximo */
-  margin: 20px auto; /* Centra la tabla horizontalmente */
+/* Panel con borde (estilo OEE) */
+.panel {
+  background: #1b1f27;
+  border: 1px solid #2a2f3a;
+  border-radius: 12px;
   padding: 20px;
-  background-color: #1e1e1e; /* Fondo oscuro */
-  border-radius: 10px; /* Bordes redondeados */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Sombra */
-  overflow-x: auto; /* Habilita el desplazamiento horizontal si es necesario */
-}
-
-/* Mejorando el diseño del título */
-.title {
-  text-align: center;
-  font-size: 28px;
-  color: #ffffff;
   margin-bottom: 20px;
 }
 
-/* Ajustes visuales para MaterialTable */
-.MuiPaper-root {
-  background-color: #2a2a2a !important; /* Color de fondo */
-  color: white !important; /* Color del texto */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2a2f3a;
 }
 
-.MuiTableHead-root {
-  background-color: #007bff !important; /* Azul para los encabezados */
+.panel-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
 }
 
-.MuiTableCell-head {
-  color: white !important; /* Texto blanco en encabezados */
+.panel-body {
+  color: #ddd;
 }
 
-.MuiTableRow-root {
-  background-color: #333 !important; /* Color oscuro en filas */
+/* Sección de controles */
+.controls-section {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.MuiTableRow-root:nth-child(even) {
-  background-color: #444 !important; /* Alternar filas con tonos grises */
+/* Sección de filtros */
+.filters-section {
+  background: #1b1f27;
+  border: 1px solid #2a2f3a;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  align-items: end;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Sección de notas o información */
+.notes-panel {
+  background: #1b1f27;
+  border: 1px solid #2a2f3a;
+  border-radius: 12px;
+  padding: 20px;
+  marginBottom: 20px;
+  color: #fff;
+}
+
+.note-section {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #2a2f3a;
+}
+
+.note-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* ============================================
+   TARJETAS DE ESTADÍSTICAS
+   ============================================ */
+
+/* Grid de tarjetas de resumen */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Tarjeta individual */
+.stat-card {
+  background: #1b1f27;
+  border: 1px solid #2a2f3a;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.stat-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ddd;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-card-value {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 10px 0 0 0;
+  color: #fff;
+}
+
+.stat-card-description {
+  font-size: 12px;
+  color: #aaa;
+  margin: 5px 0 0 0;
+}
+
+/* Variantes de color para tarjetas */
+.stat-card.green {
+  background: #1b5e20;
+}
+
+.stat-card.blue {
+  background: #0d47a1;
+}
+
+.stat-card.orange {
+  background: #f57c00;
+}
+
+.stat-card.purple {
+  background: #6a1b9a;
+}
+
+.stat-card.red {
+  background: #c62828;
+}
+
+.stat-card.teal {
+  background: #00695c;
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+button {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  fontWeight: 600;
+  fontSize: 14px;
+  transition: all 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  background: #1565c0;
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Variantes de botones */
+.btn {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: #1565c0;
+}
+
+.btn-success {
+  background: #2e7d32;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #1b5e20;
+}
+
+.btn-danger {
+  background: #d32f2f;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #c62828;
+}
+
+.btn-warning {
+  background: #f57c00;
+}
+
+.btn-warning:hover:not(:disabled) {
+  background: #ef6c00;
+}
+
+.btn-secondary {
+  background: #555;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #666;
+}
+
+.clear-btn {
+  background: #555;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.clear-btn:hover:not(:disabled) {
+  background: #666;
+}
+
+/* ============================================
+   INPUTS Y CONTROLES DE FORMULARIO
+   ============================================ */
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #222;
+  color: #fff;
+  fontSize: 14px;
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #1976d2;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* Labels */
+label {
+  color: #ddd;
+  fontSize: 14px;
+  fontWeight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Control específico para rate */
+.rate-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #1b1f27;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #2a2f3a;
+}
+
+.rate-input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #222;
+  color: #fff;
+  width: 100px;
+  font-size: 14px;
+}
+
+/* ============================================
+   TABLAS
+   ============================================ */
+
+.table-container {
+  overflow-x: auto;
+  background: #1b1f27;
+  border-radius: 12px;
+  border: 1px solid #2a2f3a;
+  margin-bottom: 20px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.data-table thead {
+  background: #0d1117;
+  color: #ddd;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 13px;
+  border-bottom: 2px solid #2a2f3a;
+  position: sticky;
+  top: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #2a2f3a;
+}
+
+.data-table tbody tr:hover {
+  background: #22262e;
+}
+
+.data-table td {
+  padding: 12px;
+  color: #fff;
+  font-size: 13px;
+}
+
+/* Colores de fondo para celdas según valores */
+.cell-success {
+  background: #1b5e2033;
+}
+
+.cell-warning {
+  background: #f57c0033;
+}
+
+.cell-danger {
+  background: #b7171733;
+}
+
+/* ============================================
+   MENSAJES Y ALERTAS
+   ============================================ */
+
+.error-message, .error {
+  background: #d32f2f;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #b71c1c;
+}
+
+.success-message, .success {
+  background: #2e7d32;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #1b5e20;
+}
+
+.warning-message, .warning {
+  background: #f57c00;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ef6c00;
+}
+
+.info-message, .info {
+  background: #1976d2;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #1565c0;
+}
+
+/* ============================================
+   LOADING Y ESTADOS VACÍOS
+   ============================================ */
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #ddd;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #1976d2;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #aaa;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state-message {
+  font-size: 16px;
+  color: #888;
+}
+
+/* ============================================
+   GRÁFICOS Y VISUALIZACIONES
+   ============================================ */
+
+.chart-card, .chart-container {
+  background: #1b1f27;
+  border: 1px solid #2a2f3a;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.chart-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* ============================================
+   MODALES Y OVERLAYS
+   ============================================ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #1b1f27;
+  border: 1px solid #2a2f3a;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #fff;
+  border-bottom: 1px solid #2a2f3a;
+  padding-bottom: 15px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #2a2f3a;
+}
+
+/* ============================================
+   BADGES Y ETIQUETAS
+   ============================================ */
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-success {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.badge-danger {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.badge-warning {
+  background-color: #f57c00;
+  color: white;
+}
+
+.badge-info {
+  background-color: #1976d2;
+  color: white;
+}
+
+.badge-secondary {
+  background-color: #555;
+  color: white;
+}
+
+/* ============================================
+   DIVISORES
+   ============================================ */
+
+.divider {
+  height: 1px;
+  background-color: #2a2f3a;
+  margin: 20px 0;
+}
+
+/* ============================================
+   PESTAÑAS / TABS
+   ============================================ */
+
+.tabs {
+  display: flex;
+  gap: 5px;
+  border-bottom: 2px solid #2a2f3a;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 12px 24px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #aaa;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: #1976d2;
+}
+
+.tab.active {
+  color: #1976d2;
+  border-bottom-color: #1976d2;
+}
+
+.tab-content {
+  padding: 20px 0;
+}
+
+/* ============================================
+   PAGINACIÓN
+   ============================================ */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 30px 0;
+}
+
+.pagination-button {
+  padding: 10px 16px;
+  border: 1px solid #2a2f3a;
+  background: #1b1f27;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.pagination-button:hover:not(:disabled) {
+  border-color: #1976d2;
+  color: #1976d2;
+  background: rgba(25, 118, 210, 0.1);
+}
+
+.pagination-button.active {
+  background: #1976d2;
+  color: white;
+  border-color: #1976d2;
+}
+
+.pagination-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   TOOLTIPS
+   ============================================ */
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  background-color: #2a2f3a;
+  color: #fff;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+  font-size: 14px;
+  border: 1px solid #444;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ============================================
+   DROPDOWN MENUS
+   ============================================ */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #1b1f27;
+  border: 1px solid #2a2f3a;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  min-width: 180px;
+  z-index: 100;
+  margin-top: 5px;
+  padding: 5px 0;
+}
+
+.dropdown-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: #ddd;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+  color: #1976d2;
+}
+
+/* ============================================
+   PROGRESS BARS
+   ============================================ */
+
+.progress-bar {
+  width: 100%;
+  height: 24px;
+  background-color: #2a2f3a;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 10px 0;
+  border: 1px solid #333;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #1976d2;
+  transition: width 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.progress-fill.success {
+  background-color: #2e7d32;
+}
+
+.progress-fill.warning {
+  background-color: #f57c00;
+}
+
+.progress-fill.danger {
+  background-color: #d32f2f;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADO
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1b1f27;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+/* ============================================
+   SKELETON LOADERS
+   ============================================ */
+
+.skeleton {
+  background: linear-gradient(90deg, #1b1f27 25%, #2a2f3a 50%, #1b1f27 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-text {
+  height: 16px;
+  margin-bottom: 10px;
+}
+
+.skeleton-title {
+  height: 24px;
+  margin-bottom: 15px;
+  width: 60%;
+}
+
+.skeleton-card {
+  height: 200px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 24px;
+  }
+
+  .summary-cards {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-section {
+    flex-direction: column;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .data-table {
+    font-size: 12px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 8px;
+  }
+
+  .panel {
+    padding: 15px;
+  }
+
+  .modal-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 20px;
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .pagination-button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
 }

@@ -27,6 +27,22 @@ router.get('/rea-production', (req, res) => {
 
     console.log('✅ Archivo ProductionReport copiado correctamente.');
 
+    // Regenerar EOL_Cuts.csv y EOL_Cuts_OEE.csv después de copiar
+    try {
+      const { spawn } = require('child_process');
+      const scriptPath = path.join(__dirname, '..', 'scripts', 'generate_eol_cuts.js');
+      if (fs.existsSync(scriptPath)) {
+        const child = spawn(process.execPath, [scriptPath, '--rate=154'], { 
+          cwd: path.join(__dirname, '..'),
+          env: process.env,
+          stdio: 'ignore'
+        });
+        console.log('🔄 Regenerando EOL_Cuts en segundo plano...');
+      }
+    } catch (e) {
+      console.warn('No se pudo regenerar EOL_Cuts:', e.message);
+    }
+
     fs.readFile(reaFilePath, 'utf8', (err, data) => {
       if (err) {
         console.error('Error leyendo ProductionReport:', err);
@@ -82,6 +98,22 @@ router.get('/rea-production-eolo', (req, res) => {
     }
 
     console.log('✅ ProductionReport copiado.');
+
+    // Regenerar EOL_Cuts.csv y EOL_Cuts_OEE.csv después de copiar
+    try {
+      const { spawn } = require('child_process');
+      const scriptPath = path.join(__dirname, '..', 'scripts', 'generate_eol_cuts.js');
+      if (fs.existsSync(scriptPath)) {
+        const child = spawn(process.execPath, [scriptPath, '--rate=154'], { 
+          cwd: path.join(__dirname, '..'),
+          env: process.env,
+          stdio: 'ignore'
+        });
+        console.log('🔄 Regenerando EOL_Cuts en segundo plano...');
+      }
+    } catch (e) {
+      console.warn('No se pudo regenerar EOL_Cuts:', e.message);
+    }
 
     fs.readFile(reaFilePath, 'utf8', (err, data) => {
       if (err) {
@@ -676,6 +708,18 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
   else stopsPath = candidateStops;
     const ratePerHour = parseFloat(req.query.ratePerHour) || 154; // piezas por hora
 
+    // Load shifts configuration
+    const shiftsPath = path.join(__dirname, '../shifts.json');
+    let shifts = [];
+    if (fs.existsSync(shiftsPath)) {
+      try {
+        const shiftsData = JSON.parse(fs.readFileSync(shiftsPath, 'utf8'));
+        shifts = shiftsData.shifts || [];
+      } catch (e) {
+        console.warn('Error reading shifts.json:', e);
+      }
+    }
+
     const csvRaw = fs.readFileSync(csvPath, 'utf8');
     const rows = csvRaw.split('\n').filter(r => r.trim() !== '');
     const header = rows[0].split(',');
@@ -700,6 +744,9 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
           for (let i = 6; i <= Math.min(12, headerCols.length - 1); i++) descIndices.push(i);
         }
 
+        // Find paro_programado column index (column 12 in the CSV)
+        const paroProgramadoIdx = headerCols.findIndex(h => h.includes('paro_programado') || h.includes('programado'));
+
         for (const line of srows.slice(1)) {
           const cols = line.split(';');
           const fecha = (cols[0] || '').trim();
@@ -714,6 +761,11 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
           }
           const descripcion = descParts.join(' ').trim();
 
+          // Get paro_programado value (si/no)
+          const paroProgramado = paroProgramadoIdx >= 0 && cols[paroProgramadoIdx] 
+            ? String(cols[paroProgramadoIdx]).trim().toLowerCase() === 'si'
+            : false;
+
           // Normalize fecha: if contains '/', treat as M/D/YYYY else assume YYYY-MM-DD
           let fechaNorm = fecha;
           if (fecha.includes('/')) {
@@ -727,7 +779,7 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
           if (end.getTime() < start.getTime()) {
             end = new Date(end.getTime() + 24 * 60 * 60 * 1000);
           }
-          stops.push({ start, end, descripcion });
+          stops.push({ start, end, descripcion, programado: paroProgramado });
         }
       }
     }
@@ -746,6 +798,73 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
     } catch (e) {
       console.warn('CHANGE_OVER_PATTERN is invalid, falling back to default. Pattern:', changeOverPatternStr);
       changeOverRegex = new RegExp(defaultPattern, 'iu');
+    }
+
+    // Helper function to determine which shift(s) a time period covers and calculate shift time
+    function calculateShiftTime(startDate, endDate, shifts) {
+      if (!shifts || shifts.length === 0) {
+        // No shifts defined, return the duration
+        const durationMinutes = Math.round((endDate.getTime() - startDate.getTime()) / 60000);
+        return { shiftTimeMinutes: durationMinutes, shiftsInvolved: [] };
+      }
+
+      let totalShiftTime = 0;
+      const shiftsInvolved = [];
+      let currentTime = new Date(startDate);
+      
+      while (currentTime < endDate) {
+        const currentHour = currentTime.getHours();
+        const currentMinute = currentTime.getMinutes();
+        
+        // Find which shift this time falls into
+        let matchedShift = null;
+        for (const shift of shifts) {
+          const shiftStart = shift.startHour * 60 + shift.startMinute;
+          const shiftEnd = shift.endHour * 60 + shift.endMinute;
+          const currentTimeMinutes = currentHour * 60 + currentMinute;
+          
+          // Handle shifts that cross midnight
+          if (shiftEnd < shiftStart) {
+            // Shift crosses midnight
+            if (currentTimeMinutes >= shiftStart || currentTimeMinutes < shiftEnd) {
+              matchedShift = shift;
+              break;
+            }
+          } else {
+            // Normal shift within same day
+            if (currentTimeMinutes >= shiftStart && currentTimeMinutes < shiftEnd) {
+              matchedShift = shift;
+              break;
+            }
+          }
+        }
+        
+        if (matchedShift) {
+          if (!shiftsInvolved.find(s => s.id === matchedShift.id)) {
+            shiftsInvolved.push(matchedShift);
+          }
+          
+          // Calculate how much time until the end of this shift or the cut end
+          const shiftEndTime = new Date(currentTime);
+          shiftEndTime.setHours(matchedShift.endHour, matchedShift.endMinute, 0, 0);
+          
+          // If shift ends before current time (crosses midnight), add a day
+          if (shiftEndTime <= currentTime) {
+            shiftEndTime.setDate(shiftEndTime.getDate() + 1);
+          }
+          
+          const segmentEnd = shiftEndTime < endDate ? shiftEndTime : endDate;
+          const segmentMinutes = Math.round((segmentEnd.getTime() - currentTime.getTime()) / 60000);
+          totalShiftTime += segmentMinutes;
+          
+          currentTime = segmentEnd;
+        } else {
+          // No shift matched, move to the next hour
+          currentTime = new Date(currentTime.getTime() + 60 * 60 * 1000);
+        }
+      }
+      
+      return { shiftTimeMinutes: totalShiftTime, shiftsInvolved };
     }
 
     // helper: split CSV line respecting quoted fields
@@ -838,8 +957,12 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
       const cutEnd = toISOFromParts(endFecha, endHora, endISOraw);
       if (!cutStart || !cutEnd) continue;
 
-      // compute downtime overlap in minutes
-      let downtimeMinutes = 0;
+      // Calculate shift time for this cut
+      const { shiftTimeMinutes, shiftsInvolved } = calculateShiftTime(cutStart, cutEnd, shifts);
+
+      // compute downtime overlap in minutes - separate programmed and unplanned
+      let downtimeProgramadoMinutes = 0;
+      let downtimeNoProgramadoMinutes = 0;
       // Also detect if any overlapping stop is a Change Over (description contains 'change over' or both words)
       let changeOverDetected = false;
       const overlappingStops = [];
@@ -851,15 +974,35 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
           const desc = String(s.descripcion || '');
           const coMatched = changeOverRegex.test(desc);
           if (coMatched) changeOverDetected = true;
-          overlappingStops.push({ startISO: s.start.toISOString(), endISO: s.end.toISOString(), descripcion: desc, overlapMinutes: overlapMin, changeOverMatch: coMatched });
-          if (!changeOverDetected && coMatched) changeOverDetected = true;
+          
+          // Separate programmed vs unplanned downtime
+          if (s.programado) {
+            downtimeProgramadoMinutes += overlapMin;
+          } else {
+            downtimeNoProgramadoMinutes += overlapMin;
+          }
+          
+          overlappingStops.push({ 
+            startISO: s.start.toISOString(), 
+            endISO: s.end.toISOString(), 
+            descripcion: desc, 
+            overlapMinutes: overlapMin, 
+            changeOverMatch: coMatched,
+            programado: s.programado 
+          });
         }
-        downtimeMinutes += overlapMin;
       }
 
       const durationMinutes = Math.max(1, Math.round((cutEnd.getTime() - cutStart.getTime()) / 60000));
-      const availableMinutes = Math.max(0, durationMinutes - downtimeMinutes);
-      const disponibilidad = durationMinutes > 0 ? (availableMinutes / durationMinutes) : 0;
+      const downtimeMinutes = downtimeProgramadoMinutes + downtimeNoProgramadoMinutes;
+      
+      // Tiempo planeado = Tiempo de turno - Downtime programado
+      const tiempoPlaneadoMinutes = Math.max(0, shiftTimeMinutes - downtimeProgramadoMinutes);
+      
+      // Disponibilidad = (Tiempo planeado - Downtime no programado) / Tiempo planeado
+      const disponibilidad = tiempoPlaneadoMinutes > 0 
+        ? Math.max(0, (tiempoPlaneadoMinutes - downtimeNoProgramadoMinutes) / tiempoPlaneadoMinutes)
+        : 0;
 
       // eficiencia: piezasTotales / (ratePerHour * durationHours)
       const durationHours = Math.max(1/60, durationMinutes / 60);
@@ -881,7 +1024,32 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
       // calidad percent for display (null when denom is zero)
       const calidadPercent = calidad === null ? null : (calidad * 100);
 
-  enriched.push({ startFecha, startHora, startISO: cutStart.toISOString(), endFecha, endHora, endISO: cutEnd.toISOString(), pn, piezasTotales, durationMinutes, downtimeMinutes, disponibilidad, eficiencia, calidad, calidadPercent, eolOk, eolNok, estaciones: stations, changeOver: changeOverDetected ? 'Si' : 'No', overlappingStops });
+  enriched.push({ 
+    startFecha, 
+    startHora, 
+    startISO: cutStart.toISOString(), 
+    endFecha, 
+    endHora, 
+    endISO: cutEnd.toISOString(), 
+    pn, 
+    piezasTotales, 
+    durationMinutes, 
+    shiftTimeMinutes,
+    tiempoPlaneadoMinutes,
+    downtimeProgramadoMinutes,
+    downtimeNoProgramadoMinutes,
+    downtimeMinutes, 
+    disponibilidad, 
+    eficiencia, 
+    calidad, 
+    calidadPercent, 
+    eolOk, 
+    eolNok, 
+    estaciones: stations, 
+    changeOver: changeOverDetected ? 'Si' : 'No', 
+    overlappingStops,
+    shiftsInvolved: shiftsInvolved.map(s => s.name || `Turno ${s.id}`)
+  });
     }
 
     // Apply optional from/to filtering (expect YYYY-MM-DD strings). Filter by cut start date.
@@ -909,12 +1077,12 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
     // write an enriched CSV for debugging/export
     try {
       const outPath = path.join(__dirname, '../data/EOL_Cuts_OEE.csv');
-      const outHeader = 'startISO,endISO,pn,piezasTotales,durationMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,changeOver,stations_json\n';
+      const outHeader = 'startISO,endISO,pn,piezasTotales,durationMinutes,shiftTimeMinutes,tiempoPlaneadoMinutes,downtimeProgramadoMinutes,downtimeNoProgramadoMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,changeOver,stations_json\n';
       let outContent = outHeader;
       for (const e of enriched) {
         const calidadCell = (e.calidad === null) ? '' : e.calidad.toFixed(4);
         const changeOverCell = (e.changeOver ? String(e.changeOver) : 'No');
-        const row = `${e.startISO},${e.endISO},"${(e.pn||'').replace(/"/g,'')}",${e.piezasTotales},${e.durationMinutes},${e.downtimeMinutes},${e.disponibilidad.toFixed(4)},${e.eficiencia.toFixed(4)},${calidadCell},${e.eolOk||0},${e.eolNok||0},${changeOverCell},"${JSON.stringify(e.estaciones).replace(/"/g,'""')}"\n`;
+        const row = `${e.startISO},${e.endISO},"${(e.pn||'').replace(/"/g,'')}",${e.piezasTotales},${e.durationMinutes},${e.shiftTimeMinutes||0},${e.tiempoPlaneadoMinutes||0},${e.downtimeProgramadoMinutes||0},${e.downtimeNoProgramadoMinutes||0},${e.downtimeMinutes},${e.disponibilidad.toFixed(4)},${e.eficiencia.toFixed(4)},${calidadCell},${e.eolOk||0},${e.eolNok||0},${changeOverCell},"${JSON.stringify(e.estaciones).replace(/"/g,'""')}"\n`;
         outContent += row;
       }
       fs.writeFileSync(outPath, outContent, 'utf8');

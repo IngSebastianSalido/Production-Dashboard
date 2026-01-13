@@ -35,6 +35,7 @@ const StopRegister = ({
     hora_arranque: '',
     descripcion: '',
     cruza_medianoche: false,
+    ajuste_proceso: false,
   });
 
   const buildCreateDefaults = () => ({
@@ -255,6 +256,7 @@ const StopRegister = ({
           hora_arranque: '',
           descripcion: '',
           cruza_medianoche: false,
+          ajuste_proceso: false,
         }));
         onRegister();
       } else {
@@ -343,8 +345,19 @@ const StopRegister = ({
               El paro cruza medianoche (arranque al día siguiente)
             </label>
           </div>
+          <div style={styles.formGroup}>
+            <label style={styles.checkboxLabel}>
+              <input 
+                type="checkbox" 
+                name="ajuste_proceso" 
+                checked={formData.ajuste_proceso} 
+                onChange={handleChange} 
+                style={styles.checkbox}
+              />
+              Ajuste de Proceso
+            </label>
+          </div>
         </div>
-
         {/* Columna derecha */}
         <div style={styles.column}>
           <div style={styles.formGroup}>

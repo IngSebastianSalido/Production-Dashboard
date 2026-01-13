@@ -46,30 +46,44 @@ const REA = () => {
   }
 
   return (
-    <div className="rea-container">
-      <h1 className="rea-title">REA</h1>
-
-      <div className="rea-date-picker" style={{ marginBottom: "40px" }}> {/* Espaciado adicional */}
-        <label htmlFor="fecha">Seleccionar fecha: </label>
-        <input
-          type="date"
-          id="fecha"
-          value={fechaSeleccionada}
-          onChange={(e) => setFechaSeleccionada(e.target.value)}
-        />
+    <div className="main-container">
+      <div className="page-header">
+        <h1 className="page-title">REA - Análisis de Producción</h1>
+        <p className="page-subtitle">Monitoreo de estaciones y producción en tiempo real</p>
       </div>
 
-      <div className="rea-chart-full" style={{ marginBottom: "60px" }}> {/* Espaciado adicional */}
+      <div className="panel">
+        <div className="filters-section">
+          <div className="filter-group">
+            <label htmlFor="fecha">Seleccionar fecha:</label>
+            <input
+              type="date"
+              id="fecha"
+              value={fechaSeleccionada}
+              onChange={(e) => setFechaSeleccionada(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="panel">
+        <div className="panel-header">
+          <h2>Gráfico de Producción</h2>
+        </div>
         {fechaSeleccionada && <REAChart fecha={fechaSeleccionada} />}
       </div>
 
       {data.map((entry, index) => (
-        <div key={index} className="rea-entry" style={{ marginBottom: "50px" }}> {/* Espaciado adicional */}
-          <h2 className="rea-date">Fecha: {entry.fecha}</h2>
-          <h3 className="rea-time">Hora: {entry.hora}</h3>
-          <h3 className="rea-pn">Número de Parte: {entry.pn}</h3>
-
-          <StationsGrid estaciones={entry.estaciones} />
+        <div key={index} className="panel" style={{ marginTop: "20px" }}>
+          <div className="panel-header">
+            <h2>Fecha: {entry.fecha} | Hora: {entry.hora}</h2>
+          </div>
+          <div style={{ padding: '15px 0' }}>
+            <p style={{ fontSize: '16px', color: '#aaa', marginBottom: '15px' }}>
+              <strong>Número de Parte:</strong> {entry.pn}
+            </p>
+            <StationsGrid estaciones={entry.estaciones} />
+          </div>
         </div>
       ))}
     </div>

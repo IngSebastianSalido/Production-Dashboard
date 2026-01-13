@@ -66,6 +66,8 @@ const EditableTable = ({ options: optionsProp, categories: categoriesProp, serve
         modo_falla: arr[9], // Transformar a snake_case
         descripcion_modo_falla: arr[10], // Transformar a snake_case
         descripcion: arr[11],
+        paro_programado: arr[12],
+        ajuste_proceso: arr[13],
       }));
   
       console.log("Formatted Stops:", formattedData);
@@ -113,6 +115,7 @@ const EditableTable = ({ options: optionsProp, categories: categoriesProp, serve
     hora_arranque: row.hora_arranque || '',
     descripcion: row.descripcion || '',
     cruza_medianoche: row.cruza_medianoche ?? crossesMidnight(row.hora_paro, row.hora_arranque),
+    ajuste_proceso: row.ajuste_proceso === 'Si',
   });
 
   const openEditModal = (rowData) => {
@@ -249,6 +252,18 @@ const EditableTable = ({ options: optionsProp, categories: categoriesProp, serve
       field: 'descripcion',
       cellStyle: wrapCellStyle(220),
       headerStyle: { minWidth: 220 },
+    },
+    {
+      title: 'Paro Programado',
+      field: 'paro_programado',
+      cellStyle: compactCellStyle(150),
+      headerStyle: { minWidth: 150 },
+    },
+    {
+      title: 'Ajuste de Proceso',
+      field: 'ajuste_proceso',
+      cellStyle: compactCellStyle(150),
+      headerStyle: { minWidth: 150 },
     },
     {
       title: 'Acciones',

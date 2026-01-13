@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
+// Usar la misma fuente que el resto de la aplicación: REA_SOURCE_FILE_PATH
+// Si no está definido en .env, usar ProductionReport.csv (archivo copiado por el endpoint /rea-production)
 const reaSourceFilePath = process.env.REA_SOURCE_FILE_PATH || path.join(__dirname, '..', 'data', 'ProductionReport.csv');
 const outCsv = path.join(__dirname, '..', 'data', 'EOL_Cuts.csv');
 
@@ -33,7 +35,9 @@ function generateCuts(){
     const cleanHora = rowHora.replace('a. m.','AM').replace('p. m.','PM').trim();
     const fechaHoraObj = new Date(`${rowFecha} ${cleanHora}`);
     if (isNaN(fechaHoraObj)) continue;
-    const pn = cols[2] || '';
+    const pn = (cols[2] || 'UNKNOWN').trim();
+    // Include all recipes including UNKNOWN
+    if (!pn) continue;
     let anyNonZero=false;
     for (let i=3;i<cols.length;i+=2){ if ((safeParseInt(cols[i])+safeParseInt(cols[i+1]))>0){ anyNonZero=true; break; } }
     registros.push({ fecha: rowFecha, hora: cleanHora, fechaHoraReal: fechaHoraObj, acumulado: safeParseInt(cols[eoloIndex]), raw: cols, pn, anyNonZero });
@@ -129,8 +133,8 @@ function generateEnriched(ratePerHour = 154){
   const rows = csvRaw.split('\n').filter(r=>r.trim()!== '');
   const dataRows = rows.slice(1);
 
-  // read stops
-  const stopsPath = path.join(__dirname, '..', 'data', 'stops.csv');
+  // read stops (paros.csv)
+  const stopsPath = path.join(__dirname, '..', 'data', 'paros.csv');
   let stops = [];
   if (fs.existsSync(stopsPath)){
     const stopsRaw = fs.readFileSync(stopsPath, 'utf8');
@@ -162,7 +166,8 @@ function generateEnriched(ratePerHour = 154){
     const cutStart = parseISOFromParts(startFecha, startHora, startISOraw); const cutEnd = parseISOFromParts(endFecha, endHora, endISOraw); if (!cutStart || !cutEnd) continue;
     let downtimeMinutes = 0; for (const s of stops){ const overlapMs = Math.max(0, Math.min(s.end.getTime(), cutEnd.getTime()) - Math.max(s.start.getTime(), cutStart.getTime())); downtimeMinutes += Math.round(overlapMs/60000); }
     const durationMinutes = Math.max(1, Math.round((cutEnd.getTime()-cutStart.getTime())/60000)); const availableMinutes = Math.max(0, durationMinutes - downtimeMinutes); const disponibilidad = durationMinutes>0 ? (availableMinutes/durationMinutes) : 0;
-    const durationHours = Math.max(1/60, durationMinutes/60); const expectedPieces = ratePerHour * durationHours; const eficiencia = expectedPieces>0 ? (piezasTotales/expectedPieces) : 0;
+    // Eficiencia = Piezas Producidas / (Tiempo Disponible * Rate/hora) - usar availableMinutes en lugar de durationMinutes
+    const availableHours = Math.max(1/60, availableMinutes/60); const expectedPieces = ratePerHour * availableHours; const eficiencia = expectedPieces>0 ? (piezasTotales/expectedPieces) : 0;
     let eolOk=null, eolNok=null, calidad=null; for (const st of stations){ if (String(st.station||'').toLowerCase().includes('eol')){ eolOk = parseInt(st.ok)||0; eolNok = parseInt(st.nok)||0; const denom = eolOk + eolNok; calidad = denom>0 ? (eolOk/denom) : null; break; } }
   enriched.push({ startISO: cutStart.toISOString(), endISO: cutEnd.toISOString(), pn, piezasTotales, durationMinutes, downtimeMinutes, disponibilidad, eficiencia, calidad, eolOk, eolNok, estaciones: stations });
   }

@@ -38,7 +38,7 @@ const productionFilePath = process.env.PRODUCTION_FILE_PATH
 
 const stopsFilePath = process.env.STOPS_FILE_PATH
     ? path.resolve(process.env.STOPS_FILE_PATH)
-    : path.join(__dirname, 'data', 'stops.csv');
+    : path.join(__dirname, 'data', 'paros.csv');
 
 const optionsFilePath = process.env.OPTIONS_FILE_PATH
     ? path.resolve(process.env.OPTIONS_FILE_PATH)
@@ -48,13 +48,23 @@ const categoriesFilePath = process.env.CATEGORIES_FILE_PATH
     ? path.resolve(process.env.CATEGORIES_FILE_PATH)
     : path.join(__dirname, 'categories.json');
 
+// Ruta al archivo EOL_Cuts_OEE (contiene eolOk, eolNok y calidad)
+const eolCutsFilePath = process.env.EOL_CUTS_FILE_PATH
+    ? path.resolve(process.env.EOL_CUTS_FILE_PATH)
+    : path.join(__dirname, 'data', 'EOL_Cuts_OEE.csv');
+
+// Ruta al archivo de configuración de turnos
+const shiftsConfigPath = process.env.SHIFTS_CONFIG_PATH
+    ? path.resolve(process.env.SHIFTS_CONFIG_PATH)
+    : path.join(__dirname, 'shifts.json');
+
 // Verificar si los archivos CSV existen, si no, crearlos con encabezados
 if (!fs.existsSync(productionFilePath)) {
     fs.writeFileSync(productionFilePath, 'fecha;area;linea;pn;hora;piezas_ok;piezas_nok\n');
 }
 
 if (!fs.existsSync(stopsFilePath)) {
-    fs.writeFileSync(stopsFilePath, 'fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;estacion;modo_falla;descripcion_modo_falla;descripcion;categoria\n');
+    fs.writeFileSync(stopsFilePath, 'fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacion;modo_falla;descripcion_modo_falla;descripcion\n');
 }
 
 // Logger para verificar las solicitudes
@@ -80,18 +90,22 @@ const reaProductionRoute = require('./routes/reaProduction');
 const efficiencyRoute = require('./routes/efficiency');
 const reportesRouteFactory = require('./routes/reportes');
 const parosRouteFactory = require('./routes/paros');
+const parosEstacionRouteFactory = require('./routes/parosEstacion');
 const opcionesRouteFactory = require('./routes/opciones');
 const categoriesRouteFactory = require('./routes/categoriesRoute');
 const reportsTimestampsFactory = require('./routes/reportsTimestamps');
+const productionSummaryFactory = require('./routes/productionSummary');
 
 // Montar rutas
 app.use('/api', reaProductionRoute);
 app.use('/api', efficiencyRoute);
 app.use('/api', reportesRouteFactory(productionFilePath));
 app.use('/api', parosRouteFactory(stopsFilePath));
+app.use('/api', parosEstacionRouteFactory(stopsFilePath));
 app.use('/api', opcionesRouteFactory(optionsFilePath));
 app.use('/api', categoriesRouteFactory(categoriesFilePath));
 app.use('/api', reportsTimestampsFactory(productionTimestampsPath));
+app.use('/api', productionSummaryFactory(productionFilePath, stopsFilePath, eolCutsFilePath, shiftsConfigPath));
 
 
 // Iniciar el servidor HTTP en el host especificado
@@ -112,6 +126,17 @@ try {
         : String(process.env.STOPS_AUTO_BACKUP).toLowerCase() !== 'false';
 
     const backupTime = process.env.STOPS_BACKUP_TIME || '23:59';
+
+    // ------------------------- RESPALDO AUTOMÁTICO DE PRODUCTION REPORT -------------------------
+    // Configuración por variables de entorno:
+    // - PRODUCTION_AUTO_BACKUP: (true/false) habilita respaldo automático diario. Default: true
+    // - PRODUCTION_BACKUP_TIME: HH:mm para la hora local. Default: 23:59
+    // - PRODUCTION_BACKUP_DIR: directorio destino; si no se define, se usa el mismo directorio del archivo de production
+    const productionAutoBackupEnabled = process.env.PRODUCTION_AUTO_BACKUP === undefined
+        ? true
+        : String(process.env.PRODUCTION_AUTO_BACKUP).toLowerCase() !== 'false';
+
+    const productionBackupTime = process.env.PRODUCTION_BACKUP_TIME || '23:59';
 
     function ensureDir(dirPath) {
         try {
@@ -161,6 +186,30 @@ try {
         });
     }
 
+    function createProductionBackup({ targetDir } = {}) {
+        return new Promise((resolve, reject) => {
+            try {
+                if (!fs.existsSync(productionFilePath)) {
+                    return reject(new Error('Archivo de ProductionReport no encontrado'));
+                }
+                const dir = targetDir || process.env.PRODUCTION_BACKUP_DIR || path.dirname(productionFilePath);
+                if (!ensureDir(dir)) {
+                    return reject(new Error('No se pudo preparar el directorio de respaldo'));
+                }
+                const ext = path.extname(productionFilePath);
+                const base = path.basename(productionFilePath, ext);
+                const backupName = `${base}_${formatTimestamp(new Date())}${ext}`;
+                const backupPath = path.join(dir, backupName);
+                fs.copyFile(productionFilePath, backupPath, (err) => {
+                    if (err) return reject(err);
+                    resolve({ backupName, backupPath });
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
     function parseTimeToNextDate(timeStr) {
         // timeStr: 'HH:mm' en hora local
         const [hh, mm] = String(timeStr).split(':').map((v) => parseInt(v, 10));
@@ -194,10 +243,37 @@ try {
         }
     }
 
+    function scheduleNextProductionBackup() {
+        try {
+            const next = parseTimeToNextDate(productionBackupTime);
+            const ms = next.getTime() - Date.now();
+            console.log(`Backup de ProductionReport programado para: ${next.toString()} (en ${(ms/1000/60).toFixed(1)} min)`);
+            setTimeout(async () => {
+                try {
+                    const { backupPath } = await createProductionBackup();
+                    console.log('Respaldo de ProductionReport creado automáticamente en', backupPath);
+                } catch (e) {
+                    console.warn('Fallo al crear respaldo automático de ProductionReport:', e && e.message ? e.message : String(e));
+                } finally {
+                    // Programar el siguiente respaldo tras ejecutar el actual
+                    scheduleNextProductionBackup();
+                }
+            }, ms);
+        } catch (e) {
+            console.warn('No se pudo programar respaldo automático de ProductionReport:', e && e.message ? e.message : String(e));
+        }
+    }
+
     if (autoBackupEnabled) {
         scheduleNextBackup();
     } else {
         console.log('STOPS_AUTO_BACKUP=false -> respaldo automático deshabilitado');
+    }
+
+    if (productionAutoBackupEnabled) {
+        scheduleNextProductionBackup();
+    } else {
+        console.log('PRODUCTION_AUTO_BACKUP=false -> respaldo automático de ProductionReport deshabilitado');
     }
 } catch (e) {
     console.warn('Error al configurar respaldo automático de paros:', e && e.message ? e.message : String(e));

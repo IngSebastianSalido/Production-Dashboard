@@ -221,54 +221,65 @@ const Reports = () => {
   };
 
   return (
-    <div className="page-container">
-      <h1>Reports</h1>
-      <div style={styles.filters}>
-        <div style={styles.filterItem}>
-          <label style={styles.label}>Desde:</label>
-          <input type="date" value={from} onChange={e => setFrom(e.target.value)} style={styles.input} />
-        </div>
-        <div style={styles.filterItem}>
-          <label style={styles.label}>Hasta:</label>
-          <input type="date" value={to} onChange={e => setTo(e.target.value)} style={styles.input} />
-        </div>
-        <div style={styles.filterItem}>
-          <label style={styles.label}>Receta (opcional):</label>
-          <select value={recipe} onChange={e => setRecipe(e.target.value)} style={styles.select}>
-            <option value="">Todas</option>
-            {recipes.map(r => (
-              <option key={r} value={r}>{r}</option>
-            ))}
-          </select>
-        </div>
-        <div style={styles.filterItem}>
-          <label style={styles.label}>Vista:</label>
-          <select value={view} onChange={e => setView(e.target.value)} style={styles.select}>
-            <option>Totals</option>
-            <option>Scrap Percentage</option>
-            <option>OEE</option>
-            </select>
-        </div>
+    <div className="main-container">
+      <div className="page-header">
+        <h1 className="page-title">Reportes de Producción</h1>
+        <p className="page-subtitle">Análisis de producción, scrap y OEE</p>
       </div>
+      
+      <div className="panel">
+        <div className="panel-header">
+          <h2>Filtros de Reporte</h2>
+        </div>
+        <div className="filters-section">
+          <div className="filter-group">
+            <label>Desde:</label>
+            <input type="date" value={from} onChange={e => setFrom(e.target.value)} />
+          </div>
+          <div className="filter-group">
+            <label>Hasta:</label>
+            <input type="date" value={to} onChange={e => setTo(e.target.value)} />
+          </div>
+          <div className="filter-group">
+            <label>Receta (opcional):</label>
+            <select value={recipe} onChange={e => setRecipe(e.target.value)}>
+              <option value="">Todas</option>
+              {recipes.map(r => (
+                <option key={r} value={r}>{r}</option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-group">
+            <label>Vista:</label>
+            <select value={view} onChange={e => setView(e.target.value)}>
+              <option>Totals</option>
+              <option>Scrap Percentage</option>
+              <option>OEE</option>
+            </select>
+          </div>
+        </div>
 
-      {/* Botones: descargar siempre disponible; exportar solo si hay datos */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
-        <button onClick={handleDownloadProductionCsv} style={{...styles.exportBtn, background: '#1565c0', marginLeft: 8}}>Descargar ProductionReport</button>
-        {data.length > 0 && (
-          <button onClick={handleExport} style={styles.exportBtn}>Exportar Excel</button>
-        )}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px', gap: '10px' }}>
+          <button onClick={handleDownloadProductionCsv} className="btn btn-info">Descargar ProductionReport</button>
+          {data.length > 0 && (
+            <button onClick={handleExport} className="btn btn-success">Exportar Excel</button>
+          )}
+        </div>
       </div>
 
       {view === 'OEE' ? (
-        <div style={styles.card}>
+        <div className="panel">
           <ReportsOEEWrapper from={from} to={to} recipe={recipe} data={data} recipes={recipes} />
         </div>
       ) : data.length > 0 ? (
-        <div style={styles.card}>
+        <div className="panel">
           <ReportsChart data={data} view={view} />
         </div>
       ) : (
-        <p>Selecciona rango y filtros para ver el reporte.</p>
+        <div className="empty-state">
+          <div className="empty-state-icon">📊</div>
+          <p className="empty-state-message">Selecciona rango y filtros para ver el reporte</p>
+        </div>
       )}
     </div>
   );

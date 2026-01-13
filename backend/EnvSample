@@ -5,8 +5,20 @@ STOPS_FILE_PATH=
 STOPS_BACKUP_DIR=
 STOPS_AUTO_BACKUP=true
 STOPS_BACKUP_TIME=23:59
+PRODUCTION_BACKUP_DIR=
+PRODUCTION_AUTO_BACKUP=true
+PRODUCTION_BACKUP_TIME=23:59
 OPTIONS_FILE_PATH=
 CATEGORIES_FILE_PATH=../categories.json
+# REA_SOURCE_FILE_PATH: Archivo fuente de producción REA
+# Este archivo es usado por:
+# - El script generate_eol_cuts.js para generar EOL_Cuts.csv y EOL_Cuts_OEE.csv
+# - Los endpoints /rea-production y otros que procesan datos de REA
+# Ejemplo: REA_SOURCE_FILE_PATH=C:/Users/salid/ProductionApp/backend/data/ProductionReport_2026-01-13_00-04-09.csv
 REA_SOURCE_FILE_PATH=
 EFFICIENCY_FILE_PATH=../data/efficiency.csv
 CORS_ORIGIN=http://localhost:4000,http://0.0.0.0:4000
+# AUTO_GENERATE_EOL: Generar automáticamente EOL_Cuts.csv al iniciar el servidor (true/false)
+AUTO_GENERATE_EOL=true
+# DEFAULT_RATE_PER_HOUR: Tasa de producción por hora para cálculos de OEE
+DEFAULT_RATE_PER_HOUR=154

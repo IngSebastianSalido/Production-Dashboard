@@ -394,7 +394,7 @@ const ReportsOEEWrapper = ({ from, to, recipe, data: summaryData, recipes }) => 
             <select value={filterRework} onChange={e => setFilterRework(e.target.value)} style={inputSm}>
               <option value="">Todos</option>
               <option value="only">Solo Rework</option>
-              <option value="exclude">Sin Rework</option>
+              <option value="exclude">Sin Rework</option> 
             </select>
           </div>
         </div>
