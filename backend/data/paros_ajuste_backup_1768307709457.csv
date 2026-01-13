@@ -4425,12 +4425,15 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-08-02;REA;Actuadores;3140CA029;14:56;14:57;1;Robots;R70;Vacuum system;vacuum off;Equipment Fault;si;no
 2025-08-04;REA;Actuadores;3140CS022;07:00;11:40;280;REA;General;Change Over;Liberación;Quality;si;no
 2025-08-04;REA;Actuadores;3140CS022;11:40;15:00;200;MSA;MSA;Chiller;Chiller apagado con fusible dañado, MSA rechaza todos los magnet shaft;Equipment Fault;si;no
-2025-08-04;REA;Actuadores;3140CS022;15:00;15:33;33;MSA;General;TBD;Se continua el paro por chiller alarmado, se arma el chiller.;Continua la falla de rechazo en las piezas, se encuentra que la receta y parametros 11 no aparecen visibles, al intentar cargarlos no aparece la pagina de parametros. Se cambia a recta 10 siendo esta identica con la excepcion de 205 en limite superior en vez de 208. Se habla con calida y produccion al respecto.;si;no
+2025-08-04;REA;Actuadores;3140CS022;15:00;15:33;33;MSA;General;TBD;Se continua el paro por chiller alarmado, se arma el chiller.;No;si
+Continua la falla de rechazo en las piezas, se encuentra que la receta y parametros 11 no aparecen visibles, al intentar cargarlos no aparece la pagina de parametros.;No;No
+Se cambia a recta 10 siendo esta identica con la excepcion de 205 en limite superior en vez de 208. Se habla con calida y produccion al respecto;Equipment Fault;No;No
 2025-08-04;REA;Actuadores;3140CS022;15:41;15:46;5;USW;St11;Weld NOK;Revision, limpieza, cambio de goma negra. Revision en CHW para comprobar que no este perforando el cover;Equipment Fault;si;no
 2025-08-04;REA;Actuadores;3140CS022;15:51;16:16;25;EOL;General;Electrical system;Scrap en jig 1, cable de la terminal NOK, se reemplaza;Equipment Fault;si;no
 2025-08-04;REA;Actuadores;3140CS022;16:16;16:22;6;Aux;805;Pneumatic System;Multiples fallas en R65 por motion supervision, al rcomenzar no queda bien la pieza en 905 y no continua. Se cambian las gomas negras, se ajusta la posicion en Z de 405.56 a 408 para que no aplaste las ventosas al bajar el gear, se aocmoda el convolute en el robot para evitar el motion supervision;Equipment Fault;si;no
 2025-08-04;REA;Actuadores;3140CS022;16:28;16:34;6;USW;St11;Weld NOK;Scrap alto en estabilizacion nok y fuga demasiado grnade. Revision, calibracion del actuador, se revisa alineacion del sonotrodo;Equipment Fault;si;no
-2025-08-04;REA;Actuadores;3140CS022;16:34;17:14;40;REA;General;Test approval;Esperando resultados prueba de burbuja.;Mientras tanto se corre master okay, se revisa nuevamente, se revisa que la frecuencia no se haya desplazado, se cambia la esponja del jig 11 y se hacen pruebas.;si;no
+2025-08-04;REA;Actuadores;3140CS022;16:34;17:14;40;REA;General;Test approval;Espernaod resultados prueba de burbuja.;No;si
+Mientras tanto se corre master okay, se revisa nuevamente, se revisa que la frecuencia no se haya desplazado, se cambia la esponja del ig 11 y se hacen pruebas.;Quality;No;No
 2025-08-04;REA;Actuadores;3140CS022;17:14;17:23;9;USW;St11;Weld NOK;Ajustes tras resultados de prueba de burbuja (parte curva del actuador con fuga grande por sobre-soldadura, el resto de la pieza bien soldado con varios puntos ligeramente infra-soldados);Equipment Fault;si;no
 2025-08-04;REA;Actuadores;3140CA029;18:21;18:26;5;EOL;St2;Gripper NOK;Se recalibre gripper ;Equipment Fault;si;no
 2025-08-04;REA;Actuadores;3140CS022;18:29;18:32;3;Main conveyor;Main conveyor;Inductive sensor;Sensor no leia pallet;Equipment Fault;si;no
@@ -4439,7 +4442,9 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-08-04;REA;Actuadores;3140CS022;20:55;20:59;4;Robots;R70;Vacuum system;Cambio de ventosas ;Equipment Fault;si;no
 2025-08-04;REA;Actuadores;3140CS022;21:35;21:38;3;MAT;Consumables;Grease;Cambio de grasa, sin grasa en el area;Maintenance;si;no
 2025-08-04;REA;Actuadores;3140CS022;21:31;21:35;4;CAW;CPA;SCARA;Timeout, fallos al insertar excedidos;Equipment Fault;si;no
-2025-08-04;REA;Actuadores;3140CS022;20:01;20:14;13;EOL;General;TBD;Pieza bloqueada, actuador sin pin de gear 3, descalibra st2.;Se calibra st2. Se agrega control para el rechazo por posicion de contacto min/max en prensa 730.;si;no
+2025-08-04;REA;Actuadores;3140CS022;20:01;20:14;13;EOL;General;TBD;Pieza bloqueada, actuador sin pin de gear 3, descalibra st2.;No;si
+Se calibra st2.;No;No
+Se agrega control para el rechazo por posicion de contacto min/max en prensa 730;Equipment Fault;No;No
 2025-08-04;REA;Actuadores;3140CS022;22:24;22:28;4;CAW;Jig/Index;Index not in home;Ajuste por gfallos al insertar;Equipment Fault;si;no
 2025-08-04;REA;Actuadores;3140CS022;06:17;06:19;2;Aux;710;NOK material;motor al revés;Production;si;no
 2025-08-04;REA;Actuadores;3140CS022;23:20;23:22;2;Robots;R80;Gripper/tool adjustments;gripper atorado;Equipment Fault;si;no
@@ -4901,7 +4906,8 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-08-12;REA;Actuadores;3140CA029;20:50;20:53;3;Equipment Fault;Robots;R33;Incorrect pick/place;Agarra mal la pieza y colisiona;no;no
 2025-08-12;REA;Actuadores;3140CA029;20:57;20:59;2;Equipment Fault;EOL;St2;Gripper NOK;Error de signal;no;no
 2025-08-12;REA;Actuadores;3140CA029;15:00;15:12;12;Maintenance;REA;General;Checklist;Checklist;si;no
-2025-08-12;REA;Actuadores;3140CA029;19:48;20:16;28;Equipment Fault;MAT;St3;INTOCO;Tool de la atornilladora se solto, causa scrap y mesa gira, partes caen. Se armo de nuevo despues de encontrar las piezas.;no;no
+2025-08-12;REA;Actuadores;3140CA029;19:48;20:16;28;Equipment Fault;MAT;St3;INTOCO;Tool de la atornilladora se solto, causa scrap y mesa gira, partes caen.;no;no
+Se armo de nuevo despues de encontrar las piezas;No;No
 2025-08-12;REA;Actuadores;3140CA029;21:39;21:50;11;Equipment Fault;USW;General;Software/PC;No continua, ninguna sensor incorrecto, se copian Job activity, results(vacio) y log por peticion de italia. Al intentar cambiar en manual maquina sigue en running, alarma de no poder restaurar emergencia por que aun se esta ejecutando otro comando. Se reinicia la app;no;no
 2025-08-12;REA;Actuadores;3140CA029;22:30;22:35;5;Maintenance;REA;General;Checklist;check list inicio de turno;si;no
 2025-08-12;REA;Actuadores;3140CA029;23:28;23:29;1;Production;Aux;710;NOK material;motor en posicion incorrecta;si;no
@@ -5466,7 +5472,8 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-09-01;REA;Actuadores;3140CA029;09:33;09:36;3;Maintenance;CHW;Consumables;Chip reel;Cambio;si;no
 2025-09-01;REA;Actuadores;3140CA029;09:36;09:38;2;Equipment Fault;Robots;R33;Motion supervision/Joint collision;Coloca mal en CHW;no;no
 2025-09-01;REA;Actuadores;3140CA029;09:39;09:41;2;Equipment Fault;915;915;Missing ogive;Caida;no;no
-2025-09-01;REA;Actuadores;3140CA029;07:00;07:18;18;Equipment Fault;REA;General;TBD;MAT y EOL alarmadas por temperatura, AC apagado, temperatura alta 30C ambiental. Se abren gabinetes, se espera un momento hasta que baja la temperatura.;no;no
+2025-09-01;REA;Actuadores;3140CA029;07:00;07:18;18;Equipment Fault;REA;General;TBD;MAT y EOL alarmadas por temperatura, AC apagado, temperatura alta 30C ambiental.;no;no
+Se abren gabinetes, se espera un momento hasta que baja la temperatura;No;No
 2025-09-01;REA;Actuadores;3140CA029;07:18;07:55;37;Quality;REA;General;SOP;Esperando liberacion, ajustes mientras tanto;si;no
 2025-09-01;REA;Actuadores;3140CA029;07:55;08:30;35;Maintenance;USW;General;TBD;Ajustes para corrida controlada. Alineacion, nivelacion, calibracion, lubricacion, barrido de frecuencia, revision de parametros, ajuste tope mecanico mesa deslizable ratraido;si;no
 2025-09-01;REA;Actuadores;3140CA029;08:41;08:49;8;Equipment Fault;Robots;R75;Incorrect pick/place;Ajuste posicion 940 place tras ajustes mecanicos (durante RW);no;no
@@ -5754,7 +5761,8 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-09-06;REA;Actuadores;3140CA029;07:05;07:15;10;Equipment Fault;REA;General;Checklist;Checklist;no;no
 2025-09-06;REA;Actuadores;3140CA029;07:16;07:26;10;Equipment Fault;REA;General;Scheduled production stop;Rework en leak test;no;no
 2025-09-06;REA;Actuadores;3140CA029;08:27;09:40;73;Equipment Fault;MAT;St6;Dispensation system;Driver se alarmaba y aparte dispensaba mucha grasa en una sola terminal, se limpia exceso de grasa;no;no
-2025-09-03;REA;Actuadores;3140CA029;07:00;13:53;413;Maintenance;REA;General;Scheduled maintenance;Cambio de sonotrodo, alinacion, nivelacion, encontrar parametros de funcionamiento, pruebas. Durante el proceso se detectan condiciones en branson como fuga interna de aire y parte mecanica bloqueada (oxido) que se atienden para correcto funcionamiento.;si;no
+2025-09-03;REA;Actuadores;3140CA029;07:00;13:53;413;Maintenance;REA;General;Scheduled maintenance;Cambio de sonotrodo, alinacion, nivelacion, encontrar parametros de funcionamiento, pruebas.;si;no
+Durante el proceso se detectan condiciones en branson como fuga interna de aire, y parte mecanica bloqueada (oxido) que se atienden para correcto funcionamiento.;No;No
 2025-09-03;REA;Actuadores;3140CA029;14:50;14:55;5;Equipment Fault;REA;General;Pneumatic System;Compresor alarmado;no;no
 2025-09-06;REA;Actuadores;3140CA029;15:40;15:43;3;Equipment Fault;915;915;Missing ogive;Cae ojiva, se encuentra a un lado del conveyor;no;no
 2025-09-06;REA;Actuadores;3140CA029;16:17;16:24;7;Equipment Fault;MSA;MSA;Sensor de presencia;No llega a posicion home, se requiere entrar a la linea y resetear manual;no;no
@@ -5911,7 +5919,10 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-09-11;REA;Actuadores;3140CA029;09:28;09:38;10;Equipment Fault;Robots;R75;Motion supervision/Joint collision;Se ajusta offset ya que colisionaba al bajar al tomar cover;no;no
 2025-09-11;REA;Actuadores;3140CA029;09:44;09:48;4;Equipment Fault;915;915;Missing ogive;Ojiva caida;no;no
 2025-09-11;REA;Actuadores;3140CA029;09:51;09:53;2;Equipment Fault;730;730;Bowl/Lineal feeder;Herramienta colisiona al bajar a tomar pin por desgaste en base;no;no
-2025-09-11;REA;Actuadores;3140CA029;09:50;10:40;50;Equipment Fault;CAW;General;Software/PC;Fallos en caw por distintas fallas. Se limpian jig, caw se alarmaba crank orienter. Posible causa: motor recupera con terminal danada.;no;no
+2025-09-11;REA;Actuadores;3140CA029;09:50;10:40;50;Equipment Fault;CAW;General;Software/PC;Fallos en caw por distintas fallas;no;no
+- se limpian ingun de los 3 jig;No;No
+- caw se alarmaba crank orienter;No;No
+posible causa motor recupera con terminal danada;No;No
 2025-09-11;REA;Actuadores;3140CA029;10:40;11:10;30;Equipment Fault;Robots;R75;Motion supervision/Joint collision;Robot fallaba constatemente al ensamblar cover, se ajusta place de cover;no;no
 2025-09-11;REA;Actuadores;3140CA029;23:25;23:29;4;Equipment Fault;915;915;Missing ogive;Ojiva caida;no;no
 2025-09-11;REA;Actuadores;3140CA029;11:50;11:57;7;Equipment Fault;USW;St14;Lower Jig;Se revisa jig por scrap consecutivo;no;no
@@ -6460,7 +6471,8 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-09-27;REA;Actuadores;3140CA030;02:47;02:50;3;Equipment Fault;CAW;Jig/Index;Blade orienter actuator;alarma por blade orienter;no;no
 2025-09-27;REA;Actuadores;3140CA030;03:09;03:11;2;Equipment Fault;EOL;General;TBD;alarma por overload;no;no
 2025-09-27;REA;Actuadores;3140CA030;03:17;03:22;5;Equipment Fault;CAW;Jig/Index;Blade orienter actuator;Alarma por crank orienter;no;no
-2025-09-27;REA;Actuadores;3140CA030;03:23;03:29;6;Maintenance;CAW;LSW;Vision system;Scrap alto, piezas con mucho humo causa falla en SV. Limpieza profunda canal de dispensacion de nitro.;si;no
+2025-09-27;REA;Actuadores;3140CA030;03:23;03:29;6;Maintenance;CAW;LSW;Vision system;Scrap alto, piezas con mucho humo causa falla en SV.;si;no
+Limpieza profunda canal de dispensacion de nitro;No;No
 2025-09-27;REA;Actuadores;3140CA030;03:52;03:59;7;Equipment Fault;CAW;Jig/Index;Ingun actuator;alarmdo por crank orienter, se revisa y tenia un crank es mal posicion;no;no
 2025-09-27;REA;Actuadores;3140CA030;04:05;04:07;2;Equipment Fault;Robots;R70;Gripper/tool adjustments;gripper no abria;no;no
 2025-09-27;REA;Actuadores;3140CA030;04:18;04:23;5;Equipment Fault;CAW;Jig/Index;Blade orienter actuator;blade orienter 1 alarmado,;no;no
@@ -7080,7 +7092,11 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-10-10;REA;Actuadores;3140CS023;17:33;17:37;4;Maintenance;CHW;Consumables;Chip reel;Cambio de chip;si;no
 2025-10-10;REA;Actuadores;3140CA029;22:30;22:40;10;Equipment Fault;REA;General;Checklist;checklist;no;no
 2025-10-10;REA;Actuadores;3140CA029;02:30;02:33;3;Equipment Fault;620;620;Alphamatic Module;scrap por maxima fuerza excedida;no;no
-2025-10-11;REA;Actuadores;3140CA029;03:22;04:52;90;Equipment Fault;USW;General;TBD;se escucha un sonido fuerte en sonotrodo, se revisan diferentes posibles fallas y se considera que el robot ponia mal la pieza en el jig y causaba el sonido, sin embargo tambien se hicieron otros ajustes que pudieron haber afectado. Ajuste de tornilleria y limpieza de jig. Cambio de esponja del jig. Lubricacion de guias de jig. Modificacion de posicion de robot al poner pieza.;no;no
+2025-10-11;REA;Actuadores;3140CA029;03:22;04:52;90;Equipment Fault;USW;General;TBD;se escucha un sonido fuerte en sonotrodo se revisan diferentes todas las posbiles falla pero llegamos a la pisiblidad que el robot ponia mal la pieza en jig y causaba el sonido, sin embargo tambien se hiceron otros ajustes que pudieron haber afectado;no;no
+ajuste de tornilleria y limpieza de jig;No;No
+- cambio de esponja del jig;No;No
+lubricacion de guias de jig;No;No
+-modificacion de posicion de robot al poner pieza;No;No
 2025-10-11;REA;Actuadores;3140CA029;05:26;05:28;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado;no;no
 2025-10-11;REA;Actuadores;3140CA029;05:47;05:50;3;Equipment Fault;750;750;Alphamatic Module;Prensa queda atorada en lineal feeder y no permite que piston salga despues de tomar bearing;no;no
 2025-10-11;REA;Actuadores;3140CA029;06:24;06:38;14;Equipment Fault;620;620;Alphamatic Module;se ajusta valores de posicion final por scrap consecutivo de fuerza excedida;no;no
@@ -7154,8 +7170,13 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2025-10-13;COVER LINE;Line 2;FORD;16:00;16:07;7;Equipment Fault;Lip seal;ST74;Actuator;falla de vacío;no;no
 2025-10-13;REA;Actuadores;3140CA029;15:00;15:10;10;Maintenance;REA;General;Checklist;Checklist;si;no
 2025-10-13;REA;Actuadores;3140CA029;15:10;15:20;10;Equipment Fault;CHW;St3;Thermodo;se ajusta mecanicamente por scrap constante;no;no
-2025-10-13;REA;Actuadores;3140CA029;15:20;17:40;140;Equipment Fault;USW;St11;Weld NOK;se revisan y se hacen ajustes por soldadura nok. Se ajusta nivelacion de jig. Se revisan parametros. Se cambia esponja.;no;no
-2025-10-13;REA;Actuadores;3140CA030;20:30;21:20;50;Maintenance;REA;General;Change Over;CHO. Problemas en ST3 axis lineal EOL no responde. Corrida de masters, SOP.;si;no
+2025-10-13;REA;Actuadores;3140CA029;15:20;17:40;140;Equipment Fault;USW;St11;Weld NOK;se revisan y se hacen ajustes por soldadura nok;no;no
+se ajusta nivelacion de jig;No;No
+se revisan parametros;No;No
+se cambia esponja;No;No
+2025-10-13;REA;Actuadores;3140CA030;20:30;21:20;50;Maintenance;REA;General;Change Over;CHO.;si;no
+Problemas en ST3 axis lineal EOL no responde.;No;No
+Corrida de masters, SOP.;No;No
 2025-10-13;REA;Actuadores;3140CA029;18:25;19:00;35;Quality;USW;General;NOK material;Scrap alto, body con mucho flash, poroso. Se cambia el batch, se nota un gran cambio en los resultados de USW, se estabiliza en OK consecutivas;si;no
 2025-10-13;REA;Actuadores;3140CA030;21:20;22:30;70;Quality;REA;General;Change Over;Esperando liberacion;si;no
 2025-10-13;REA;Actuadores;3140CA030;22:30;23:07;37;Quality;REA;General;SOP;liberacion por cambio de 029 a 030 FORD.;si;no
@@ -7469,4 +7490,3 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2026-02-23;REA;Actuadores;WG REA FORD CA030;15:46;15:47;1;Fallo;Press_750;General;Tool;test;no;no
 2026-01-08;REA;Actuadores;WG REA FORD CA030;01:59;02:59;60;Calidad;Press_750;General;Presence sensor;test;si;no
 2026-01-08;REA;Actuadores;WG REA FORD CA030;01:00;02:00;60;Fallo;Press_730;General;Tool;test;no;no
-2026-01-13;REA;Actuadores;WG REA FORD CA030;05:59;06:03;4;Fallo;Press_620;General;Tool;golasdf fasdf,;No;Si

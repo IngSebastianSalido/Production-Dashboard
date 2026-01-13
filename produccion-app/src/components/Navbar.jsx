@@ -19,9 +19,6 @@ const Navbar = () => {
           <Link to="/oee" style={styles.navLink}>OEE</Link>
         </li>
         <li style={styles.navItem}>
-          <Link to="/production-summary" style={styles.navLink}>Resumen Final</Link>
-        </li>
-        <li style={styles.navItem}>
           <Link to="/grafica-paros" style={styles.navLink}>StopChart</Link>
         </li>
         <li style={styles.navItem}>

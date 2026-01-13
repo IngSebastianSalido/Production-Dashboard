@@ -7,7 +7,7 @@ const OEEPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [defaultRate, setDefaultRate] = useState(154);
+  const [defaultRate, setDefaultRate] = useState(180); // RATE por defecto
   const [showNotes, setShowNotes] = useState(false);
   const [oeeAverages, setOeeAverages] = useState(null);
   
@@ -15,6 +15,8 @@ const OEEPage = () => {
   const [filters, setFilters] = useState({
     pn: '',
     shift: '',
+    changeOver: '',
+    rework: '',
     dateFrom: '',
     dateTo: ''
   });
@@ -83,12 +85,45 @@ const OEEPage = () => {
     };
   };
 
+  // Función para obtener día de la semana en español
+  const getDayOfWeek = (date) => {
+    const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    return days[date.getDay()];
+  };
+
+  // Función para extraer número de turno del Batch ID
+  const getShiftNumber = (batchId) => {
+    if (!batchId) return '';
+    const match = batchId.match(/S(\d)/);
+    return match ? `Turno ${match[1]}` : '';
+  };
+
   // Apply filters
   const getFilteredData = () => {
     return data.filter(cut => {
+      // Filtro por PN (receta)
       if (filters.pn && !cut.pn.toLowerCase().includes(filters.pn.toLowerCase())) return false;
-      // Los cortes no tienen campo shift, así que omitimos ese filtro
-      // Los filtros de fecha ya se aplican en el backend
+      
+      // Filtro por Turno
+      if (filters.shift) {
+        const shiftNum = getShiftNumber(cut.batchId).replace('Turno ', '');
+        if (shiftNum !== filters.shift) return false;
+      }
+      
+      // Filtro por Change Over
+      if (filters.changeOver) {
+        const hasChangeOver = cut.changeOver === 'Si';
+        if (filters.changeOver === 'si' && !hasChangeOver) return false;
+        if (filters.changeOver === 'no' && hasChangeOver) return false;
+      }
+      
+      // Filtro por Rework
+      if (filters.rework) {
+        const isRework = cut.pn.toLowerCase().includes('rework');
+        if (filters.rework === 'si' && !isRework) return false;
+        if (filters.rework === 'no' && isRework) return false;
+      }
+      
       return true;
     });
   };
@@ -157,17 +192,20 @@ const OEEPage = () => {
       const startDate = new Date(cut.startISO);
       const endDate = new Date(cut.endISO);
       return {
-        'PN': cut.pn,
+        'Batch ID': cut.batchId || 'N/A',
+        'Turno': getShiftNumber(cut.batchId),
+        'Día': getDayOfWeek(startDate),
         'Fecha Inicio': startDate.toLocaleDateString(),
         'Hora Inicio': startDate.toLocaleTimeString(),
         'Fecha Fin': endDate.toLocaleDateString(),
         'Hora Fin': endDate.toLocaleTimeString(),
+        'PN': cut.pn,
         'Piezas Totales': cut.piezasTotales,
         'Duración (min)': cut.durationMinutes,
         'Tiempo de Turno (min)': metrics.shiftTimeMinutes,
         'Tiempo Planeado (min)': metrics.tiempoPlaneadoMinutes,
-        'Downtime Programado (min)': metrics.downtimeProgramadoMinutes,
-        'Downtime No Programado (min)': metrics.downtimeNoProgramadoMinutes,
+        'DT Programado (min)': metrics.downtimeProgramadoMinutes,
+        'DT No Programado (min)': metrics.downtimeNoProgramadoMinutes,
         'Downtime Total (min)': cut.downtimeMinutes,
         'Change Over': cut.changeOver || 'No',
         'Disponibilidad %': metrics.disponibilidad,
@@ -181,6 +219,33 @@ const OEEPage = () => {
     });
 
     const ws = XLSX.utils.json_to_sheet(exportData);
+    // Ajustar ancho de columnas para mejor visualización
+    const columnWidths = [
+      { wch: 15 },  // Batch ID
+      { wch: 10 },  // Turno
+      { wch: 12 },  // Día
+      { wch: 12 },  // Fecha Inicio
+      { wch: 12 },  // Hora Inicio
+      { wch: 12 },  // Fecha Fin
+      { wch: 12 },  // Hora Fin
+      { wch: 20 },  // PN
+      { wch: 12 },  // Piezas Totales
+      { wch: 12 },  // Duración
+      { wch: 14 },  // Tiempo de Turno
+      { wch: 14 },  // Tiempo Planeado
+      { wch: 14 },  // DT Programado
+      { wch: 14 },  // DT No Programado
+      { wch: 14 },  // Downtime Total
+      { wch: 12 },  // Change Over
+      { wch: 14 },  // Disponibilidad
+      { wch: 8 },   // OK EOL
+      { wch: 8 },   // NOK EOL
+      { wch: 10 },  // Calidad
+      { wch: 8 },   // RATE
+      { wch: 12 },  // Eficiencia
+      { wch: 8 }    // OEE
+    ];
+    ws['!cols'] = columnWidths;
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'OEE Report');
     XLSX.writeFile(wb, `OEE_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
@@ -205,6 +270,20 @@ const OEEPage = () => {
       {showNotes && (
         <div style={styles.notesContainer}>
           <h3 style={{marginTop: 0}}>📝 Cómo se calculan las métricas de OEE</h3>
+          <div style={styles.noteSection}>
+            <h4>🔢 Batch ID</h4>
+            <p><strong>Formato:</strong> D[MMDDYYYY]S[#]C[#]</p>
+            <p><strong>Componentes:</strong></p>
+            <ul>
+              <li><strong>D:</strong> Prefijo de "Date" (Fecha)</li>
+              <li><strong>MMDDYYYY:</strong> Fecha en formato Mes/Día/Año (08 dígitos)</li>
+              <li><strong>S#:</strong> Número de turno (1=7AM-3PM, 2=3PM-10:30PM, 3=10:30PM-7AM)</li>
+              <li><strong>C#:</strong> Número de corte dentro del turno (incrementa con cada cambio de receta)</li>
+            </ul>
+            <p><strong>Ejemplo:</strong> <code>D10222025S1C2</code> = 22 de octubre 2025, Turno 1, Corte 2</p>
+            <p><strong>Descripción:</strong> Identificador único para cada batch de producción que combina fecha, turno y secuencia de corte. 
+            Útil para rastrear y analizar batches específicos.</p>
+          </div>
           <div style={styles.noteSection}>
             <h4>🟢 Disponibilidad</h4>
             <p><strong>Fórmula:</strong> (Tiempo Planeado - Downtime No Programado) / Tiempo Planeado × 100</p>
@@ -265,7 +344,7 @@ const OEEPage = () => {
         <h3 style={{marginTop: 0}}>Filtros</h3>
         <div style={styles.filtersGrid}>
           <div style={styles.filterItem}>
-            <label style={styles.label}>PN:</label>
+            <label style={styles.label}>PN (Receta):</label>
             <input
               type="text"
               value={filters.pn}
@@ -273,6 +352,43 @@ const OEEPage = () => {
               placeholder="Buscar por PN..."
               style={styles.input}
             />
+          </div>
+          <div style={styles.filterItem}>
+            <label style={styles.label}>Turno:</label>
+            <select
+              value={filters.shift}
+              onChange={(e) => setFilters({ ...filters, shift: e.target.value })}
+              style={styles.input}
+            >
+              <option value="">Todos</option>
+              <option value="1">Turno 1 (7AM-3PM)</option>
+              <option value="2">Turno 2 (3PM-10:30PM)</option>
+              <option value="3">Turno 3 (10:30PM-7AM)</option>
+            </select>
+          </div>
+          <div style={styles.filterItem}>
+            <label style={styles.label}>Change Over:</label>
+            <select
+              value={filters.changeOver}
+              onChange={(e) => setFilters({ ...filters, changeOver: e.target.value })}
+              style={styles.input}
+            >
+              <option value="">Todos</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div style={styles.filterItem}>
+            <label style={styles.label}>Rework:</label>
+            <select
+              value={filters.rework}
+              onChange={(e) => setFilters({ ...filters, rework: e.target.value })}
+              style={styles.input}
+            >
+              <option value="">Todos</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
           </div>
           <div style={styles.filterItem}>
             <label style={styles.label}>Desde:</label>
@@ -294,7 +410,24 @@ const OEEPage = () => {
           </div>
           <div style={styles.filterItem}>
             <button 
-              onClick={() => setFilters({ pn: '', shift: '', dateFrom: '', dateTo: '' })}
+              onClick={() => {
+                const today = new Date();
+                const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                const formatDate = (date) => {
+                  const year = date.getFullYear();
+                  const month = String(date.getMonth() + 1).padStart(2, '0');
+                  const day = String(date.getDate()).padStart(2, '0');
+                  return `${year}-${month}-${day}`;
+                };
+                setFilters({ 
+                  pn: '', 
+                  shift: '', 
+                  changeOver: '', 
+                  rework: '', 
+                  dateFrom: formatDate(new Date(today.getFullYear(), today.getMonth(), 1)), 
+                  dateTo: formatDate(new Date())
+                });
+              }}
               style={styles.clearBtn}
             >
               Limpiar Filtros
@@ -358,6 +491,9 @@ const OEEPage = () => {
         <table style={styles.table}>
           <thead>
             <tr>
+              <th style={styles.th}>Batch ID</th>
+              <th style={styles.th}>Turno</th>
+              <th style={styles.th}>Día</th>
               <th style={styles.th}>PN</th>
               <th style={styles.th}>Fecha Inicio</th>
               <th style={styles.th}>Hora Inicio</th>
@@ -382,9 +518,9 @@ const OEEPage = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={20} style={styles.td}>Cargando...</td></tr>
+              <tr><td colSpan={23} style={styles.td}>Cargando...</td></tr>
             ) : filteredData.length === 0 ? (
-              <tr><td colSpan={20} style={styles.td}>No hay datos disponibles. Selecciona un rango de fechas.</td></tr>
+              <tr><td colSpan={23} style={styles.td}>No hay datos disponibles. Selecciona un rango de fechas.</td></tr>
             ) : (
               filteredData.map((cut, index) => {
                 const metrics = getOEEMetrics(cut);
@@ -392,6 +528,9 @@ const OEEPage = () => {
                 const endDate = new Date(cut.endISO);
                 return (
                   <tr key={index} style={styles.tr}>
+                    <td style={{...styles.td, fontFamily: 'monospace', fontSize: '11px'}}>{cut.batchId || 'N/A'}</td>
+                    <td style={{...styles.td, fontWeight: 'bold', color: '#42a5f5'}}>{getShiftNumber(cut.batchId)}</td>
+                    <td style={styles.td}>{getDayOfWeek(startDate)}</td>
                     <td style={styles.td}>{cut.pn}</td>
                     <td style={styles.td}>{startDate.toLocaleDateString()}</td>
                     <td style={styles.td}>{startDate.toLocaleTimeString()}</td>

@@ -345,18 +345,6 @@ const StopRegister = ({
               El paro cruza medianoche (arranque al día siguiente)
             </label>
           </div>
-          <div style={styles.formGroup}>
-            <label style={styles.checkboxLabel}>
-              <input 
-                type="checkbox" 
-                name="ajuste_proceso" 
-                checked={formData.ajuste_proceso} 
-                onChange={handleChange} 
-                style={styles.checkbox}
-              />
-              Ajuste de Proceso
-            </label>
-          </div>
         </div>
         {/* Columna derecha */}
         <div style={styles.column}>
@@ -399,6 +387,18 @@ const StopRegister = ({
           <div style={styles.formGroup}>
             <label>Descripción:</label>
             <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} style={styles.textarea} />
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.checkboxLabel}>
+              <input 
+                type="checkbox" 
+                name="ajuste_proceso" 
+                checked={formData.ajuste_proceso} 
+                onChange={handleChange} 
+                style={styles.checkbox}
+              />
+              Ajuste de Proceso Crítico
+            </label>
           </div>
         </div>
       </div>

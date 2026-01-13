@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const router = express.Router();
 const dotenv = require('dotenv');
+const { execSync } = require('child_process');
 
 // Cargar las variables de entorno desde el archivo .env
 dotenv.config();
@@ -695,8 +696,24 @@ router.get('/rea-production-eolo-cuts', async (req, res) => {
 // Endpoint: devuelve cortes EOL enriquecidos con métricas OEE (disponibilidad, eficiencia, calidad)
 router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
   try {
+    // Ejecutar el script de generación de cortes automáticamente
+    const scriptPath = path.join(__dirname, '../scripts/generate_eol_cuts.js');
+    const ratePerHour = parseFloat(req.query.ratePerHour) || 154;
+    
+    try {
+      console.log('Generando cortes EOL automáticamente...');
+      execSync(`node "${scriptPath}" --rate=${ratePerHour}`, { 
+        cwd: path.join(__dirname, '..'),
+        stdio: 'pipe' 
+      });
+      console.log('Cortes EOL generados exitosamente');
+    } catch (execErr) {
+      console.error('Error al generar cortes EOL:', execErr.message);
+      return res.status(500).send('Error al generar cortes EOL: ' + execErr.message);
+    }
+
     const csvPath = path.join(__dirname, '../data/EOL_Cuts.csv');
-    if (!fs.existsSync(csvPath)) return res.status(404).send('EOL_Cuts.csv no encontrado. Genera primero los cortes.');
+    if (!fs.existsSync(csvPath)) return res.status(404).send('EOL_Cuts.csv no encontrado después de generación.');
 
   // Resolve stops/paros file: prefer STOPS_FILE_PATH env, then backend/data/paros.csv if present, then backend/data/stops.csv
   const candidateEnv = process.env.STOPS_FILE_PATH ? path.resolve(process.env.STOPS_FILE_PATH) : null;
@@ -706,7 +723,6 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
   if (candidateEnv && fs.existsSync(candidateEnv)) stopsPath = candidateEnv;
   else if (fs.existsSync(candidateParos)) stopsPath = candidateParos;
   else stopsPath = candidateStops;
-    const ratePerHour = parseFloat(req.query.ratePerHour) || 154; // piezas por hora
 
     // Load shifts configuration
     const shiftsPath = path.join(__dirname, '../shifts.json');
@@ -940,16 +956,17 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
     const enriched = [];
     for (const row of dataRows) {
       const parts = splitCsvLine(row);
-      if (parts.length < 11) continue;
-      const startFecha = parts[0];
-      const startHora = parts[1];
-      const startISOraw = parts[2];
-      const endFecha = parts[3];
-      const endHora = parts[4];
-      const endISOraw = parts[5];
-      const pn = parts[6] ? parts[6].replace(/^"|"$/g, '') : '';
-      const piezasTotales = parseInt(parts[7]) || 0;
-      const stationsJsonRaw = parts[10] || parts[parts.length-1];
+      if (parts.length < 12) continue;
+      const batchId = parts[0] ? parts[0].replace(/^"|"$/g, '') : '';
+      const startFecha = parts[1];
+      const startHora = parts[2];
+      const startISOraw = parts[3];
+      const endFecha = parts[4];
+      const endHora = parts[5];
+      const endISOraw = parts[6];
+      const pn = parts[7] ? parts[7].replace(/^"|"$/g, '') : '';
+      const piezasTotales = parseInt(parts[8]) || 0;
+      const stationsJsonRaw = parts[11] || parts[parts.length-1];
       let stations = [];
       try { stations = JSON.parse(stationsJsonRaw.replace(/""/g,'"').replace(/^"|"$/g, '')); } catch (e) { stations = []; }
 
@@ -1025,6 +1042,7 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
       const calidadPercent = calidad === null ? null : (calidad * 100);
 
   enriched.push({ 
+    batchId,
     startFecha, 
     startHora, 
     startISO: cutStart.toISOString(), 

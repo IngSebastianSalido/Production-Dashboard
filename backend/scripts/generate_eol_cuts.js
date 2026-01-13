@@ -45,65 +45,261 @@ function generateCuts(){
 
   registros.sort((a,b)=>a.fechaHoraReal - b.fechaHoraReal);
 
-  // remove isolated zero rows
-  const keep = new Array(registros.length).fill(true);
-  for (let i=0;i<registros.length;i++){
-    if (!registros[i].anyNonZero){
-      const prev = registros[i-1];
-      const next = registros[i+1];
-      if (prev && next && prev.anyNonZero && next.anyNonZero) keep[i]=false;
-    }
-  }
-  const filtered = registros.filter((r,idx)=>keep[idx]);
+  // Nueva lógica: generar cortes por turno + cambios de receta
+  // Definir turnos fijos: 7AM-3PM, 3PM-10:30PM, 10:30PM-7AM
+  const SHIFTS = [
+    { name: 'Turno 1', start: 7*60, end: 15*60 },          // 7:00-15:00 (7AM-3PM)
+    { name: 'Turno 2', start: 15*60, end: 22*60+30 },      // 15:00-22:30 (3PM-10:30PM)
+    { name: 'Turno 3', start: 22*60+30, end: 24*60+7*60 }  // 22:30-31:00 (10:30PM-7AM del día siguiente)
+  ];
 
+  // Función para obtener minutos desde medianoche
+  function getMinutesFromMidnight(date) {
+    return date.getHours() * 60 + date.getMinutes();
+  }
+
+  // Función para determinar el turno de una fecha/hora
+  function getShift(date) {
+    const mins = getMinutesFromMidnight(date);
+    for (const shift of SHIFTS) {
+      if (shift.start < shift.end) { // turno en el mismo día
+        if (mins >= shift.start && mins < shift.end) return shift;
+      } else { // turno que cruza medianoche (Turno 3)
+        if (mins >= shift.start || mins < (shift.end - 24*60)) return shift;
+      }
+    }
+    return SHIFTS[0]; // default
+  }
+
+  // Calcular deltas normales
   const deltas = [];
   let prev = null;
-  // allow override via CLI: --minPrevAccum=10
   const arg = process.argv.find(a=>a.startsWith('--minPrevAccum='));
   const MIN_PREVIOUS_ACCUM = arg ? parseInt(arg.split('=')[1]) : 5;
-  for (let i=0;i<filtered.length;i++){
-    const r = filtered[i];
+  
+  for (let i=0;i<registros.length;i++){
+    const r = registros[i];
     let deltaEol = 0;
+    let isReset = false;
+    
     if (!prev) deltaEol = 0;
     else {
       if (r.acumulado >= prev.acumulado) deltaEol = r.acumulado - prev.acumulado;
       else {
-        if ((prev.acumulado||0) >= MIN_PREVIOUS_ACCUM){ deltaEol = 0; r._isReset = true; }
-        else { const diff = r.acumulado - prev.acumulado; deltaEol = diff>0?diff:0; }
+        if ((prev.acumulado||0) >= MIN_PREVIOUS_ACCUM){ 
+          deltaEol = 0; 
+          isReset = true; 
+        } else { 
+          const diff = r.acumulado - prev.acumulado; 
+          deltaEol = diff>0?diff:0; 
+        }
       }
     }
+    
     const stationDeltas = [];
     for (let j=3;j<r.raw.length;j+=2){
       const name = (header[j]||`Est${j}`).replace(/ok$/i,'');
       const ok = safeParseInt(r.raw[j]);
       const nok = safeParseInt(r.raw[j+1]);
       let dOk=0,dNok=0;
-      if (prev){ const prevOk = safeParseInt(prev.raw[j]); const prevNok = safeParseInt(prev.raw[j+1]); dOk = ok - prevOk; dNok = nok - prevNok; dOk = dOk>0?dOk:0; dNok = dNok>0?dNok:0; }
+      if (prev){ 
+        const prevOk = safeParseInt(prev.raw[j]); 
+        const prevNok = safeParseInt(prev.raw[j+1]); 
+        dOk = ok - prevOk; 
+        dNok = nok - prevNok; 
+        dOk = dOk>0?dOk:0; 
+        dNok = dNok>0?dNok:0; 
+      }
       stationDeltas.push({ station: name, ok: dOk, nok: dNok });
     }
-    deltas.push({ index: i, fecha: r.fecha, hora: r.hora, fechaHoraReal: r.fechaHoraReal, acumulado: r.acumulado, deltaEol, stationDeltas, pn: r.pn, _isReset: r._isReset||false });
+    
+    deltas.push({ 
+      index: i, 
+      fecha: r.fecha, 
+      hora: r.hora, 
+      fechaHoraReal: r.fechaHoraReal, 
+      acumulado: r.acumulado, 
+      deltaEol, 
+      stationDeltas, 
+      pn: r.pn, 
+      isReset 
+    });
     prev = r;
   }
 
-  // group into cuts
-  const cuts = [];
-  let cutStartIdx = 0; let cutSum = 0; let cutStationSums = {};
-  for (let k=0;k<deltas.length;k++){
-    const d = deltas[k];
-    cutSum += d.deltaEol;
-    d.stationDeltas.forEach(sd=>{ if (!cutStationSums[sd.station]) cutStationSums[sd.station]={ok:0,nok:0}; cutStationSums[sd.station].ok += sd.ok; cutStationSums[sd.station].nok += sd.nok; });
-    if (d._isReset){
-      const startRec = deltas[cutStartIdx];
-      const endRec = deltas[k-1] || deltas[cutStartIdx];
-      const estacionesArr = Object.keys(cutStationSums).map(s=>({station:s, ok: cutStationSums[s].ok, nok: cutStationSums[s].nok}));
-      if (cutSum>0){ cuts.push({ startFecha: startRec.fecha, startHora: startRec.hora, endFecha: endRec.fecha, endHora: endRec.hora, pn: endRec.pn||startRec.pn, piezasTotales: cutSum, estaciones: estacionesArr, startAccum: startRec.acumulado, endAccum: endRec.acumulado }); }
-      cutStartIdx = k; cutSum = 0; cutStationSums = {};
+  // Identificar rango de fechas
+  let cuts = [];
+  
+  if (deltas.length === 0) {
+    console.warn('No deltas to process');
+  } else {
+    const minDate = new Date(deltas[0].fechaHoraReal);
+    const maxDate = new Date(deltas[deltas.length-1].fechaHoraReal);
+    
+    // Generar todos los días en el rango
+    const allDays = [];
+    const currentDate = new Date(minDate);
+    currentDate.setHours(0,0,0,0);
+    
+    while (currentDate <= maxDate) {
+      allDays.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    // Para cada día, generar cortes por turno
+    for (const day of allDays) {
+      for (let shiftIdx = 0; shiftIdx < SHIFTS.length; shiftIdx++) {
+        const shift = SHIFTS[shiftIdx];
+        // Calcular inicio y fin del turno
+        let shiftStart = new Date(day);
+        let shiftEnd = new Date(day);
+        
+        shiftStart.setHours(Math.floor(shift.start / 60), shift.start % 60, 0, 0);
+        
+        if (shift.end > 24*60) { // cruza medianoche
+          shiftEnd.setDate(shiftEnd.getDate() + 1);
+          shiftEnd.setHours(Math.floor((shift.end - 24*60) / 60), (shift.end - 24*60) % 60, 0, 0);
+        } else {
+          shiftEnd.setHours(Math.floor(shift.end / 60), shift.end % 60, 0, 0);
+        }
+
+        // Filtrar registros dentro de este turno
+        const shiftDeltas = deltas.filter(d => 
+          d.fechaHoraReal >= shiftStart && d.fechaHoraReal < shiftEnd
+        );
+
+        if (shiftDeltas.length === 0) {
+          // Turno sin datos - generar corte vacío
+          const startFecha = `${shiftStart.getMonth()+1}/${shiftStart.getDate()}/${shiftStart.getFullYear()}`;
+          const startHora = `${String(shiftStart.getHours()).padStart(2,'0')}:${String(shiftStart.getMinutes()).padStart(2,'0')}:00`;
+          const endFecha = `${shiftEnd.getMonth()+1}/${shiftEnd.getDate()}/${shiftEnd.getFullYear()}`;
+          const endHora = `${String(shiftEnd.getHours()).padStart(2,'0')}:${String(shiftEnd.getMinutes()).padStart(2,'0')}:00`;
+          
+          // Generar Batch ID para turno sin producción
+          const month = String(shiftStart.getMonth() + 1).padStart(2, '0');
+          const dayNum = String(shiftStart.getDate()).padStart(2, '0');
+          const year = shiftStart.getFullYear();
+          const shiftNum = shiftIdx + 1;
+          const batchId = `D${month}${dayNum}${year}S${shiftNum}C1`;
+          
+          cuts.push({ 
+            batchId,
+            startFecha, 
+            startHora, 
+            endFecha, 
+            endHora, 
+            pn: 'NO_PRODUCTION', 
+            piezasTotales: 0, 
+            estaciones: [], 
+            startAccum: 0, 
+            endAccum: 0 
+          });
+          continue;
+        }
+
+        // Detectar cambios de receta dentro del turno
+        // Solo dividir cuando cambia la receta (PN)
+        const recipeCuts = [];
+        let currentRecipe = shiftDeltas[0].pn;
+        let cutStartIdx = 0;
+
+        for (let i = 1; i < shiftDeltas.length; i++) {
+          const currRecipe = shiftDeltas[i].pn;
+          
+          // Dividir solo si cambia la receta
+          if (currRecipe !== currentRecipe) {
+            recipeCuts.push({ startIdx: cutStartIdx, endIdx: i - 1, pn: currentRecipe });
+            cutStartIdx = i;
+            currentRecipe = currRecipe;
+          }
+        }
+        // Último corte del turno
+        recipeCuts.push({ startIdx: cutStartIdx, endIdx: shiftDeltas.length - 1, pn: currentRecipe });
+
+        // Generar cortes
+        for (let cutIdx = 0; cutIdx < recipeCuts.length; cutIdx++) {
+          const rc = recipeCuts[cutIdx];
+          
+          // Generar Batch ID: D[MMDDYYYY]S[#]C[#]
+          const month = String(shiftStart.getMonth() + 1).padStart(2, '0');
+          const dayNum = String(shiftStart.getDate()).padStart(2, '0');
+          const year = shiftStart.getFullYear();
+          const shiftNum = shiftIdx + 1;
+          const cutNum = cutIdx + 1;
+          const batchId = `D${month}${dayNum}${year}S${shiftNum}C${cutNum}`;
+          const startRec = shiftDeltas[rc.startIdx];
+          const endRec = shiftDeltas[rc.endIdx];
+          
+          let cutSum = 0;
+          let cutStationSums = {};
+          
+          for (let k = rc.startIdx; k <= rc.endIdx; k++) {
+            const d = shiftDeltas[k];
+            cutSum += d.deltaEol;
+            d.stationDeltas.forEach(sd => {
+              if (!cutStationSums[sd.station]) cutStationSums[sd.station] = {ok:0, nok:0};
+              cutStationSums[sd.station].ok += sd.ok;
+              cutStationSums[sd.station].nok += sd.nok;
+            });
+          }
+          
+          const estacionesArr = Object.keys(cutStationSums).map(s => ({
+            station: s, 
+            ok: cutStationSums[s].ok, 
+            nok: cutStationSums[s].nok
+          }));
+
+          // Determinar tiempos de inicio y fin
+          // Si es el único corte del turno completo, usar horarios de turno
+          // Si hay múltiples cortes (cambio de receta), usar horarios reales
+          let cutStartFecha, cutStartHora, cutEndFecha, cutEndHora;
+          
+          if (recipeCuts.length === 1) {
+            // Único corte - usar horarios del turno
+            cutStartFecha = `${shiftStart.getMonth()+1}/${shiftStart.getDate()}/${shiftStart.getFullYear()}`;
+            cutStartHora = `${String(shiftStart.getHours()).padStart(2,'0')}:${String(shiftStart.getMinutes()).padStart(2,'0')}:00`;
+            cutEndFecha = `${shiftEnd.getMonth()+1}/${shiftEnd.getDate()}/${shiftEnd.getFullYear()}`;
+            cutEndHora = `${String(shiftEnd.getHours()).padStart(2,'0')}:${String(shiftEnd.getMinutes()).padStart(2,'0')}:00`;
+          } else {
+            // Múltiples cortes - usar horarios reales pero ajustar inicio/fin de turno
+            if (rc.startIdx === 0) {
+              // Primer corte del turno - inicio = inicio del turno
+              cutStartFecha = `${shiftStart.getMonth()+1}/${shiftStart.getDate()}/${shiftStart.getFullYear()}`;
+              cutStartHora = `${String(shiftStart.getHours()).padStart(2,'0')}:${String(shiftStart.getMinutes()).padStart(2,'0')}:00`;
+            } else {
+              cutStartFecha = startRec.fecha;
+              cutStartHora = startRec.hora;
+            }
+            
+            if (rc.endIdx === shiftDeltas.length - 1) {
+              // Último corte del turno - fin = fin del turno
+              cutEndFecha = `${shiftEnd.getMonth()+1}/${shiftEnd.getDate()}/${shiftEnd.getFullYear()}`;
+              cutEndHora = `${String(shiftEnd.getHours()).padStart(2,'0')}:${String(shiftEnd.getMinutes()).padStart(2,'0')}:00`;
+            } else {
+              cutEndFecha = endRec.fecha;
+              cutEndHora = endRec.hora;
+            }
+          }
+
+          cuts.push({ 
+            batchId,
+            startFecha: cutStartFecha, 
+            startHora: cutStartHora, 
+            endFecha: cutEndFecha, 
+            endHora: cutEndHora, 
+            pn: rc.pn || 'UNKNOWN', 
+            piezasTotales: cutSum, 
+            estaciones: estacionesArr, 
+            startAccum: startRec.acumulado, 
+            endAccum: endRec.acumulado 
+          });
+        }
+      }
     }
   }
-  if (cutSum>0){ const startRec = deltas[cutStartIdx]; const endRec = deltas[deltas.length-1]; const estacionesArr = Object.keys(cutStationSums).map(s=>({station:s, ok: cutStationSums[s].ok, nok: cutStationSums[s].nok})); cuts.push({ startFecha: startRec.fecha, startHora: startRec.hora, endFecha: endRec.fecha, endHora: endRec.hora, pn: endRec.pn||startRec.pn, piezasTotales: cutSum, estaciones: estacionesArr, startAccum: startRec.acumulado, endAccum: endRec.acumulado }); }
 
   // write CSV
-  const csvHeader = 'startFecha,startHora,startFechaHoraISO,endFecha,endHora,endFechaHoraISO,pn,piezasTotales,startAccum,endAccum,stations_json\n';
+  const csvHeader = 'batchId,startFecha,startHora,startFechaHoraISO,endFecha,endHora,endFechaHoraISO,pn,piezasTotales,startAccum,endAccum,stations_json\n';
   let csvContent = csvHeader;
   for (const c of cuts){
     const startParts = String(c.startFecha).split('/');
@@ -115,7 +311,7 @@ function generateCuts(){
     if (endParts.length===3) endISO = `${endParts[2]}-${endParts[0].padStart(2,'0')}-${endParts[1].padStart(2,'0')}T${c.endHora}`;
     else endISO = new Date(`${c.endFecha} ${c.endHora}`).toISOString();
     const stationsJson = JSON.stringify(c.estaciones||[]);
-    const row = `${c.startFecha},${c.startHora},${startISO},${c.endFecha},${c.endHora},${endISO},"${(c.pn||'').replace(/\"/g,'')}",${c.piezasTotales||0},${c.startAccum||0},${c.endAccum||0},"${stationsJson.replace(/"/g,'""')}"\n`;
+    const row = `${c.batchId||''},${c.startFecha},${c.startHora},${startISO},${c.endFecha},${c.endHora},${endISO},"${(c.pn||'').replace(/\"/g,'')}",${c.piezasTotales||0},${c.startAccum||0},${c.endAccum||0},"${stationsJson.replace(/"/g,'""')}"\n`;
     csvContent += row;
   }
   fs.writeFileSync(outCsv, csvContent, 'utf8');

@@ -32,12 +32,32 @@ module.exports = (stopsFilePath) => {
 
     // Función para sanitizar campos de texto (eliminar saltos de línea y punto y coma)
     const sanitizarTexto = (texto) => {
-      if (!texto) return '';
-      return texto
+      if (texto === undefined || texto === null) return '';
+      return String(texto)
         .replace(/[\r\n]+/g, ' ')  // Reemplazar saltos de línea por espacio
         .replace(/;/g, ',')         // Reemplazar punto y coma por coma
         .trim();                     // Eliminar espacios al inicio y final
     };
+
+    const asBool = (val, defaultValue = false) => {
+      if (val === undefined || val === null) return defaultValue;
+      if (typeof val === 'boolean') return val;
+      const normalized = String(val).toLowerCase().trim();
+      return normalized === 'true' || normalized === '1' || normalized === 'si' || normalized === 'sí';
+    };
+
+    // Sanitizar todos los campos de entrada
+    const fechaSan = sanitizarTexto(fecha);
+    const areaSan = sanitizarTexto(area);
+    const lineaSan = sanitizarTexto(linea);
+    const pnSan = sanitizarTexto(pn);
+    const estacionSan = sanitizarTexto(estacion);
+    const categoriaSan = sanitizarTexto(categoria);
+    const horaParoSan = sanitizarTexto(hora_paro);
+    const horaArranqueSan = sanitizarTexto(hora_arranque);
+    const fechaArranqueSan = sanitizarTexto(fecha_arranque);
+    const cruzaMedianocheFlag = asBool(cruza_medianoche, false);
+    const ajusteProcesoFlag = asBool(ajuste_proceso, false);
 
     // Sanitizar campos de texto que pueden contener caracteres problemáticos
     const modoFallaSanitizado = sanitizarTexto(modoFalla);
@@ -47,13 +67,13 @@ module.exports = (stopsFilePath) => {
     // Calcular la diferencia de tiempo en minutos
     let diferenciaMinutos;
     
-    if (cruza_medianoche) {
-      const horaParoDate = new Date(`1970-01-01T${hora_paro}:00Z`);
-      const horaArranqueDate = new Date(`1970-01-02T${hora_arranque}:00Z`);
+    if (cruzaMedianocheFlag) {
+      const horaParoDate = new Date(`1970-01-01T${horaParoSan}:00Z`);
+      const horaArranqueDate = new Date(`1970-01-02T${horaArranqueSan}:00Z`);
       diferenciaMinutos = Math.round((horaArranqueDate - horaParoDate) / 60000);
     } else {
-      const horaParoDate = new Date(`1970-01-01T${hora_paro}:00Z`);
-      const horaArranqueDate = new Date(`1970-01-01T${hora_arranque}:00Z`);
+      const horaParoDate = new Date(`1970-01-01T${horaParoSan}:00Z`);
+      const horaArranqueDate = new Date(`1970-01-01T${horaArranqueSan}:00Z`);
       diferenciaMinutos = Math.round((horaArranqueDate - horaParoDate) / 60000);
     }
     
@@ -63,7 +83,7 @@ module.exports = (stopsFilePath) => {
 
     // Calcular paro_programado: "No" si es "Fallo" o si descripcionModoFalla contiene "scheduled stop" o "paro programado", "Si" en otros casos
     const esDescripcionProgramada = (descripcionModoFallaSanitizada || '').toLowerCase().includes('scheduled stop') || (descripcionModoFallaSanitizada || '').toLowerCase().includes('paro programado');
-    const paroProgramado = (categoria === 'Fallo' || esDescripcionProgramada) ? 'No' : 'Si';
+    const paroProgramado = (categoriaSan === 'Fallo' || esDescripcionProgramada) ? 'No' : 'Si';
 
     fs.readFile(stopsFilePath, 'utf8', (err, data) => {
       if (err) {
@@ -72,25 +92,25 @@ module.exports = (stopsFilePath) => {
       }
 
       let registrosToAdd = [];
-      if (cruza_medianoche) {
-        const [horaParoHour, horaParoMin] = hora_paro.split(':').map(Number);
-        const [horaArranqueHour, horaArranqueMin] = hora_arranque.split(':').map(Number);
+      if (cruzaMedianocheFlag) {
+        const [horaParoHour, horaParoMin] = horaParoSan.split(':').map(Number);
+        const [horaArranqueHour, horaArranqueMin] = horaArranqueSan.split(':').map(Number);
         const minutosHastaMedianoche = (23 * 60 + 59) - (horaParoHour * 60 + horaParoMin) + 1;
         const minutosDesdeMedianoche = horaArranqueHour * 60 + horaArranqueMin;
-        const ajusteProceso = ajuste_proceso ? 'Si' : 'No';
+        const ajusteProceso = ajusteProcesoFlag ? 'Si' : 'No';
         const comentarioMedianoche1 = ' [Paro cruza medianoche - Parte 1]';
-        const registro1 = `${fecha};${area};${linea};${pn};${hora_paro};23:59;${minutosHastaMedianoche};${categoria};${estacion};${modoFallaSanitizado};${descripcionModoFallaSanitizada};${descripcionSanitizada}${comentarioMedianoche1};${paroProgramado};${ajusteProceso}`;
-        const fechaArranque = fecha_arranque || (() => {
-          const fechaSiguiente = new Date(fecha);
+        const registro1 = `${fechaSan};${areaSan};${lineaSan};${pnSan};${horaParoSan};23:59;${minutosHastaMedianoche};${categoriaSan};${estacionSan};${modoFallaSanitizado};${descripcionModoFallaSanitizada};${descripcionSanitizada}${comentarioMedianoche1};${paroProgramado};${ajusteProceso}`;
+        const fechaArranque = fechaArranqueSan || (() => {
+          const fechaSiguiente = new Date(fechaSan);
           fechaSiguiente.setDate(fechaSiguiente.getDate() + 1);
           return fechaSiguiente.toLocaleDateString('en-CA');
         })();
         const comentarioMedianoche2 = ' [Paro cruza medianoche - Parte 2]';
-        const registro2 = `${fechaArranque};${area};${linea};${pn};00:00;${hora_arranque};${minutosDesdeMedianoche};${categoria};${estacion};${modoFallaSanitizado};${descripcionModoFallaSanitizada};${descripcionSanitizada}${comentarioMedianoche2};${paroProgramado};${ajusteProceso}`;
+        const registro2 = `${fechaArranque};${areaSan};${lineaSan};${pnSan};00:00;${horaArranqueSan};${minutosDesdeMedianoche};${categoriaSan};${estacionSan};${modoFallaSanitizado};${descripcionModoFallaSanitizada};${descripcionSanitizada}${comentarioMedianoche2};${paroProgramado};${ajusteProceso}`;
         registrosToAdd = [registro1, registro2];
       } else {
-        const ajusteProceso = ajuste_proceso ? 'Si' : 'No';
-        const nuevoRegistro = `${fecha};${area};${linea};${pn};${hora_paro};${hora_arranque};${diferenciaMinutos};${categoria};${estacion};${modoFallaSanitizado};${descripcionModoFallaSanitizada};${descripcionSanitizada};${paroProgramado};${ajusteProceso}`;
+        const ajusteProceso = ajusteProcesoFlag ? 'Si' : 'No';
+        const nuevoRegistro = `${fechaSan};${areaSan};${lineaSan};${pnSan};${horaParoSan};${horaArranqueSan};${diferenciaMinutos};${categoriaSan};${estacionSan};${modoFallaSanitizado};${descripcionModoFallaSanitizada};${descripcionSanitizada};${paroProgramado};${ajusteProceso}`;
         registrosToAdd = [nuevoRegistro];
       }
 

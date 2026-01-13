@@ -11,7 +11,6 @@ import REA from './pages/REA';
 import PPTPage from './pages/PPTPage'; // Importar la nueva página de presentación
 import ProductionBoard from './pages/ProductionBoard'; // Importar la página de ProductionBoard
 import Reports from './pages/Reports'; // Nueva página Reports
-import ProductionSummaryPage from './pages/ProductionSummaryPage'; // Página de resumen de producción
 import OEEPage from './pages/OEEPage'; // Página dedicada para OEE
 import './index.css';
 
@@ -29,7 +28,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Route path="/presentacion" element={<PPTPage />} /> 
   <Route path="/production-board" element={<ProductionBoard />} /> 
   <Route path="/reports" element={<Reports />} /> {/* Ruta mínima para Reports */}
-  <Route path="/production-summary" element={<ProductionSummaryPage />} /> {/* Ruta para resumen de producción */}
   <Route path="/oee" element={<OEEPage />} /> {/* Página dedicada para OEE */}
 </Routes>
 
