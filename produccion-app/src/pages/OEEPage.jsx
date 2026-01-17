@@ -13,6 +13,7 @@ const OEEPage = () => {
   
   // Filters
   const [filters, setFilters] = useState({
+    area: 'REA', // Filtro por defecto REA
     pn: '',
     shift: '',
     changeOver: '',
@@ -35,6 +36,7 @@ const OEEPage = () => {
 
     setFilters({
       ...filters,
+      area: 'REA',
       dateFrom: formatDate(firstDayOfMonth),
       dateTo: formatDate(today)
     });
@@ -101,6 +103,9 @@ const OEEPage = () => {
   // Apply filters
   const getFilteredData = () => {
     return data.filter(cut => {
+      // Filtro por Área
+      if (filters.area && !cut.pn.toLowerCase().includes(filters.area.toLowerCase())) return false;
+      
       // Filtro por PN (receta)
       if (filters.pn && !cut.pn.toLowerCase().includes(filters.pn.toLowerCase())) return false;
       
@@ -344,6 +349,16 @@ const OEEPage = () => {
         <h3 style={{marginTop: 0}}>Filtros</h3>
         <div style={styles.filtersGrid}>
           <div style={styles.filterItem}>
+            <label style={styles.label}>Área:</label>
+            <input
+              type="text"
+              value={filters.area}
+              onChange={(e) => setFilters({ ...filters, area: e.target.value })}
+              placeholder="Buscar por área..."
+              style={styles.input}
+            />
+          </div>
+          <div style={styles.filterItem}>
             <label style={styles.label}>PN (Receta):</label>
             <input
               type="text"
@@ -420,6 +435,7 @@ const OEEPage = () => {
                   return `${year}-${month}-${day}`;
                 };
                 setFilters({ 
+                  area: 'REA',
                   pn: '', 
                   shift: '', 
                   changeOver: '', 

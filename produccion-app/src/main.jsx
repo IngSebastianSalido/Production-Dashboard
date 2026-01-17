@@ -12,6 +12,7 @@ import PPTPage from './pages/PPTPage'; // Importar la nueva página de presentac
 import ProductionBoard from './pages/ProductionBoard'; // Importar la página de ProductionBoard
 import Reports from './pages/Reports'; // Nueva página Reports
 import OEEPage from './pages/OEEPage'; // Página dedicada para OEE
+import ParosBatchPage from './pages/ParosBatchPage'; // Página de paros por batch ID
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Route path="/production-board" element={<ProductionBoard />} /> 
   <Route path="/reports" element={<Reports />} /> {/* Ruta mínima para Reports */}
   <Route path="/oee" element={<OEEPage />} /> {/* Página dedicada para OEE */}
+  <Route path="/paros-batch" element={<ParosBatchPage />} /> {/* Página de paros por batch ID */}
 </Routes>
 
     </div>

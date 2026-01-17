@@ -95,6 +95,8 @@ const opcionesRouteFactory = require('./routes/opciones');
 const categoriesRouteFactory = require('./routes/categoriesRoute');
 const reportsTimestampsFactory = require('./routes/reportsTimestamps');
 const productionSummaryFactory = require('./routes/productionSummary');
+const parosOEERouteFactory = require('./routes/parosOEE');
+const parosBatchRouteFactory = require('./routes/parosBatch');
 
 // Montar rutas
 app.use('/api', reaProductionRoute);
@@ -106,6 +108,8 @@ app.use('/api', opcionesRouteFactory(optionsFilePath));
 app.use('/api', categoriesRouteFactory(categoriesFilePath));
 app.use('/api', reportsTimestampsFactory(productionTimestampsPath));
 app.use('/api', productionSummaryFactory(productionFilePath, stopsFilePath, eolCutsFilePath, shiftsConfigPath));
+app.use('/api', parosOEERouteFactory(stopsFilePath));
+app.use('/api', parosBatchRouteFactory(stopsFilePath));
 
 
 // Iniciar el servidor HTTP en el host especificado

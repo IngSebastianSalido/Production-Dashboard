@@ -19,6 +19,9 @@ const Navbar = () => {
           <Link to="/oee" style={styles.navLink}>OEE</Link>
         </li>
         <li style={styles.navItem}>
+          <Link to="/paros-batch" style={styles.navLink}>Paros por Batch</Link>
+        </li>
+        <li style={styles.navItem}>
           <Link to="/grafica-paros" style={styles.navLink}>StopChart</Link>
         </li>
         <li style={styles.navItem}>

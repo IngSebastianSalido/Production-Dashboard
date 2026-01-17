@@ -6,9 +6,7 @@ const parosFilePath = path.join(__dirname, '..', 'data', 'paros.csv');
 
 // Categorías NO PROGRAMADAS (todas las demás son programadas)
 const notProgrammedCategories = [
-    'Fallo',
-    'Equipment Fault',
-    'Equipement fault',
+    'Equipment fault',
 ];
 
 // Leer el archivo CSV
@@ -39,21 +37,20 @@ for (let i = 0; i < lines.length; i++) {
     // Parsear la línea
     const parts = line.split(';');
     
-    if (parts.length < 12) {
+    if (parts.length < 13) {
         // Si la línea no tiene suficientes columnas, mantenerla como está
         updatedLines.push(line);
         continue;
     }
     
+    // Columna de referencia: "categoria" (index 7) contiene valores como "Equipment Fault"
     const categoria = parts[7] || '';
+
+    // Determinar si es programado basado únicamente en la categoria
+    // Reglas: SOLO "Equipment Fault" es NO programado; todo lo demás es SI programado
+    const isProgrammed = categoria.trim().toLowerCase() !== 'equipment fault';
     
-    // Determinar si es programado basado únicamente en la categoría
-    // Por defecto es programado, excepto si está en la lista de categorías NO programadas
-    const isProgrammed = !notProgrammedCategories.some(cat => 
-        categoria.toLowerCase().includes(cat.toLowerCase())
-    );
-    
-    // Actualizar la última columna
+    // Actualizar la columna de paros programados (penúltima columna)
     parts[12] = isProgrammed ? 'si' : 'no';
     
     if (isProgrammed) {
