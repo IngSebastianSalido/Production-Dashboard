@@ -23,48 +23,82 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use('/static', express.static(path.join(__dirname, 'data')));
 
+// Helper function to check if a path is accessible and fallback to local if not
+function getFilePath(envPath, defaultPath) {
+    if (!envPath) {
+        return defaultPath;
+    }
+    
+    try {
+        const resolvedPath = path.resolve(envPath);
+        // Try to access the file to check if network is available
+        fs.accessSync(path.dirname(resolvedPath));
+        return resolvedPath;
+    } catch (err) {
+        console.warn(`Network path not accessible: ${envPath}. Falling back to local path: ${defaultPath}`);
+        return defaultPath;
+    }
+}
+
 // Archivos de reportes por timestamp (ProductionReport y HrperHr)
-const productionTimestampsPath = process.env.PRODUCTION_TIMESTAMPS_FILE_PATH
-  ? path.resolve(process.env.PRODUCTION_TIMESTAMPS_FILE_PATH)
-  : path.join(__dirname, 'data', 'ProductionReport.csv');
-const hrPerHrPath = process.env.HRPERHR_FILE_PATH
-  ? path.resolve(process.env.HRPERHR_FILE_PATH)
-  : path.join(__dirname, 'data', 'HrperHrReport.csv');
+const productionTimestampsPath = getFilePath(
+    process.env.PRODUCTION_TIMESTAMPS_FILE_PATH,
+    path.join(__dirname, 'data', 'ProductionReport.csv')
+);
+const hrPerHrPath = getFilePath(
+    process.env.HRPERHR_FILE_PATH,
+    path.join(__dirname, 'data', 'HrperHrReport.csv')
+);
 
-// Rutas a los archivos CSV (usar defaults dentro de backend/data cuando no está en .env)
-const productionFilePath = process.env.PRODUCTION_FILE_PATH
-    ? path.resolve(process.env.PRODUCTION_FILE_PATH)
-    : path.join(__dirname, 'data', 'ProductionReport.csv');
+// Rutas a los archivos CSV (usar defaults dentro de backend/data cuando no está en .env o cuando la red no está disponible)
+const productionFilePath = getFilePath(
+    process.env.PRODUCTION_FILE_PATH,
+    path.join(__dirname, 'data', 'ProductionReport.csv')
+);
 
-const stopsFilePath = process.env.STOPS_FILE_PATH
-    ? path.resolve(process.env.STOPS_FILE_PATH)
-    : path.join(__dirname, 'data', 'paros.csv');
+const stopsFilePath = getFilePath(
+    process.env.STOPS_FILE_PATH,
+    path.join(__dirname, 'data', 'paros.csv')
+);
 
-const optionsFilePath = process.env.OPTIONS_FILE_PATH
-    ? path.resolve(process.env.OPTIONS_FILE_PATH)
-    : path.join(__dirname, 'options.json');
+const optionsFilePath = getFilePath(
+    process.env.OPTIONS_FILE_PATH,
+    path.join(__dirname, 'options.json')
+);
+
 // Ruta al archivo de categories (si no está en .env, usar backend/categories.json)
-const categoriesFilePath = process.env.CATEGORIES_FILE_PATH
-    ? path.resolve(process.env.CATEGORIES_FILE_PATH)
-    : path.join(__dirname, 'categories.json');
+const categoriesFilePath = getFilePath(
+    process.env.CATEGORIES_FILE_PATH,
+    path.join(__dirname, 'categories.json')
+);
 
 // Ruta al archivo EOL_Cuts_OEE (contiene eolOk, eolNok y calidad)
-const eolCutsFilePath = process.env.EOL_CUTS_FILE_PATH
-    ? path.resolve(process.env.EOL_CUTS_FILE_PATH)
-    : path.join(__dirname, 'data', 'EOL_Cuts_OEE.csv');
+const eolCutsFilePath = getFilePath(
+    process.env.EOL_CUTS_FILE_PATH,
+    path.join(__dirname, 'data', 'EOL_Cuts_OEE.csv')
+);
 
 // Ruta al archivo de configuración de turnos
-const shiftsConfigPath = process.env.SHIFTS_CONFIG_PATH
-    ? path.resolve(process.env.SHIFTS_CONFIG_PATH)
-    : path.join(__dirname, 'shifts.json');
+const shiftsConfigPath = getFilePath(
+    process.env.SHIFTS_CONFIG_PATH,
+    path.join(__dirname, 'shifts.json')
+);
 
 // Verificar si los archivos CSV existen, si no, crearlos con encabezados
 if (!fs.existsSync(productionFilePath)) {
-    fs.writeFileSync(productionFilePath, 'fecha;area;linea;pn;hora;piezas_ok;piezas_nok\n');
+    try {
+        fs.writeFileSync(productionFilePath, 'fecha;area;linea;pn;hora;piezas_ok;piezas_nok\n');
+    } catch (err) {
+        console.error(`Could not create file ${productionFilePath}: ${err.message}`);
+    }
 }
 
 if (!fs.existsSync(stopsFilePath)) {
-    fs.writeFileSync(stopsFilePath, 'fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacion;modo_falla;descripcion_modo_falla;descripcion\n');
+    try {
+        fs.writeFileSync(stopsFilePath, 'fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacion;modo_falla;descripcion_modo_falla;descripcion\n');
+    } catch (err) {
+        console.error(`Could not create file ${stopsFilePath}: ${err.message}`);
+    }
 }
 
 // Logger para verificar las solicitudes
