@@ -59,8 +59,8 @@ module.exports = (stopsFilePath) => {
           // Calcular paro_programado si no existe en el registro
           let paroProgramadoFinal = paroProgramadoData;
           if (!paroProgramadoFinal || paroProgramadoFinal.trim() === '') {
-            const esDescripcionProgramada = (descripcion_modo_falla || '').toLowerCase().includes('scheduled stop') || (descripcion_modo_falla || '').toLowerCase().includes('paro programado');
-            paroProgramadoFinal = (categoriaData === 'Fallo' || esDescripcionProgramada) ? 'No' : 'Si';
+            const esCategoriaFallo = categoriaData.toLowerCase().trim() === 'equipment fault' || categoriaData.toLowerCase().trim() === 'fallo';
+            paroProgramadoFinal = esCategoriaFallo ? 'No' : 'Si';
           }
 
           // Aplicar filtros
