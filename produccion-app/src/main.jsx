@@ -13,6 +13,7 @@ import ProductionBoard from './pages/ProductionBoard'; // Importar la página de
 import Reports from './pages/Reports'; // Nueva página Reports
 import OEEPage from './pages/OEEPage'; // Página dedicada para OEE
 import ParosBatchPage from './pages/ParosBatchPage'; // Página de paros por batch ID
+import HeijunkaPage from './pages/HeijunkaPage'; // Heijunka Production Planning
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -31,6 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Route path="/reports" element={<Reports />} /> {/* Ruta mínima para Reports */}
   <Route path="/oee" element={<OEEPage />} /> {/* Página dedicada para OEE */}
   <Route path="/paros-batch" element={<ParosBatchPage />} /> {/* Página de paros por batch ID */}
+  <Route path="/heijunka" element={<HeijunkaPage />} /> {/* Heijunka Production Planning */}
 </Routes>
 
     </div>

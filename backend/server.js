@@ -21,7 +21,21 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
-app.use('/static', express.static(path.join(__dirname, 'data')));
+
+// Detectar si estamos ejecutando desde pkg o en desarrollo
+const isPackaged = process.pkg !== undefined;
+const baseDir = isPackaged ? process.cwd() : __dirname;
+const dataDir = path.join(baseDir, 'data');
+
+app.use('/static', express.static(dataDir));
+
+// Servir el frontend compilado (Vite build)
+const frontendPath = isPackaged 
+    ? path.join(process.cwd(), 'produccion-app', 'dist')
+    : path.join(__dirname, '..', 'produccion-app', 'dist');
+
+console.log('Frontend path:', frontendPath);
+console.log('Frontend exists:', fs.existsSync(frontendPath));
 
 // Helper function to check if a path is accessible and fallback to local if not
 function getFilePath(envPath, defaultPath) {
@@ -43,45 +57,45 @@ function getFilePath(envPath, defaultPath) {
 // Archivos de reportes por timestamp (ProductionReport y HrperHr)
 const productionTimestampsPath = getFilePath(
     process.env.PRODUCTION_TIMESTAMPS_FILE_PATH,
-    path.join(__dirname, 'data', 'ProductionReport.csv')
+    path.join(dataDir, 'ProductionReport.csv')
 );
 const hrPerHrPath = getFilePath(
     process.env.HRPERHR_FILE_PATH,
-    path.join(__dirname, 'data', 'HrperHrReport.csv')
+    path.join(dataDir, 'HrperHrReport.csv')
 );
 
 // Rutas a los archivos CSV (usar defaults dentro de backend/data cuando no está en .env o cuando la red no está disponible)
 const productionFilePath = getFilePath(
     process.env.PRODUCTION_FILE_PATH,
-    path.join(__dirname, 'data', 'ProductionReport.csv')
+    path.join(dataDir, 'ProductionReport.csv')
 );
 
 const stopsFilePath = getFilePath(
     process.env.STOPS_FILE_PATH,
-    path.join(__dirname, 'data', 'paros.csv')
+    path.join(dataDir, 'paros.csv')
 );
 
 const optionsFilePath = getFilePath(
     process.env.OPTIONS_FILE_PATH,
-    path.join(__dirname, 'options.json')
+    path.join(baseDir, 'options.json')
 );
 
 // Ruta al archivo de categories (si no está en .env, usar backend/categories.json)
 const categoriesFilePath = getFilePath(
     process.env.CATEGORIES_FILE_PATH,
-    path.join(__dirname, 'categories.json')
+    path.join(baseDir, 'categories.json')
 );
 
 // Ruta al archivo EOL_Cuts_OEE (contiene eolOk, eolNok y calidad)
 const eolCutsFilePath = getFilePath(
     process.env.EOL_CUTS_FILE_PATH,
-    path.join(__dirname, 'data', 'EOL_Cuts_OEE.csv')
+    path.join(dataDir, 'EOL_Cuts_OEE.csv')
 );
 
 // Ruta al archivo de configuración de turnos
 const shiftsConfigPath = getFilePath(
     process.env.SHIFTS_CONFIG_PATH,
-    path.join(__dirname, 'shifts.json')
+    path.join(baseDir, 'shifts.json')
 );
 
 // Verificar si los archivos CSV existen, si no, crearlos con encabezados
@@ -131,6 +145,7 @@ const reportsTimestampsFactory = require('./routes/reportsTimestamps');
 const productionSummaryFactory = require('./routes/productionSummary');
 const parosOEERouteFactory = require('./routes/parosOEE');
 const parosBatchRouteFactory = require('./routes/parosBatch');
+const heijunkaRoute = require('./routes/heijunka');
 
 // Montar rutas
 app.use('/api', reaProductionRoute);
@@ -144,6 +159,7 @@ app.use('/api', reportsTimestampsFactory(productionTimestampsPath));
 app.use('/api', productionSummaryFactory(productionFilePath, stopsFilePath, eolCutsFilePath, shiftsConfigPath));
 app.use('/api', parosOEERouteFactory(stopsFilePath));
 app.use('/api', parosBatchRouteFactory(stopsFilePath));
+app.use('/api/heijunka', heijunkaRoute);
 
 
 // Iniciar el servidor HTTP en el host especificado
@@ -346,3 +362,16 @@ try {
 } catch (err) {
     console.warn('Error starting auto-generation of EOL cuts:', err && err.message ? err.message : String(err));
 }
+
+// Servir archivos estáticos del frontend (debe estar después de todas las rutas API)
+app.use(express.static(frontendPath));
+
+// Ruta fallback para React Router (debe ser la última ruta)
+app.get('*', (req, res) => {
+    const indexPath = path.join(frontendPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(404).send('Frontend not found. Make sure produccion-app/dist exists.');
+    }
+});

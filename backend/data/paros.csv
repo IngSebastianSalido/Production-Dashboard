@@ -9270,3 +9270,1107 @@ fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacio
 2026-01-17;REA;Actuadores;WG REA FORD CA029;05:02;05:04;2;Equipment Fault;Robots;R70;Vacuum system;Cambio de ventosas;no;No
 2026-01-17;REA;Actuadores;WG REA FORD CA029;05:05;05:09;4;Quality;CHW;General;Scrapbox full;Scrapboxfull;si;No
 2026-01-17;REA;Actuadores;WG REA FORD CA029;05:04;05:14;10;Maintenance;REA;General;Checklist;Checklist mil piezas;si;No
+2026-01-17;REA;Actuadores;3140CA029;07:00;07:23;23;Maintenance;REA;General;Checklist;checklist inicio de turno;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;08:40;08:42;2;Equipment Fault;731;731;Alphamatic Module;contacto minimo nok;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;09:00;09:05;5;Equipment Fault;CAW;General;Electrical system;limpieza de pines ingun;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;09:11;09:12;1;Maintenance;CHW;Consumables;Argon;cambio de argon;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;09:20;09:26;6;Equipment Fault;CHW;St4;Pressor;cambio de puntas por desgaste;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;09:48;09:50;2;Equipment Fault;Robots;R75;Motion supervision/Joint collision;cambio de cinta en gripper;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;10:02;10:07;5;Equipment Fault;EOL;St4;CRIO NOK;reinicio de crio por alarma;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;10:10;10:12;2;Equipment Fault;Robots;R40;Motion supervision/Joint collision;colision por mangera suelta;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;10:35;10:38;3;Maintenance;CCC;Consumables;Resin;cambio de resina;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;11:12;11:16;4;Maintenance;CHW;Consumables;Chip reel;cambio de chip;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;11:19;11:21;2;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas por desgaste;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;11:40;11:47;7;Equipment Fault;Robots;R80;Motion supervision/Joint collision;colicion en caw al hacer pick;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;11:54;12:00;6;Equipment Fault;CAW;Jig/Index;Index not in home;se desfaso la mesa y empezó a tirar scrap se dio nueva posición de home;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;12:00;12:30;30;Production;REA;General;No staff;paro de linea para comer;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;15:00;15:20;20;Maintenance;REA;General;Checklist;Checklist de inicio de turno.;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;15:36;15:37;1;Equipment Fault;Robots;R65;Motion supervision/Joint collision;no coloca gear.;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;15:51;15:52;1;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;sensor no detecta pallet.;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;16:12;16:13;1;Equipment Fault;750;750;Bowl/Lineal feeder;bearing atorado;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;16:24;16:25;1;Equipment Fault;Robots;R65;Motion supervision/Joint collision;no coloca gear.;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;16:47;16:48;1;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas.;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;16:56;16:57;1;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;reset en tablero.;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;17:03;17:08;5;Equipment Fault;Robots;R40;Motion supervision/Joint collision;robot choca con pallet.;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;17:36;17:37;1;Equipment Fault;CHW;St5;Vision system;reset falla st5;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;18:00;18:15;15;Maintenance;REA;General;Checklist;Checklist 500 pzs.;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;18:34;18:35;1;Production;Conveyors;C36;Presence sensor;blister interumpiendo sensor.;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;18:50;18:51;1;Equipment Fault;Robots;R65;Motion supervision/Joint collision;no coloca gear.;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;19:00;19:15;15;Production;REA;General;Change Over;hora de cena.;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;19:20;19:21;1;Equipment Fault;750;750;Bowl/Lineal feeder;bearing atorado.;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;19:39;19:41;2;Equipment Fault;620;620;Feed piston;se queda abajo piston.;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;20:26;20:27;1;Equipment Fault;731;731;Feed piston;pin chueco;no;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;20:44;20:45;1;Production;Conveyors;C31;Presence sensor;blister amontonados;si;No
+2026-01-17;REA;Actuadores;WG REA FORD CA029;21:05;21:10;5;Maintenance;REA;General;Checklist;checklist 1000 pzs.;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;07:00;07:17;17;Production;REA;General;SOP;entrega de muestras para liberacion;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;07:17;07:45;28;Maintenance;REA;General;Checklist;check list inicio de turno;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;07:17;08:04;47;Quality;REA;General;Test approval;liberacion;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;11:08;11:09;1;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa por desgaste;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;11:12;11:15;3;Maintenance;CHW;Consumables;Chip reel;cambio de chip;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;11:18;11:25;7;Maintenance;REA;General;Checklist;checklist 500 piezas ok;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;12:00;12:30;30;Production;REA;General;No staff;paro de linea para ir a comer;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;14:30;14:32;2;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;14:50;14:53;3;Equipment Fault;MAT;St6;Actuator;no detecto sensor de posición;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;14:56;14:57;1;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;15:05;15:25;20;Maintenance;REA;General;Checklist;Checklist diario.;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;17:30;17:31;1;Equipment Fault;731;731;Presence sensor;pin caido.;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;18:00;18:25;25;Production;REA;General;Change Over;comida.;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;18:45;18:50;5;Maintenance;REA;General;Checklist;Checklist 500 pzs.;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;18:38;18:39;1;Equipment Fault;731;731;Bowl/Lineal feeder;prensa no sube.;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;19:10;19:13;3;Maintenance;CHW;Consumables;Argon;cambio de argon.;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;19:42;19:45;3;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas.;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;20:15;20:20;5;Equipment Fault;MSA;MSA;Sensor de presencia;falla, no detecta magnen;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;20:22;20:24;2;Equipment Fault;915;915;Missing ogive;se cae ogiva.;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;20:47;20:49;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en locking.;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;21:05;21:10;5;Maintenance;REA;General;Checklist;Checklist 1000 pzs.;si;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;21:18;21:20;2;Equipment Fault;Robots;R65;Gripper/tool adjustments;no coloca magne;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;21:36;21:37;1;Equipment Fault;Robots;R70;Vacuum system;vacuum off;no;No
+2026-01-18;REA;Actuadores;WG REA FORD CA029;21:54;21:56;2;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa.;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;07:00;07:52;52;Quality;REA;General;SOP;liberacion;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;07:00;07:30;30;Maintenance;REA;General;Checklist;checklist inicio de turno;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;08:30;08:33;3;Equipment Fault;CHW;St5;Vision system;ajuste de samlight terminal 2;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;09:15;09:17;2;Equipment Fault;USW;St11;Branson;Se aumenta collapse de 0.85 a 0.86;no;Si
+2026-01-19;REA;Actuadores;WG REA FORD CA029;09:22;09:25;3;Equipment Fault;CHW;St5;Vision system;Ajuste de SV por falso scrap;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;09:30;09:33;3;Equipment Fault;Main conveyor;Main conveyor;Singulator NOK;Se atoran pallet en sing;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;10:00;10:03;3;Equipment Fault;Main conveyor;Main conveyor;RFID Reader;Se atora pallet;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;11:08;11:12;4;Maintenance;CHW;Consumables;Chip reel;Cambio de rollo chip;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;11:51;11:56;5;Maintenance;MSA;MSA;Sensor de presencia;Sensor no detecta correctamente magnet shaft;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;11:30;11:40;10;Maintenance;REA;General;Checklist;Checklist 500pz;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;12:56;13:00;4;Equipment Fault;Robots;R65;Motion supervision/Joint collision;Paros repetitivos;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;14:08;14:18;10;Maintenance;REA;General;Checklist;Checklist 1000pz;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;17:09;17:11;2;Production;Conveyors;C31;Presence sensor;riel lleno de blister.;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;17:28;17:29;1;Equipment Fault;Robots;R65;Gripper/tool adjustments;griper suelta magne antes de ponerlo.;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;18:02;18:31;29;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;un sensor estaba haciendo  falso contacto y no dejaba que la comunicación detectara que el  pallet ya avia pasado.;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;19:15;19:16;1;Equipment Fault;Robots;R65;Gripper/tool adjustments;no coloca bien magne.;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;19:34;19:37;3;Production;731;General;NOK material;Material mezclado con pin de 730;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;19:52;19:55;3;Equipment Fault;MAT;St4;CRIO App;Reset crio;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;22:35;22:40;5;Quality;REA;General;Scheduled production stop;Paro para pasr master en sistema de vision chw;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;22:40;22:57;17;Maintenance;REA;General;Checklist;Checklist;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;23:05;23:07;2;Equipment Fault;MSA;MSA;Driver;Driver not in home, se reestablece y se pone star cycle;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;23:18;23:22;4;Equipment Fault;MSA;MSA;Sensor de presencia;Se revisa y se hace limpieza en base porque detectaba altura en magnet;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;23:56;23:58;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;Pallet atorado;no;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;23:37;23:40;3;Quality;MSA;MSA;Driver;Driver not in home, se acomoda manual;si;No
+2026-01-19;REA;Actuadores;WG REA FORD CA029;23:52;23:54;2;Equipment Fault;Aux;710;TBD;Motor mal posicionado;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;01:02;01:06;4;Maintenance;USW;St14;Lower Jig;Limpieza continuacion de checklist;si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;01:40;01:42;2;Equipment Fault;731;731;Bowl/Lineal feeder;pin atorado;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;02:17;02:18;1;Equipment Fault;Robots;R65;Incorrect pick/place;Robot pone mal magnet;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;02:21;02:23;2;Equipment Fault;Main conveyor;Main conveyor;RFID Reader;Rfid no leia pallet;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;02:25;02:28;3;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;02:46;02:50;4;Equipment Fault;MSA;MSA;Driver;Driver alarmado, se ocupa restablecer;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;03:02;03:12;10;Maintenance;REA;General;Checklist;Checklist;si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;03:14;03:19;5;Maintenance;CHW;Consumables;Chip reel;cambio de chip;si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;03:35;03:37;2;Equipment Fault;Aux;710;TBD;robot pone mal motor;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;03:41;03:42;1;Equipment Fault;Robots;R65;Incorrect pick/place;robot pone mal magnet shaft;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;03:51;03:53;2;Production;Conveyors;General;Blister NOK/Wrong PN;Blister volteado;si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;03:56;03:57;1;Equipment Fault;Robots;R65;Motion supervision/Joint collision;robot pone mal magnet shaft;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;04:05;04:06;1;Equipment Fault;Robots;R65;Incorrect pick/place;robot pone mal magnet shaft;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;04:14;04:17;3;Production;Conveyors;C31;Guides;blister atorados por guias;si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;04:17;04:18;1;Equipment Fault;Robots;R65;Incorrect pick/place;robot pone mal magnet shaft;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;04:19;04:22;3;Equipment Fault;CHW;St4;Pressor;Limpieza de pressor y se revisa cinta de jigs;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;04:42;04:44;2;Equipment Fault;Robots;R65;Incorrect pick/place;ROBOT PONE MAL MAGNET SHAFT;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;04:47;04:49;2;Equipment Fault;Robots;R65;Incorrect pick/place;ROBOT PONE MAL MAGNET SHAFT;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;04:53;04:55;2;Equipment Fault;Robots;R65;Incorrect pick/place;Robot pone mal magnet shaft;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;05:03;05:13;10;Maintenance;REA;General;Checklist;Checklist mil piezas;si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;05:35;05:37;2;Equipment Fault;Robots;R65;Incorrect pick/place;robot pone mal magnet shaft;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;03:19;03:24;5;Equipment Fault;USW;St14;Lower Jig;revision de razon de scrap, cover perforado, posible variación por cinta que se agrega se decide esperar revision de cinta Daniel/Orlando;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;05:49;05:50;1;Equipment Fault;Robots;R65;Incorrect pick/place;Robot pone mal magnet shaft;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;05:54;05:56;2;Maintenance;CHW;St4;Pressor;Limpieza de pressor;si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;06:03;06:05;2;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;Sensor no detectapaba pallet se acomoda;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;06:09;06:12;3;Equipment Fault;915;915;Missing ogive;ojiva caida;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;06:25;06:26;1;Equipment Fault;REA;General;TBD;Test;no;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;06:32;06:33;1;Maintenance;REA;General;TBD;test;Si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;06:27;06:28;1;Equipment Fault;REA;General;TBD;testttt;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;06:22;06:24;2;Equipment Fault;CHW;St4;Pressor;Robot pone mal magnet shaft;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;06:29;06:31;2;Equipment Fault;Robots;R65;Incorrect pick/place;Robot pone mal magnet shaft;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;06:36;06:39;3;Maintenance;Robots;R70;Vacuum system;cambio de ventosas;Si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;06:43;06:45;2;Equipment Fault;Robots;R65;Incorrect pick/place;Robot pone mal magnet shaft;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;07:00;07:25;25;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;07:30;07:50;20;Equipment Fault;CHW;St4;IPG/Samlight;ajuste de 3 puntos de soldadura en samligth;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;07:55;08:30;35;Equipment Fault;Robots;R65;Motion supervision/Joint collision;ajuste por colision al insertar magnet shaft;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;09:35;09:37;2;Equipment Fault;730;730;Presence sensor;sensor detectaba presencia por rebaba en el jig;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;11:23;11:25;2;Equipment Fault;Robots;R40;Motion supervision/Joint collision;tenia bolsa de silica adentro del body y el motor quedo de fuera y colisiono;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;11:40;11:50;10;Equipment Fault;CAW;Jig/Index;Ingun actuator;ingun atorado por tornilleria suelta;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;12:00;12:09;9;Equipment Fault;CHW;St4;Pressor;checklist cambio de goma;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;12:30;12:41;11;Equipment Fault;CAW;General;Software/PC;reinicio de aplicacion porque no continuaba el ciclo;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;16:08;17:25;77;Quality;USW;General;NOK material;Bushing salido atascado en sonotrodo. Se desmota sonotrodo para poder quitarlo, causa desgaste menor. Alineación sonotrodo, ajuste de parametros, monitoreo. Sonotrodo presenta rechinido, planeado su reemplazo en proximo CHO;Si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;17:30;17:42;12;Equipment Fault;CAW;LSW;Pressor;Scrap alto por diferencia de centro, se reemplaza limpiador del pressor. Despues se nota que la mesa no esta centrada, quedando ligeramente fuera de la region de inspeccion, se ajusta home;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;16:00;16:08;8;Equipment Fault;MAT;St3;INTOCO;se cambia orring por daño.;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;21:10;21:15;5;Maintenance;CHW;Consumables;Chip reel;cambio;Si;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;01:17;01:27;10;Maintenance;REA;General;Checklist;500 pcs;Si;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;22:55;23:10;15;Maintenance;REA;General;Checklist;checklist + masters CHW;Si;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;03:28;03:31;3;Equipment Fault;Conveyors;C31;Actuator NOK;Blister atorado con cilindro, abrir manual;No;No
+2026-01-20;REA;Actuadores;WG REA FORD CA029;05:10;05:15;5;Equipment Fault;EOL;St4;CRIO NOK;Se reinicia crio;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;05:55;06:05;10;Maintenance;REA;General;Checklist;Checklist;Si;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;07:00;07:20;20;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;11:20;11:30;10;Maintenance;REA;General;Checklist;Checklist mtto 500pz;Si;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;11:44;11:45;1;Maintenance;CHW;Consumables;Argon;cambio de tanque;Si;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;15:00;15:15;15;Maintenance;REA;General;Checklist;Checklist diario y pase de master.;Si;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;16:50;17:11;21;Equipment Fault;MAT;General;Software/PC;Non responde PC, hard reset. Se vacia manual por cadena vacia, se llena secuencia;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;15:40;15:45;5;Equipment Fault;EOL;General;Software/PC;Falla conexión del conector externo, fisicamente es correcto pero no es detectado por el programa. Repetitivo, se reinicia app y desaparece el problema;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;16:12;16:15;3;Equipment Fault;EOL;Jigs;Ingun actuator;Falla repetitiva sensor ingun jig 3 no responde, se ajusta posicion del sensor;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;17:33;17:37;4;Equipment Fault;MSA;MSA;Sensor de presencia;Holders alarmados, no encuentra home;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;17:32;17:34;2;Equipment Fault;CAW;CPA;Vision system;crank no pasa;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;17:37;17:39;2;Equipment Fault;CAW;CPA;Vision system;crank invertido.;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;18:09;18:13;4;Equipment Fault;MSA;MSA;Sensor de presencia;Alarma, no encuentra home;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;18:10;18:13;3;Equipment Fault;MSA;MSA;Sensor de presencia;falla en MSA.;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;18:15;18:17;2;Equipment Fault;CAW;Jig/Index;Blade orienter actuator;Mal acomodado el crank, se ajusta regulador de flujo;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;18:37;18:39;2;Equipment Fault;EOL;St4;CRIO NOK;crio ps;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;19:05;19:11;6;Equipment Fault;USW;SCARA;Motion supervision/Joint collision;Colision, pierde pieza, pierde secuencia aun despues de dar reset a las estaciones;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;19:01;19:05;4;Equipment Fault;MSA;MSA;Sensor de presencia;No encuentra home;No;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;20:20;20:26;6;Maintenance;REA;General;Checklist;Checklist;Si;No
+2026-01-21;REA;Actuadores;WG REA FORD CA029;22:20;23:00;40;Equipment Fault;MSA;MSA;Chiller;Scrap consecutivo, Bobina a 73 grados. Se para para dejar alcanzar temperatura normal;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;22:30;23:59;90;Equipment Fault;EOL;General;Software/PC;Calibracion nok continua, constante scrap. se reinicio la estacion en algunas ocasiones, se reviso PTC, Se reviso que recetas estuvieran correctamente. [Paro cruza medianoche - Parte 1];No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;00:00;01:25;85;Equipment Fault;EOL;General;Software/PC;Calibracion nok continua, constante scrap. se reinicio la estacion en algunas ocasiones, se reviso PTC, Se reviso que recetas estuvieran correctamente. [Paro cruza medianoche - Parte 2];No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;02:40;02:44;4;Equipment Fault;USW;St14;Lower Jig;Limpieza, por rebaba, genera scraps;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;04:02;04:04;2;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;Pallet no avanzaba en st 731, se pone refresh y funciona;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;04:15;04:18;3;Equipment Fault;CHW;St4;Pressor;Limpieza de pressor;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;04:21;04:23;2;Equipment Fault;620;620;Bowl/Lineal feeder;Bearing atorado;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;04:51;04:54;3;Equipment Fault;Robots;R70;Vacuum system;Cambio de ventosas;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;04:52;05:02;10;Maintenance;REA;General;Checklist;Checklist 500 piezas;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;05:02;05:06;4;Quality;MAT;General;NOK material;Se revisa st 4 por constante scrap, se limpia pogo pins, se revia cableado pogo pins;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;05:12;05:15;3;Equipment Fault;750;General;TBD;Collision en prensa por doble bearing;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;05:32;05:34;2;Equipment Fault;Robots;R65;Motion supervision/Joint collision;robot colisiona al poner el magnet shaft para leer qr;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;05:40;05:42;2;Equipment Fault;Robots;R70;Vacuum system;Cambio de ventosa, 1 trozada;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;01:40;02:06;26;Equipment Fault;CAW;LSW;Vision system;Se revisa sistema de vision por scrap consnte Se ajusta límite inferior y superior de 650,750 a 630 y 730, se reviso correcto centrado de soldadura;No;Si
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;07:00;07:15;15;Maintenance;REA;General;Checklist;Checklist;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;07:17;07:19;2;Maintenance;CHW;Consumables;Argon;Cambio argon;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;07:20;07:30;10;Equipment Fault;CHW;St4;Pressor;Cambio puntas pressor;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;07:34;07:45;11;Equipment Fault;CHW;St5;Vision system;Ajuste de sistema de vision terminal 1;No;Si
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;08:00;08:05;5;Equipment Fault;CHW;St4;IPG/Samlight;Ajuste de center X en terminal 1 y 3 de 1.4 a 1.41 y 3.45 a 3.41;No;Si
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;09:00;09:10;10;Maintenance;CHW;St4;IPG/Samlight;Cambio de lente;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;09:15;09:25;10;Quality;CHW;St5;Vision system;Ajuste de SV por nueva referencia por cambio de lente;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;10:12;10:16;4;Equipment Fault;EOL;St2;CRIO NOK;Alto scrap en st2;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;11:03;11:07;4;Equipment Fault;Robots;R38;TBD;Manguera robot suelta, se acomoda para evitar atorones y daños;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;11:36;11:40;4;Equipment Fault;Robots;R65;Gripper/tool adjustments;Sensor gripper desconectado;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;12:24;12:26;2;Maintenance;USW;St11;Branson;Se aumenta collapse en 0.1;Si;Si
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;14:15;14:18;3;Maintenance;Robots;R70;Vacuum system;Cambio de ventosas;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;17:35;17:45;10;Equipment Fault;CAW;Jig/Index;Index not in home;Falla insercion crank, mesa no en home. Despues de ajustar y arrancar comienza scrap alto por SV soldadura de crank (No coincide totalmente la posicion del crank respecto a la referencia, si bien se ve completo y la soldadura esta centrada rechaza por los limites de posicion X y Y), se ajusta posicion mesa;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;17:55;18:10;15;Equipment Fault;USW;St11;Weld NOK;Scrap alto,  Se revisan pieza, se prueban parametros, se cambia esponja jig 11, se coloca cinta en jig. Calidad no puede llevar a cabo prueba de burbuja.;No;Si
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;18:14;18:16;2;Equipment Fault;Main conveyor;Main conveyor;Lift;sensor;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;18:30;18:34;4;Equipment Fault;Robots;R70;Vacuum system;ventosas nok;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;18:50;18:58;8;Equipment Fault;CAW;Jig/Index;Index not in home;Index fuera de home;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;15:00;15:20;20;Maintenance;REA;General;Checklist;Checklist diario.;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;18:33;18:41;8;Production;Conveyors;General;Blister NOK/Wrong PN;Blister NOK, causa colision robot en st710, perdida de secuencia;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;19:01;19:06;5;Equipment Fault;CAW;Jig/Index;Index not in home;Falla insercion crank;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;19:08;19:12;4;Equipment Fault;USW;St11;Weld NOK;Spike scrap consecutivo, se sospecha body de diferentes lotes / origen. Ajuste reduccion colapso;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;19:20;19:24;4;Production;CAW;General;Empty conveyor/feeder;Bowl vacio;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;15:48;15:55;7;Equipment Fault;CHW;St5;Vision system;falso rechazo herramientas Shading, se ajusta el limite inferior de 180 a 170;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;15:48;15:55;7;Equipment Fault;CHW;St5;Vision system;falso rechazo herramientas Shading, se ajusta el limite inferior de 180 a 170;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;16:25;16:35;10;Production;750;General;NOK material;dejan con exceso de material y se atoran en riel.;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;16:44;16:45;1;Equipment Fault;USW;St14;Lower Jig;limpieza de jig.;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;16:56;16:57;1;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;17:10;17:11;1;Production;Aux;710;NOK material;motor invertido.;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;17:19;17:20;1;Equipment Fault;USW;General;NOK material;se revisa St14 y St11 por alto scrap.;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;17:25;17:30;5;Equipment Fault;MAT;St2;Load Cell;falla de st2 se reinicia st.;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;21:01;21:06;5;Quality;MAT;General;Scrapbox full;caja llena de scrap.;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;21:10;21:11;1;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en locking de prensa 731.;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;21:37;21:44;7;Quality;CHW;General;NOK material;Reviswion por scrap, se encuentran piezas con el punto de soldadura hacia un lado en medio de piezas bien soldadas.  Se revisan jigs, se revisa stadistica confirmando que no es un problema relacionado a un jig. Se revisa el scrap con calidad encontrando que todas las piezas NOK son de la cavidad 1A;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;21:59;22:02;3;Maintenance;CHW;Consumables;Chip reel;cambio;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;22:20;22:21;1;Production;Aux;710;NOK material;motor invertido.;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;22:35;22:40;5;Quality;REA;General;Scheduled production stop;Paro para pasar master chw;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;22:40;23:05;25;Maintenance;REA;General;Checklist;Checklist general y cambio de goma;Si;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;23:06;23:50;44;Equipment Fault;CHW;St5;Vision system;Se  ajusta sistema de vision por consntante falso scrap;No;No
+2026-01-23;REA;Actuadores;WG REA STELLANTIS CA028;23:50;23:59;10;Quality;CHW;St5;Vision system;En espera de calidad y se pasan master [Paro cruza medianoche - Parte 1];Si;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;00:00;00:00;0;Quality;CHW;St5;Vision system;En espera de calidad y se pasan master [Paro cruza medianoche - Parte 2];Si;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;00:00;00:30;30;Production;REA;General;Scheduled production stop;break;Si;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;00:30;00:55;25;Equipment Fault;CHW;St5;Vision system;Ajustes y verificacionde soldadura ok;No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;01:39;03:02;83;Equipment Fault;CHW;St4;Pressor;Se realiza cambio de goma y ajuste de pressor por scrap en distintas puntas;No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;05:10;05:12;2;Equipment Fault;CHW;St4;Pressor;limpieza de pressor;No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;05:24;05:34;10;Maintenance;REA;General;Checklist;Checklist 500 piezas;Si;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;06:02;06:07;5;Equipment Fault;CHW;St5;Vision system;Revisando fotos de soldadura se encuntra con una pieza con una pequena rebaba, se retira manual y se hace limpieza de pressor;No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;06:38;06:40;2;Equipment Fault;CHW;St4;Pressor;SE hace limpieza de pressor /;No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;06:48;07:00;12;Equipment Fault;CHW;St5;Vision system;Paro por revision de sistema de vision;No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;07:00;07:25;25;Maintenance;REA;General;Checklist;check list inicio de turno;Si;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;07:25;08:00;35;Equipment Fault;CHW;St5;Vision system;ajustes en sistema de vision;No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;10:27;10:35;8;Equipment Fault;Robots;R38;Incorrect pick/place;sensor de gripper 2 desconectado;No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;11:27;11:50;23;Equipment Fault;Robots;R38;Electrical system;reparacion cable del sensor gripper 2;No;No
+2026-01-24;REA;Actuadores;WG REA STELLANTIS CA028;12:00;12:30;30;Production;REA;General;No staff;paro de linea para comer;Si;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;07:00;07:10;10;Production;REA;General;SOP;entrega de muestras;Si;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;07:10;07:30;20;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;07:10;08:37;87;Quality;REA;General;Test approval;liberacion;Si;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;10:50;11:00;10;Equipment Fault;EOL;General;Electrical system;alto scrap por pogo pin ST4 tope mecanico flojo no detectaba el sensor de final de carrera;No;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;15:00;16:40;100;Maintenance;REA;General;Change Over;Setup, llenado de secuencia, ajustes USW, ajuste gripper r80, sop;Si;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;18:40;20:30;110;Quality;REA;General;Change Over;Liberacion, masters, parametros;Si;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;20:30;20:50;20;Equipment Fault;MAT;St3;INTOCO;Tornillos atascados dentro de la punta, mecanicamente atascdo;No;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;20:50;20:56;6;Equipment Fault;EOL;St1;PTC;Fallas repetitivas PTC. se revisan conectores, se reinicia, continua la falla, se reinicia nuevamente;No;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;20:56;21:08;12;Equipment Fault;CHW;St3;Thermodo;Ajuste pos termodo;No;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;21:15;21:22;7;Equipment Fault;CAW;CPA;Feeder;No avanza crank. se queda vibrando en un lugar, se revisa bowl fisicamente, vibracion inusual;No;No
+2026-01-26;REA;Actuadores;3140CS023;22:30;23:01;31;Equipment Fault;MAT;St3;INTOCO;Tornillo atorado en punta causa acumulacion de tornillos, se desarma y se le hace servicio solo a punta. se cambia oring;No;No
+2026-01-26;REA;Actuadores;3140CS023;23:04;23:12;8;Maintenance;REA;General;Checklist;Checklist general;Si;No
+2026-01-26;REA;Actuadores;3140CS023;23:12;23:17;5;Equipment Fault;USW;St11;Weld NOK;Se realiza prueba de burbujo y se revisa jig por scrap, actuador tenia un costado quemado, se pone un pedacito de cinta y se monitorea;No;No
+2026-01-27;REA;Actuadores;WG REA STELLANTIS CA027;01:14;01:16;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado;No;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;23:58;23:59;2;Equipment Fault;620;620;Tool;falla al tomar bearing, se revisa tooling [Paro cruza medianoche - Parte 1];No;No
+2026-01-27;REA;Actuadores;WG REA STELLANTIS CA027;00:00;00:02;2;Equipment Fault;620;620;Tool;falla al tomar bearing, se revisa tooling [Paro cruza medianoche - Parte 2];No;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;23:44;23:46;2;Production;Conveyors;General;NOK material;motor volteado;Si;No
+2026-01-26;REA;Actuadores;WG REA STELLANTIS CA027;21:22;21:26;4;Equipment Fault;USW;St11;Weld NOK;Scrap, revisio prueba de burbuja, ajuste colapso de 0.99 a 0.9, amplitud de 75 a 75;No;Si
+2026-01-27;REA;Actuadores;WG REA STELLANTIS CA027;00:02;00:08;6;Equipment Fault;730;730;Presence sensor;falla sensor de presencia, limpieza por residuos;No;No
+2026-01-27;REA;Actuadores;WG REA STELLANTIS CA027;02:25;04:09;104;Equipment Fault;CAW;Jig/Index;Index not in home;Falla crank orienter pos 3 nok, previamente se habia diagnosticado como falla de mesa giratoria, el problema no permite restaurar;No;No
+2026-01-27;REA;Actuadores;3140CS023;04:20;05:21;61;Equipment Fault;CAW;General;Software/PC;Falla de software. caw se alarma al girar error de crank orienter 1 y 3. se restablece hasta que se logra arrancar;No;No
+2026-01-27;REA;Actuadores;WG REA STELLANTIS CA027;05:53;06:02;9;Equipment Fault;CAW;General;Software/PC;Alarms de crank orienter, se ocupa restablecer maquina y poner robot en baja velocidad de 10%;No;No
+2026-01-27;REA;Actuadores;WG REA STELLANTIS CA027;06:45;06:46;1;Equipment Fault;EOL;General;Software/PC;Time out do nothing;No;No
+2026-01-27;REA;Actuadores;WG REA STELLANTIS CA027;05:38;05:50;12;Maintenance;CHW;Consumables;Chip reel;Cambio;Si;No
+2026-01-27;REA;Actuadores;WG REA STELLANTIS CA027;06:30;06:38;8;Equipment Fault;CAW;General;Software/PC;Caw falla por alarma de crank orienter. se restablece y se pone robot en 5% de velocidad para que no interrumpa el ciclo, ya que termina de llenar caw se pone a 100% de velocidad;No;No
+2026-01-27;REA;Actuadores;3140CS022;07:15;07:35;20;Equipment Fault;CAW;Jig/Index;Blade orienter actuator;falla crack orientador p1;No;No
+2026-01-27;REA;Actuadores;3140CS022;07:40;07:50;10;Equipment Fault;CHW;St5;Vision system;ajuste en sistema de vision se saco nueva master y se actualizo imagen de referancia;No;No
+2026-01-27;REA;Actuadores;3140CS022;07:00;07:15;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-01-27;REA;Actuadores;WG REA GM CS023;09:44;11:16;92;Maintenance;REA;General;SOP;cambio de set up a GM 23 y entrega de muestras para liberacion;Si;No
+2026-01-27;REA;Actuadores;WG REA GM CS023;11:16;12:39;83;Quality;REA;General;Test approval;liberacion ok;Si;No
+2026-01-27;REA;Actuadores;WG REA GM CS023;13:48;13:55;7;Equipment Fault;USW;St14;Ateq;ateq no responde se reinicio el equipo;No;No
+2026-01-27;REA;Actuadores;WG REA GM CS023;14:50;14:55;5;Equipment Fault;EOL;St4;CRIO NOK;reinicio de crio;No;No
+2026-01-15;COVER LINE;Line 2;FORD;09:36;09:40;4;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-01-15;COVER LINE;Line 2;FORD;11:00;11:02;2;Equipment Fault;Robots;R20;Incorrect pick/place;;No;No
+2026-01-15;COVER LINE;Line 2;FORD;14:00;14:30;30;Equipment Fault;Robots;R20;Module error;axis 6;No;No
+2026-01-16;COVER LINE;Line 2;FORD;08:21;08:33;12;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-01-16;COVER LINE;Line 2;FORD;08:35;08:36;1;Equipment Fault;OMT;ST3;Pogopins;pogo 3;No;No
+2026-01-16;COVER LINE;Line 2;FORD;09:40;09:42;2;Equipment Fault;OMT;ST4;Profilometer;;No;No
+2026-01-16;COVER LINE;Line 2;FORD;13:30;14:00;30;Equipment Fault;Robots;R20;Module error;axis 6;No;No
+2026-01-19;COVER LINE;Line 2;FORD;08:30;08:36;6;Equipment Fault;Retainer;ST76;Bowl/lineal feeder;reteiner invertido;No;No
+2026-01-19;COVER LINE;Line 2;FORD;11:27;12:16;49;Equipment Fault;OMT;General;Software/PC;memoria llena se reinicia app;No;No
+2026-01-19;COVER LINE;Line 2;FORD;14:55;15:00;5;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-01-21;COVER LINE;Line 2;FORD;09:03;09:09;6;Equipment Fault;Retainer;ST76;Bowl/lineal feeder;RETENEDOR INVERTIDO;No;No
+2026-01-21;COVER LINE;Line 2;FORD;09:40;09:41;1;Equipment Fault;OMT;ST7;Laser;;No;No
+2026-01-21;COVER LINE;Line 2;FORD;10:17;10:20;3;Equipment Fault;Robots;R20;Module error;axis 6;No;No
+2026-01-21;COVER LINE;Line 2;FORD;10:40;10:46;6;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-01-23;COVER LINE;Line 2;FORD;08:35;08:40;5;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-01-23;COVER LINE;Line 2;FORD;09:00;09:04;4;Equipment Fault;Lip seal;ST74;Actuator;vacum;No;No
+2026-01-23;COVER LINE;Line 2;FORD;10:30;10:36;6;Equipment Fault;Robots;R20;Module error;axis 6;No;No
+2026-01-26;COVER LINE;Line 2;FORD;08:38;08:40;2;Equipment Fault;Lip seal;ST74;Actuator;vacumm;No;No
+2026-01-26;COVER LINE;Line 2;FORD;09:15;09:20;5;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en riel;No;No
+2026-01-26;COVER LINE;Line 2;FORD;10:13;10:18;5;Equipment Fault;OMT;ST4;Profilometer;;No;No
+2026-01-26;COVER LINE;Line 2;FORD;13:25;14:00;35;Equipment Fault;OMT;General;Software/PC;se reinicia app;No;No
+2026-01-27;COVER LINE;Line 2;FORD;08:35;08:40;5;Equipment Fault;Retainer;ST76;Bowl/lineal feeder;retenedor invertido;No;No
+2026-01-27;COVER LINE;Line 2;FORD;09:42;09:50;8;Equipment Fault;Robots;R20;Module error;axis 6;No;No
+2026-01-27;COVER LINE;Line 2;FORD;11:57;12:00;3;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en riel;No;No
+2026-01-27;REA;Actuadores;WG REA GM CS022;10:35;10:40;5;Quality;REA;General;Scheduled production stop;Paro para pasar master chw;Si;No
+2026-01-27;REA;Actuadores;WG REA GM CS022;23:33;23:38;5;Equipment Fault;CAW;CPA;Feeder;Crank no sube por feeder, se aumenta la vibracion;No;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;01:53;01:55;2;Equipment Fault;620;620;Alphamatic Module;Pieza nok, se restablece prensa;No;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;02:05;02:07;2;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;sensor no detectaba pallet;No;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;02:47;03:04;17;Quality;730;General;NOK material;Pin mas grande se atora en punta de prensa, se ocupa desmontar para quitar pin ya que estaba muy atorado;Si;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;02:15;02:17;2;Equipment Fault;CHW;St3;Gefran module;time out;No;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;02:30;02:35;5;Quality;CHW;General;Scrapbox full;scrap box full;Si;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;03:17;03:28;11;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;04:47;04:53;6;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;04:58;05:01;3;Maintenance;Robots;R70;Vacuum system;cambio de ventosas;Si;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;00:02;00:08;6;Equipment Fault;CHW;St3;Gefran module;revision por scraps continuos, ajuste mecanico de transductor, acomodar a la marca;No;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;00:36;00:55;19;Equipment Fault;CHW;General;TBD;se remueve cinta, por multiples scraps, posicion nok de chip;No;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;06:23;06:25;2;Maintenance;CHW;Consumables;Argon;Cambio de argon;Si;No
+2026-01-27;REA;Actuadores;WG REA GM CS022;22:55;23:20;25;Maintenance;REA;General;Checklist;Checklist;Si;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;06:38;06:40;2;Equipment Fault;731;731;Bowl/Lineal feeder;pin atorado;No;No
+2026-01-28;COVER LINE;Line 2;WG REA GM CS022;12:00;14:00;120;Equipment Fault;Robots;R20;Module error;pérdida de secuencia;No;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;22:30;22:33;3;Production;Robots;R65;NOK material;Se recibe REA en paro, por blister mal etiquedado;Si;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;10:33;10:38;5;Quality;REA;General;Scheduled production stop;Paro para pasar master en chw;Si;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;10:38;10:45;7;Equipment Fault;Robots;R65;NOK material;robot no continua secuencia, se manda a home. se restablecen senales y se arranca de nuevo;No;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;22:55;23:20;25;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-01-28;REA;Actuadores;WG REA GM CS022;23:30;23:40;10;Equipment Fault;CHW;St4;Pressor;Ajuste de pressor por scrap constante;No;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;00:04;00:10;6;Equipment Fault;Robots;R80;Gripper/tool adjustments;Alarma por sensor de presencia, se cambia sensor danado;No;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;01:16;01:26;10;Quality;Conveyors;General;Blister NOK/Wrong PN;Blister con QR equivocado, robot para al poner en estacion 805. al restablecer se pierden senales en MSA;Si;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;01:17;01:18;1;Quality;Conveyors;General;Blister NOK/Wrong PN;Blister atorado;Si;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;03:05;03:17;12;Maintenance;REA;General;Checklist;500pcs;Si;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;01:40;01:50;10;Equipment Fault;USW;St11;Weld NOK;Se cambia cinta y esponja por scraps continuos;No;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;03:21;03:23;2;Production;731;General;NOK material;material mezclado;Si;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;06:15;06:18;3;Equipment Fault;620;620;Tool;fallo al tomar bearing;No;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;07:00;07:15;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;07:25;07:26;1;Production;Aux;710;NOK material;motor en mala posicion;Si;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;22:50;23:16;26;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;23:20;23:26;6;Equipment Fault;USW;St14;Lower Jig;se revisa usw por scrap, se cambia goma blanca;No;No
+2026-01-29;REA;Actuadores;WG REA GM CS022;22:35;22:40;5;Quality;REA;General;Scheduled production stop;paro para pasar master en chw;Si;No
+2026-01-30;REA;Actuadores;WG REA GM CS023;02:25;02:35;10;Maintenance;REA;General;Checklist;500pcs;Si;No
+2026-01-30;REA;Actuadores;WG REA GM CS023;00:49;00:56;7;Equipment Fault;CHW;St4;Pressor;scraps continuos, ajuste mecanico;No;No
+2026-01-30;REA;Actuadores;WG REA FORD CA029;15:00;15:20;20;Maintenance;REA;General;Checklist;Checklist diario cambio de turno.;Si;No
+2026-01-30;REA;Actuadores;WG REA FORD CA029;22:35;22:40;5;Quality;REA;General;Scheduled production stop;Paro para pasar master en chw;Si;No
+2026-01-30;REA;Actuadores;WG REA FORD CA029;22:45;23:07;22;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-01-30;REA;Actuadores;WG REA FORD CA029;23:07;23:14;7;Equipment Fault;USW;St11;Weld NOK;se revisa jig y piezas de scrap  por scrap alto en usw, se remueve cinta de jig y se monitorea;No;No
+2026-01-30;REA;Actuadores;WG REA FORD CA029;23:17;23:18;1;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper no abre a tiempo despues de ensamblar cover;No;No
+2026-01-30;REA;Actuadores;WG REA FORD CA029;23:23;23:24;1;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper no habre correctamente al ensamblar cover;No;No
+2026-01-30;REA;Actuadores;WG REA FORD CA029;23:31;23:39;8;Equipment Fault;Robots;R75;Gripper/tool adjustments;se pone cinta a gripper por falla constante al ensamblar cover;No;No
+2026-01-30;REA;Actuadores;WG REA FORD CA029;00:45;00:47;2;Equipment Fault;Robots;R65;Incorrect pick/place;robot pone mal magnet shaft en lector QR;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;00:57;01:00;3;Equipment Fault;EOL;Jigs;Jig actuator;alarma en jig 5 por sensor de presencia, se revia jig para descartar atoramiento;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;02:45;02:55;10;Maintenance;REA;General;Checklist;500pcs;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;02:55;03:02;7;Equipment Fault;CAW;LSW;Pressor;colision con limpiapipas, 2 veces, no continua ciclo, ajustar posicion de limpiapipas;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;05:10;05:15;5;Equipment Fault;CAW;LSW;Vision system;Scraps continuos, se agrega filtro de contraste por sombra en centro de shaft;No;Si
+2026-01-31;REA;Actuadores;WG REA FORD CA029;07:00;07:25;25;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;08:10;08:12;2;Equipment Fault;Robots;R70;Motion supervision/Joint collision;cambio de cinta a gripper;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;08:20;08:21;1;Maintenance;CHW;Consumables;Argon;cambio de gas;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;08:40;08:45;5;Equipment Fault;CAW;LSW;Laser module;no continuo ciclo;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;09:20;09:26;6;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;09:50;09:53;3;Equipment Fault;EOL;Jigs;Ingun actuator;no detecta sensor ingun;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;09:57;09:58;1;Equipment Fault;731;731;Feed piston;pin inclinado;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;10:50;10:55;5;Equipment Fault;EOL;St4;CRIO NOK;reinicio de crio;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;12:00;12:10;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;13:47;13:50;3;Production;730;730;Presence sensor;feeder sin material;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;15:00;15:20;20;Maintenance;REA;General;Checklist;checklist  diario cambio de turno.;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;15:38;15:40;2;Equipment Fault;731;731;Bowl/Lineal feeder;pin chueco, se atoro al regresar a posición.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;15:51;15:52;1;Equipment Fault;Robots;R65;Motion supervision/Joint collision;choca con un magnet chueco.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;16:12;16:13;1;Production;Conveyors;C31;Presence sensor;blister acumulados.;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;16:26;16:27;1;Equipment Fault;EOL;St1;Presence sensor;falla, no respondía a la comunicación de ingul.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;16:39;16:40;1;Equipment Fault;MSA;MSA;Sensor de presencia;falla, no regresa a home .;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;16:51;16:52;1;Equipment Fault;Robots;R65;Vacuum system;se le cae Gear.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;17:06;17:07;1;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;falla de locking de estacion 731, no abre.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;17:12;17:13;1;Production;Aux;710;NOK material;motor invertido.;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;17:20;17:23;3;Equipment Fault;MSA;MSA;Sensor de presencia;se repetía secuencia.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;17:31;17:32;1;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa dañada.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;17:41;17:42;1;Equipment Fault;MAT;St1;Motor DM reader;falla tira scrap;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;17:54;17:56;2;Equipment Fault;MSA;MSA;Sensor de presencia;robot se queda esperando señal.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;18:09;18:10;1;Production;Conveyors;C55;Belt;blister al revés.;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;18:24;18:25;1;Equipment Fault;Main conveyor;Main conveyor;Singulator NOK;pallet atorado en locking.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;18:38;18:39;1;Equipment Fault;MSA;MSA;Sensor de presencia;R60 no avanza se queda esperando magnet.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;18:49;18:52;3;Equipment Fault;EOL;St1;Presence sensor;falla en st1 por ingul.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;19:05;19:06;1;Equipment Fault;Robots;R65;Vacuum system;no coloca gear.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;19:20;19:21;1;Equipment Fault;731;731;Bowl/Lineal feeder;pin chueco;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;19:27;19:28;1;Equipment Fault;Robots;R70;Vacuum system;vacuum off;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;19:32;19:35;3;Production;Conveyors;C37;Actuator NOK;falta de material.;Si;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;19:45;19:46;1;Equipment Fault;MAT;St1;Motor DM reader;falla se alarma por st1;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;19:50;19:53;3;Equipment Fault;MSA;MSA;Lector de Datamatrix;no leia magnet;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;19:58;19:59;1;Equipment Fault;Robots;R70;Vacuum system;vacuum off.;No;No
+2026-01-31;REA;Actuadores;WG REA FORD CA029;20:20;20:21;1;Equipment Fault;Conveyors;C36;Presence sensor;pistones no abren y blister se queda atorado.;No;No
+2026-02-01;REA;Actuadores;WG REA FORD CA029;07:00;07:23;23;Production;REA;General;SOP;entrega de muestras;Si;No
+2026-02-01;REA;Actuadores;WG REA FORD CA029;07:23;08:54;91;Quality;REA;General;Test approval;liberacion;Si;No
+2026-02-01;REA;Actuadores;WG REA FORD CA029;10:08;10:11;3;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-01;REA;Actuadores;WG REA FORD CA029;14:00;14:10;10;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-01;REA;Actuadores;WG REA FORD CA029;14:25;14:30;5;Equipment Fault;MSA;MSA;Driver;no home;No;No
+2026-02-01;REA;Actuadores;WG REA FORD CA029;14:40;14:45;5;Equipment Fault;CAW;Jig/Index;Ingun actuator;rea current nok se cambiaron pines;No;No
+2026-02-02;REA;Actuadores;WG REA FORD CA029;07:00;07:11;11;Production;REA;General;SOP;entrega de muestras;Si;No
+2026-02-02;REA;Actuadores;WG REA FORD CA029;07:11;07:50;39;Quality;REA;General;Test approval;liberacion;Si;No
+2026-02-02;REA;Actuadores;WG REA FORD CA029;08:15;08:18;3;Equipment Fault;Robots;R70;Motion supervision/Joint collision;ogiva atorada en cover hizo que colicionara;No;No
+2026-02-02;REA;Actuadores;WG REA FORD CA029;08:32;08:33;1;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa por desgaste;No;No
+2026-02-02;REA;Actuadores;WG REA FORD CA029;10:20;10:28;8;Maintenance;CHW;Consumables;Argon;cambio de gas argon tambo con valvula con fuga se le puso teflon al conector;Si;No
+2026-02-02;REA;Actuadores;WG REA FORD CA029;12:30;12:35;5;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-02;REA;Actuadores;WG REA FORD CA029;14:10;14:20;10;Equipment Fault;CAW;LWS;NOK Condition;ajuste sistema de vision por centrado fuera de tolerancia;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;07:20;07:55;35;Quality;REA;General;SOP;liberación por arranque.;Si;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;07:00;07:20;20;Maintenance;REA;General;Checklist;Checklist diario y pase de master.;Si;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;09:24;09:26;2;Production;Aux;710;NOK material;motor invertido y se alarma robot 38.;Si;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;09:34;09:36;2;Equipment Fault;MAT;General;Pneumatic System;inge. monitoreando detalles de falla de eq.;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;09:42;09:51;9;Equipment Fault;CAW;LSW;Vision system;Ajuste de sistema de visión por alto scrap.;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;10:13;10:15;2;Equipment Fault;Robots;R70;Vacuum system;vacuum off;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;09:55;10:10;15;Equipment Fault;CAW;Jig/Index;Index not in home;Limpieza de pressor por scrap, despues de eso al arrancar empieza a fallar la index (no gira), sensor de posicion falsea;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;10:25;10:26;1;Equipment Fault;731;731;Bowl/Lineal feeder;pin atorado.;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;10:35;10:36;1;Equipment Fault;750;750;Bowl/Lineal feeder;bearing atorado;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;10:38;10:39;1;Production;Aux;710;NOK material;motor invertido.;Si;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;15:10;15:28;18;Maintenance;REA;General;Checklist;Checklist;Si;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;16:30;16:33;3;Equipment Fault;MSA;MSA;Sensor de presencia;Sensor no detectaba magnet shaft, se acomoda manual para que tome lectura;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;18:41;18:43;2;Equipment Fault;731;731;Bowl/Lineal feeder;pin atorado;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;18:45;18:47;2;Equipment Fault;Robots;R65;Incorrect pick/place;robot agarra incorrectamente magnet shaft;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA030;17:35;18:15;40;Equipment Fault;CAW;LSW;Vision system;scraps continuos revision de herramientas de sistema de vision, ajustar tamañao y posicion de areas, y ganancia de herramientas, por sombras en el centro de magnet, se revisaron ambas herramientas;No;Si
+2026-02-03;REA;Actuadores;WG REA FORD CA030;18:20;18:23;3;Equipment Fault;Robots;R70;Vacuum system;pierde gear, posiblemente mal acomodado en blister;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;19:30;19:32;2;Production;Conveyors;General;Blister NOK/Wrong PN;blister volteado;Si;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;19:33;19:43;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;19:45;19:47;2;Maintenance;CHW;Consumables;Argon;cambio de argon;Si;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;19:47;19:49;2;Equipment Fault;MAT;St1;Presence sensor;alarma en jig 1;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA029;19:52;19:57;5;Equipment Fault;Robots;R65;Incorrect pick/place;robot no pone gear 3 en body, se hace cambio de ventosas como preventivo;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA030;22:30;22:40;10;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-03;REA;Actuadores;WG REA FORD CA030;23:15;23:18;3;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;01:52;02:00;8;Maintenance;REA;General;Checklist;check list 500 piezas;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;02:25;02:29;4;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;07:00;07:26;26;Maintenance;REA;General;Checklist;Checklist diario cambio de tuno.;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;07:35;07:36;1;Equipment Fault;Robots;R75;Gripper/tool adjustments;no abre gripper 4.;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;08:20;08:26;6;Equipment Fault;Robots;R75;Gripper/tool adjustments;Gripper NOK, se compensa co cinta;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;08:06;08:07;1;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas.;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;07:42;07:45;3;Equipment Fault;620;620;Tool;Tool con tornillo no completamente ajustado causa variaciones en la lectura de celda de carga;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;07:48;07:49;1;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper 4 no abre.;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;08:56;08:59;3;Equipment Fault;MSA;MSA;Sensor de presencia;No continua, no detecta pieza colocada;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;08:52;08:55;3;Maintenance;CHW;Consumables;Argon;cambio argon;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;09:07;09:30;23;Production;CAW;General;Blister NOK/Wrong PN;Crank assy mezclado, 029 y 030.;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;11:10;11:16;6;Maintenance;REA;General;Checklist;Checklist por 500 pzs.;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;13:14;13:19;5;Equipment Fault;Robots;R38;Motion supervision/Joint collision;Colision motor con body en 710, se retira manual, se manda a main, reinicia grafcet de 710;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;14:35;14:40;5;Maintenance;REA;General;Checklist;Checklist de 1000 pzs.;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;15:05;15:10;5;Quality;REA;General;Scheduled production stop;Paro para pasar master en chw;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;15:10;15:25;15;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;15:32;15:35;3;Equipment Fault;USW;St11;Weld NOK;se revisa scrap en usw;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;15:38;16:16;38;Equipment Fault;CHW;St4;IPG/Samlight;Se revisa samligth por cover perforados , scrap en usw.  se ajusta samligth  se retiran cover perforados de linea para evitar scrap de body.  se corre monitoreando usw y chw;No;No
+2026-02-03;REA;Actuadores;WG REA FORD CA030;18:00;18:10;10;Maintenance;CHW;Consumables;Chip reel;cambio;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;18:58;19:00;2;Equipment Fault;Robots;R65;Incorrect pick/place;robot agarra mal magnet shaft y colisiona al llegar a msa en lector Qr;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;19:04;19:20;16;Maintenance;REA;General;Scheduled production stop;checklist;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;20:32;20:35;3;Equipment Fault;MAT;St3;Feeder;tornido atorado en feeder;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;20:40;20:43;3;Equipment Fault;Robots;R65;Incorrect pick/place;robot toma mal magnet shaft y colisiona en estacion de lectura de qr;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;20:56;20:58;2;Equipment Fault;Conveyors;C36;Guides;blister atorado;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;21:01;21:03;2;Equipment Fault;Aux;710;TBD;motor volteado;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;21:30;21:40;10;Maintenance;REA;General;Checklist;checklist 1 mil piezas;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;21:40;21:44;4;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;acumulacion de pallets atorados  en st 915, se requiere mover pallets manualmente;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;21:49;21:51;2;Equipment Fault;Conveyors;C36;Guides;blister atorado;No;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;21:55;21:57;2;Production;Aux;710;TBD;motor volteado;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;22:14;22:17;3;Maintenance;CHW;Consumables;Argon;cambio de argon;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;22:30;22:45;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-04;REA;Actuadores;WG REA FORD CA030;23:05;23:08;3;Equipment Fault;731;731;Alphamatic Module;fallo al insertar pin;No;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;01:30;01:32;2;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa;No;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;02:01;02:11;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;04:20;04:35;15;Equipment Fault;MAT;St4;CRIO App;falla st 4 alto scrap por crio;No;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;07:00;07:15;15;Maintenance;REA;General;Checklist;Checklist diario inici0 de turno / pase de masters.;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;07:20;07:23;3;Quality;REA;General;SOP;se entregan pzs. bustes con 3 pz. más con crank.;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;08:15;08:20;5;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;10:00;10:12;12;Maintenance;REA;General;Checklist;Checklist por 500 pzs.;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;10:12;10:17;5;Maintenance;CCC;Consumables;Resin;cambio de resina.;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;10:17;10:20;3;Maintenance;CHW;Consumables;Argon;cambio de tambo de argon.;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;15:05;15:15;10;Quality;REA;General;Scheduled production stop;Paro para pasar master en sistema de vision chw  tiempo extendido, orlando tomando medidas en camara;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;15:15;15:24;9;Maintenance;REA;General;Checklist;Checklist corto. turno anterior ya habia cambiado goma, puntas y ajustado pressor;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;15:25;15:30;5;Quality;CHW;General;Scrapbox full;scrap box full, en espera que calidad retire  scrap de turno anterior;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;15:32;15:35;3;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado;No;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;19:03;21:05;122;Equipment Fault;Robots;R38;Electrical system;cables dañados, reparacion tardia, pendiente cambio completo de cableado;No;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;18:30;18:40;10;Maintenance;REA;General;Checklist;500 pcs aprox;Si;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;21:49;22:00;11;Equipment Fault;CAW;Jig/Index;Index not in home;Scraps continuos, mesa desalineada;No;No
+2026-02-05;REA;Actuadores;WG REA FORD CA030;22:30;22:40;10;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-06;REA;Actuadores;WG REA FORD CA030;00:10;00:14;4;Equipment Fault;Conveyors;C55;Lift;se ajusto la inclinacion de la banda;No;No
+2026-02-06;REA;Actuadores;WG REA FORD CA030;01:20;01:24;4;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-06;REA;Actuadores;WG REA FORD CA030;01:02;01:04;2;Maintenance;CHW;Consumables;Argon;cambio de gas argon;Si;No
+2026-02-06;REA;Actuadores;WG REA FORD CA030;01:55;02:01;6;Maintenance;REA;General;Checklist;checklist en caw;Si;No
+2026-02-06;REA;Actuadores;WG REA FORD CA029;15:05;15:10;5;Quality;REA;General;Scheduled production stop;paro para pasar master en sistema de vision;Si;No
+2026-02-06;REA;Actuadores;WG REA FORD CA029;15:10;15:28;18;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-06;REA;Actuadores;WG REA FORD CA029;15:30;15:32;2;Production;REA;General;NOK material;motor volteado y no lee sensor en st710;Si;No
+2026-02-06;REA;Actuadores;WG REA FORD CA029;15:34;16:05;31;Equipment Fault;CHW;General;TBD;Cover atorado en entre cabina, quedo atorado en pressor, se recetea alarma y se vuelve ajustar pressor;No;No
+2026-02-06;REA;Actuadores;WG REA FORD CA029;16:06;16:26;20;Equipment Fault;CHW;St5;Vision system;Se justa area 1 de inspeccion por scrap contante.  sistema de vision requiere contrasena por apagon de computadora.;No;No
+2026-02-06;REA;Actuadores;WG REA FORD CA029;16:37;16:47;10;Equipment Fault;CAW;Jig/Index;Index not in home;se ajusta mesa giratoria por scrap consntante en caw, mesa estaba desfasada;No;No
+2026-02-06;REA;Actuadores;WG REA FORD CA029;16:52;16:57;5;Production;REA;General;NOK material;robot 40 colisiona al ensamblar motor con body por que llevaba un carton, se require mover manual y quitar carton;Si;No
+2026-02-06;REA;Actuadores;WG REA FORD CA029;20:46;20:48;2;Production;REA;General;NOK material;motor volteado;Si;No
+2026-02-06;REA;Actuadores;WG REA FORD CA029;22:30;22:45;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;00:10;00:15;5;Equipment Fault;CAW;General;Software/PC;check list caw;No;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;01:57;02:41;44;Equipment Fault;EOL;St2;Gripper NOK;falla con gripper alarmado;No;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;07:00;07:20;20;Maintenance;REA;General;Checklist;Checklist diario cambio de turno.;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;15:05;15:10;5;Quality;REA;General;Scheduled production stop;paro para pasar master en chw;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;15:10;15:30;20;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;15:35;15:38;3;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado se ocupa quitar aire para quitar;No;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;15:42;15:46;4;Production;REA;General;NOK material;paro en mat por tornillo atorado por feeder lleno de material;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;16:26;16:28;2;Production;REA;General;NOK material;motor volteado en st 710;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;16:32;16:34;2;Production;REA;General;NOK material;blister vacios acumulados en conveyor, operar no los retira los blister;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;16:49;16:52;3;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas;No;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;18:36;18:46;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;18:52;18:54;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper no abre correctamente;No;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;19:23;19:28;5;Production;REA;General;NOK material;paro por material mezclado en st 730, se retira de feeder;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;19:50;19:52;2;Equipment Fault;Conveyors;C36;Guides;blister atorado;No;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;19:54;19:58;4;Equipment Fault;Robots;R33;Incorrect pick/place;robot toma mal cover y colisiona en jig de chw, se require mover manual para continuar;No;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;20:00;20:30;30;Production;REA;General;Scheduled production stop;Paro por hora de comida;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;20:34;20:36;2;Equipment Fault;Robots;R75;Incorrect pick/place;robot colisiona al ensamblar cover en body;No;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;20:43;20:45;2;Production;REA;General;NOK material;material volteado;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;21:14;21:16;2;Production;REA;General;NOK material;motor volteado;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;21:45;21:47;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper no abre correctamente despues de ensamblar body;No;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;22:07;22:09;2;Production;REA;General;No staff;conveyor de actuador lleno, para por sensor de presencia;Si;No
+2026-02-07;REA;Actuadores;WG REA FORD CA029;22:19;22:21;2;Production;REA;General;NOK material;motor volteado;Si;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;07:00;07:20;20;Maintenance;REA;General;Checklist;Checklist diario inicio de turno.;Si;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;07:00;07:18;18;Production;REA;General;SOP;entrega de muestras para liberacion;Si;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;07:18;07:35;17;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;07:18;08:05;47;Quality;REA;General;Test approval;liberacion;Si;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;09:18;09:20;2;Production;Aux;710;NOK material;motor en mala posicion;Si;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;11:20;11:30;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;11:50;11:52;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en locking.;No;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;11:53;11:54;1;Equipment Fault;750;750;Bowl/Lineal feeder;bearing atorado en rilel.;No;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;12:09;12:10;1;Production;Aux;710;NOK material;motor invertido.;Si;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;12:22;12:23;1;Equipment Fault;Conveyors;C31;Presence sensor;no sube piston tope.;No;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;14:35;14:40;5;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-08;REA;Actuadores;WG REA FORD CA029;15:18;15:22;4;Maintenance;CCC;Consumables;Resin;cambio de resina;Si;No
+2026-02-09;REA;Actuadores;WG REA FORD CA029;07:00;07:20;20;Production;REA;General;Change Over;Vaciado, esperando instrucciones;Si;No
+2026-02-09;REA;Actuadores;WG REA FORD CA029;07:20;09:52;152;Maintenance;REA;General;Change Over;Setup, llenado, debug, SOP;Si;No
+2026-02-09;REA;Actuadores;WG REA FORD CA029;09:52;14:03;251;Quality;REA;General;Change Over;Liberacion, masters, revision parametros;Si;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;15:05;15:10;5;Production;REA;General;Scheduled production stop;Paro para pasar master en chw;Si;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;15:10;15:30;20;Maintenance;REA;General;Checklist;checklis general a linea;Si;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;15:46;15:49;3;Production;REA;General;No staff;Conveyor de cover vacio y blister acumulados vacios;Si;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;16:04;16:14;10;Equipment Fault;CHW;General;TBD;Se quita cinta de jigs por varacion en cover stellantis;No;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;17:53;18:06;13;Equipment Fault;CAW;LSW;Vision system;Se verifica y ajusta sistema de vision por scrap contante en caw;No;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;18:09;18:15;6;Equipment Fault;MSA;General;Software/PC;problema de comunicacion entre msa y robot 60, pieza marcaba como ok pero robot no entra. se quita y se restablece senales;No;No
+2026-01-29;COVER LINE;Line 2;FORD;08:08;08:24;16;Equipment Fault;OMT;ST3;Pogopins;cambio de pogos;No;No
+2026-01-29;COVER LINE;Line 2;FORD;08:46;08:49;3;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-01-29;COVER LINE;Line 2;FORD;08:50;08:56;6;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-01-29;COVER LINE;Line 2;FORD;08:58;09:06;8;Equipment Fault;Robots;R20;Module error;axis 6 alarmado;No;No
+2026-01-29;COVER LINE;Line 2;FORD;10:05;10:07;2;Equipment Fault;OMT;ST7;Laser barrier;;No;No
+2026-01-29;COVER LINE;Line 2;FORD;16:29;16:35;6;Equipment Fault;ST10;ST11-St12;Ejector;falla de ejector st12;No;No
+2026-01-30;COVER LINE;Line 2;FORD;09:40;09:42;2;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-01-30;COVER LINE;Line 2;FORD;09:48;09:50;2;Equipment Fault;OMT;ST7;Laser barrier;falla de comunicacion;No;No
+2026-01-30;COVER LINE;Line 2;FORD;09:55;09:56;1;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-01-30;COVER LINE;Line 2;FORD;12:30;12:32;2;Equipment Fault;Robots;R20;Module error;axis 6;No;No
+2026-02-03;COVER LINE;Line 2;FORD;09:27;10:50;83;Maintenance;Robots;R20;Module error;intervención soporte ABB;Si;No
+2026-02-04;COVER LINE;Line 2;FORD;10:15;10:19;4;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en riel;No;No
+2026-02-04;COVER LINE;Line 2;FORD;11:38;11:40;2;Equipment Fault;Robots;R70;Motion supervision/Joint collision;colicion con faxture en conveyo;No;No
+2026-02-04;COVER LINE;Line 2;FORD;11:42;11:44;2;Equipment Fault;Retainer;ST76;Bowl/lineal feeder;retenedor invertido;No;No
+2026-02-04;COVER LINE;Line 2;FORD;11:50;11:51;1;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-04;COVER LINE;Line 2;FORD;11:56;11:58;2;Equipment Fault;OMT;ST7;Laser barrier;falla de comunicación;No;No
+2026-02-04;COVER LINE;Line 2;FORD;12:56;12:57;1;Quality;OMT;ST4;Profilometer;;Si;No
+2026-02-05;COVER LINE;Line 2;FORD;08:37;08:39;2;Equipment Fault;Lip seal;ST74;Actuator;vacum;No;No
+2026-02-05;COVER LINE;Line 2;FORD;09:00;09:01;1;Equipment Fault;OMT;ST3;Pogopins;;No;No
+2026-02-05;COVER LINE;Line 2;FORD;09:15;09:17;2;Equipment Fault;Terminal caps;ST95;Turntable;;No;No
+2026-02-05;COVER LINE;Line 2;FORD;09:18;09:19;1;Equipment Fault;OMT;ST4;Profilometer;;No;No
+2026-02-05;COVER LINE;Line 2;FORD;09:49;09:57;8;Equipment Fault;Robots;R20;Module error;axis 6;No;No
+2026-02-05;COVER LINE;Line 2;FORD;10:20;10:23;3;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atoradoe n bowl;No;No
+2026-02-05;COVER LINE;Line 2;FORD;11:15;11:17;2;Equipment Fault;Lip seal;ST74;Actuator;vacum;No;No
+2026-02-05;COVER LINE;Line 2;FORD;11:30;11:32;2;Equipment Fault;OMT;ST4;Profilometer;;No;No
+2026-02-09;COVER LINE;Line 2;FORD;07:50;07:57;7;Equipment Fault;Lip seal;ST74;Actuator;vacumm;No;No
+2026-02-09;COVER LINE;Line 2;FORD;09:16;09:18;2;Equipment Fault;Robots;R70;Motion supervision/Joint collision;colission con fixture;No;No
+2026-02-09;COVER LINE;Line 2;FORD;09:36;09:38;2;Equipment Fault;Lip seal;ST74;Actuator;vacum;No;No
+2026-02-09;COVER LINE;Line 2;FORD;09:42;09:45;3;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-09;COVER LINE;Line 2;FORD;09:58;09:59;1;Equipment Fault;Lip seal;ST74;Actuator;vacum;No;No
+2026-02-09;COVER LINE;Line 2;FORD;10:15;10:18;3;Equipment Fault;ST30 Molding;General;TBD;terminal mal insrtada;No;No
+2026-02-09;COVER LINE;Line 2;FORD;10:48;10:50;2;Equipment Fault;Lip seal;ST74;Actuator;vacuum;No;No
+2026-02-09;COVER LINE;Line 2;FORD;11:40;11:42;2;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-09;COVER LINE;Line 2;FORD;11:50;11:52;2;Equipment Fault;Lip seal;ST74;Actuator;vacuum;No;No
+2026-02-09;COVER LINE;Line 2;FORD;11:56;11:57;1;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en riel;No;No
+2026-02-09;COVER LINE;Line 2;FORD;12:25;12:27;2;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-09;COVER LINE;Line 2;FORD;12:40;12:43;3;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-02-09;COVER LINE;Line 2;FORD;12:48;12:50;2;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-09;COVER LINE;Line 2;FORD;12:57;13:00;3;Equipment Fault;Lip seal;ST74;Actuator;vacuum;No;No
+2026-02-09;COVER LINE;Line 2;FORD;13:18;13:20;2;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-09;COVER LINE;Line 2;FORD;13:46;13:50;4;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en riel;No;No
+2026-02-09;COVER LINE;Line 2;FORD;14:35;14:40;5;Maintenance;Lip seal;ST74;Actuator;limpieza de filtro;Si;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;20:53;21:06;13;Equipment Fault;CHW;St4;Pressor;Se revisa puntas y se cambia goma por scrap constante en chw;No;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;21:36;21:39;3;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado;No;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;16:20;16:26;6;Equipment Fault;CHW;St4;IPG/Samlight;Ajuste de Samlight por posicion nok, soldadura nok, cover perforado Pin 1 de 3.44 a 3.4 Pin 3 de 1.44 a 1.5;No;Si
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;16:26;16:39;13;Equipment Fault;CHW;General;TBD;Quitar cintas, constante cover 1A principalmente atorado;No;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;17:11;17:30;19;Equipment Fault;CHW;St5;Vision system;Fallas constantes por manchas en terminal, causan falsos rechazos, se ajusta Lower intesity average de 170 a 160 y las posiciones en los 3 pines del Shading,;No;Si
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;17:56;18:04;8;Equipment Fault;CAW;Jig/Index;Index not in home;posicion nok, falla insercion de crank y sistema de vision, area;No;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;18:53;19:32;39;Equipment Fault;CHW;St5;Vision system;Fallas constantes por binarizado mayor al límite superior, causan falsos rechazos, se ajusta limite de 6400 a 6500 (se estandariza para los 3 pines, ya que presentan los falsos en las 3);No;Si
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;20:00;20:10;10;Equipment Fault;CAW;LSW;Vision system;Falla posición de area, y límite de soldadura, se incrementa de 800 a 820 en upper limit X (los valores fuera de limite eran 802 y la soldadura se veía OK);No;Si
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;22:30;22:40;10;Maintenance;REA;General;Checklist;check list inicio de turno;Si;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;23:20;23:22;2;Production;Aux;710;NOK material;motor mal colocado en blister;Si;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;23:30;23:33;3;Equipment Fault;MSA;MSA;Driver;home nok;No;No
+2026-02-09;REA;Actuadores;WG REA STELLANTIS CA027;23:40;23:43;3;Equipment Fault;Robots;R75;Electrical system;sensor de gripper flojo no detecto posicion;No;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;01:10;01:20;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;03:20;03:23;3;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;04:40;04:59;19;Equipment Fault;CAW;LSW;Vision system;ajuste por alto scrap caw;No;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;05:00;05:45;45;Equipment Fault;CAW;CPA;SCARA;insercion nok;No;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;05:50;05:58;8;Equipment Fault;Robots;R38;Electrical system;sensor dañado;No;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;06:26;06:33;7;Equipment Fault;CAW;CPA;SCARA;mala insercion en jig 1;No;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;10:40;10:43;3;Quality;EOL;General;Scrapbox full;esperando a calidad;Si;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;07:20;08:50;90;Equipment Fault;CHW;St4;Pressor;Cinta en jigs gastada, algunos no tienen, causa variacion. Pressor altura muy baja, arrastra sobre lead frame Pressor inclinado una punta toca primero que la del otro extremo. Puntas gastadas, no spare part Samlight posicion no centrada. Sistema de vision falsos rechazos;No;Si
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;17:03;17:11;8;Equipment Fault;CAW;Jig/Index;Ingun actuator;Fallos al insertar crank. se ajusta tope mecanico de ingun porque levantaba actuado causando el problema;No;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;17:11;17:13;2;Equipment Fault;731;731;Feed piston;scrap al insertar pin y se queda abajo prensa;No;No
+2026-02-10;COVER LINE;Line 2;FORD;11:30;12:30;60;Maintenance;Lip seal;ST74;Actuator;limpieza de válvula de vacío;Si;No
+2026-02-10;COVER LINE;Line 2;FORD;13:50;18:20;270;Maintenance;ST10;ST11-St12;Ejector;cambio de pistón ejector st12;Si;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;20:06;20:11;5;Quality;REA;General;NOK material;sale body con mucha rebaba y causa colision en robot, se cambia de body;Si;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;16:30;16:35;5;Production;CAW;General;NOK material;Pin atorado en feeder;Si;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;16:48;16:51;3;Equipment Fault;USW;St14;Lower Jig;rebaba, limpieza por scraps;No;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;17:50;18:10;20;Production;REA;General;NOK material;Crank mezclado se sortea,;Si;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;22:30;22:45;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-10;REA;Actuadores;WG REA STELLANTIS CA027;23:12;23:14;2;Equipment Fault;Main conveyor;Main conveyor;Singulator NOK;locking atorado por singulator;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;00:47;00:49;2;Equipment Fault;731;731;Alphamatic Module;inserción nok;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;02:08;02:10;2;Material/Logistics;730;730;Bowl/Lineal feeder;material mezclado;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;02:13;02:15;2;Equipment Fault;750;750;Alphamatic Module;se quedo en posicion de pick;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;02:25;02:35;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;07:00;07:15;15;Maintenance;REA;General;Change Over;SETUP, CHO, SOP;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;07:15;10:40;205;Quality;REA;General;Change Over;Liberacion,master, parametros;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;11:40;12:05;25;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;Locking pierde posicion, se desalinea respecto a prensa por tope mecanico flojo. Ajusta, se alinea;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;12:10;12:15;5;Equipment Fault;CHW;St1;DM reader;Codigo distinto no es leido correctamente, se añade al banco en autoid;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;10:45;10:50;5;Equipment Fault;EOL;St2;CRIO NOK;Scrap repetitivo, se reinicia crio y app;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;12:45;13:10;25;Quality;CHW;General;TBD;Revision fotos 100 fotos, masters;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;13:12;13:15;3;Equipment Fault;CHW;St1;DM reader;ajuste de visión st1. Código distorsionado.;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;13:28;13:30;2;Equipment Fault;915;915;Missing ogive;se cae ogiva.;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;12:30;12:33;3;Production;CAW;CPA;Vision system;crank nok se detecto un crank de otro numero de parte.;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;13:44;13:46;2;Equipment Fault;CAW;LWS;NOK Condition;se ajusta mesa rotatory.;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;13:51;13:52;1;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;seatora pallet en locking en st 915.;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;14:09;14:13;4;Equipment Fault;CAW;Jig/Index;Index not in home;Ajuste home;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;14:20;14:21;1;Equipment Fault;Robots;R70;Vacuum system;no coloca Gear en St 905.;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;15:05;15:10;5;Quality;REA;General;Scheduled production stop;paro para pasar master en chw;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;15:10;15:30;20;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;15:33;16:02;29;Maintenance;REA;General;Scheduled maintenance;Paro para instalar chiller de MSA;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;16:11;16:18;7;Equipment Fault;EOL;Jigs;Ingun actuator;Alarma en eol por que tope mecanico de jig estaba flojo y no detectaba sensor, se ajusta a posicion adecuada;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;16:28;16:32;4;Maintenance;REA;General;Scheduled maintenance;paro para verificar funcionamiento de chiller;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;17:28;17:38;10;Equipment Fault;CHW;St5;Vision system;black/white cordenada x de 1261 a 1255, se evaluaron masters y revision de 50pcs antes/despues con inspector segun procedimeinto, anteriormente Aaron comento se agrego filtro fisico y herramienta en SV;No;Si
+2026-02-09;COVER LINE;Line 2;FORD;17:24;17:25;1;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-02-09;COVER LINE;Line 2;FORD;19:56;19:57;1;Equipment Fault;OMT;ST7;Laser barrier;;No;No
+2026-02-09;COVER LINE;Line 2;FORD;21:15;21:16;1;Equipment Fault;Robots;R70;Motion supervision/Joint collision;pallett conveyo;No;No
+2026-02-09;COVER LINE;Line 2;FORD;21:55;21:56;1;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en riel;No;No
+2026-02-09;COVER LINE;Line 2;FORD;22:15;22:18;3;Maintenance;OMT;ST3;Pogopins;limpieza de pogos;Si;No
+2026-02-09;COVER LINE;Line 2;FORD;22:30;22:35;5;Equipment Fault;Robots;R70;Motion supervision/Joint collision;pallet conveyo;No;No
+2026-02-10;COVER LINE;Line 2;FORD;07:50;07:52;2;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-02-10;COVER LINE;Line 2;FORD;08:20;08:28;8;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;;No;No
+2026-02-10;COVER LINE;Line 2;FORD;08:38;08:40;2;Equipment Fault;ST10;ST11-St12;Ejector;;No;No
+2026-02-10;COVER LINE;Line 2;FORD;09:30;09:34;4;Equipment Fault;Lip seal;ST74;Actuator;vacuum;No;No
+2026-02-10;COVER LINE;Line 2;FORD;18:30;18:32;2;Equipment Fault;Lip seal;ST74;Actuator;vacuum;No;No
+2026-02-10;COVER LINE;Line 2;FORD;19:38;19:39;1;Equipment Fault;OMT;ST4;Profilometer;;No;No
+2026-02-10;COVER LINE;Line 2;FORD;20:01;20:04;3;Equipment Fault;OMT;ST7;Laser barrier;;No;No
+2026-02-10;COVER LINE;Line 2;FORD;20:49;20:50;1;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-02-10;COVER LINE;Line 2;FORD;21:30;21:35;5;Material/Logistics;Robots;R20;Vision System;terminal doblada;Si;No
+2026-02-10;COVER LINE;Line 2;FORD;00:03;00:05;2;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;;No;No
+2026-02-10;COVER LINE;Line 2;FORD;01:35;01:38;3;Material/Logistics;Robots;R20;Vision System;;Si;No
+2026-02-11;COVER LINE;Line 2;FORD;07:50;08:00;10;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-02-11;COVER LINE;Line 2;FORD;08:10;08:16;6;Material/Logistics;Robots;R20;Vision System;trminal doblada;Si;No
+2026-02-11;COVER LINE;Line 2;FORD;08:48;08:52;4;Equipment Fault;OMT;ST7;Laser barrier;;No;No
+2026-02-11;COVER LINE;Line 2;FORD;10:31;10:35;4;Equipment Fault;OMT;ST4;Profilometer;;No;No
+2026-02-11;COVER LINE;Line 2;FORD;12:57;13:54;57;Equipment Fault;OMT;ST4;Profilometer;falla de sistema;No;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;20:14;20:25;11;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA027;20:26;20:29;3;Quality;REA;General;NOK material;paro en robot 70 por gear nok;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;19:32;19:42;10;Maintenance;CHW;Consumables;Chip reel;cambio;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;19:57;20:00;3;Maintenance;CHW;Consumables;Argon;cambio rapido;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;22:30;22:45;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-11;REA;Actuadores;WG REA STELLANTIS CA028;23:20;23:22;2;Equipment Fault;Conveyors;C36;Presence sensor;sensor no detecto blister;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;01:05;01:07;2;Equipment Fault;915;915;Dart sensor;ogiva caida;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;01:25;01:33;8;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;02:30;03:00;30;Equipment Fault;EOL;St5;Vision system;falla en sistema de vision;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;04:10;04:12;2;Equipment Fault;915;915;Dart sensor;ogiva caida;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;06:20;06:25;5;Equipment Fault;EOL;St4;CRIO NOK;reinicio de crio;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;07:00;07:15;15;Maintenance;REA;General;Checklist;Checklist diario inicio de turno.;Si;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;07:20;07:23;3;Quality;REA;General;NOK material;calidad para líneas para retiro de scrap.;Si;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;07:30;07:35;5;Maintenance;CHW;Consumables;Argon;se cambian los dos tambos de argon.;Si;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;07:40;07:55;15;Equipment Fault;EOL;General;PLC;se ajusta st2 a zero, falla general en st EOL.;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;08:00;08:02;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en locking de R60.;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;08:39;08:44;5;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en locking de prensa 750.;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;10:15;10:16;1;Equipment Fault;750;750;Bowl/Lineal feeder;bearing atorado.;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;10:27;10:28;1;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;locking no abre y pallet se queda esperando señal.;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;10:45;10:50;5;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA028;10:50;10:53;3;Maintenance;CCC;Consumables;Resin;cambio de resina.;Si;No
+2026-02-13;REA;Actuadores;WG REA GM CS022;07:00;09:10;130;Maintenance;REA;General;Scheduled maintenance;Mantenimiento motor convetor Z4, se reemplaza, el reemplazo esta mas dañado (motor reparado ) se regresa el original, pendiente intervencion posible eje dañado;Si;Si
+2026-02-13;REA;Actuadores;WG REA GM CS022;09:10;09:35;25;Quality;REA;General;Change Over;Masters,;Si;No
+2026-02-13;REA;Actuadores;WG REA GM CS022;09:35;11:40;125;Maintenance;REA;General;Scheduled maintenance;Cilindro de CAW NOK tras mtto preventivo turno anterior, se termina reemplazando;Si;Si
+2026-02-13;REA;Actuadores;WG REA GM CS022;11:40;13:10;90;Quality;REA;General;Test approval;Liberacion tras intervencion critica en CAW por ajuste cilindro pressor;Si;No
+2026-02-13;REA;Actuadores;WG REA GM CS022;13:15;13:28;13;Equipment Fault;CCC;General;TBD;Falla index en la misma posicion repetidas veces, sensor nok, se retira la tapa para ajustar sensor bajo la index;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA027;14:08;14:10;2;Equipment Fault;CHW;St3;Thermodo;falla de variación de temperatura.;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA027;14:15;14:17;2;Equipment Fault;CHW;St3;Thermodo;gap de temperatura.;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA027;14:36;14:39;3;Equipment Fault;Robots;R40;Gripper/tool adjustments;no abre gripper 3, se queda en estación  805.;No;No
+2026-02-12;REA;Actuadores;WG REA STELLANTIS CA027;15:05;15:10;5;Quality;REA;General;Scheduled production stop;paro para pasar master;Si;No
+2026-02-13;REA;Actuadores;WG REA GM CS022;15:10;15:30;20;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-13;REA;Actuadores;WG REA GM CS022;15:35;16:28;53;Equipment Fault;CHW;St3;Thermodo;Ajustes en termo por scrap;No;No
+2026-02-13;REA;Actuadores;WG REA GM CS022;16:37;16:48;11;Equipment Fault;CHW;St3;Thermodo;se revisa termopar por gap de temperatura;No;No
+2026-02-13;REA;Actuadores;WG REA GM CS022;16:53;21:17;264;Maintenance;CHW;St3;Thermodo;Se hace ajuste en heat steaking por pestañas de chip visible. se ajusta sistema de vision. se manda a liberar pruebas;Si;Si
+2026-02-13;REA;Actuadores;WG REA GM CS022;21:25;21:37;12;Equipment Fault;CHW;St4;IPG/Samlight;ajuste en samligth por cover perforados. se ajustan posiciones;No;Si
+2026-02-14;REA;Actuadores;WG REA GM CS022;07:00;07:20;20;Maintenance;REA;General;Checklist;Checklist diario y pase de masters.;Si;No
+2026-02-14;REA;Actuadores;WG REA GM CS022;07:31;07:40;9;Equipment Fault;Robots;R40;Motion supervision/Joint collision;no detectaba body en St 805.;No;No
+2026-02-14;REA;Actuadores;WG REA GM CS022;10:15;10:18;3;Production;CAW;CPA;Vision system;se queda sin materia  (rank );Si;No
+2026-02-14;REA;Actuadores;WG REA GM CS022;15:00;19:03;243;Equipment Fault;CHW;St3;Thermodo;Se recibe tuno en paro por scrap constante en st3.  se destomnta ermo para revir empaques, bujes,  se monta de nuevo y se alinea.  se revisa conexiones de termopar y se ajustan.  se revisa cableado de termodo.  se ajusta set de temperatura.;No;No
+2026-02-14;REA;Actuadores;WG REA GM CS022;19:03;19:08;5;Quality;REA;General;Scheduled production stop;paro para pasar maste en chw;Si;No
+2026-02-14;REA;Actuadores;WG REA GM CS022;20:00;20:30;30;Production;REA;General;No staff;paro por comida;Si;No
+2026-02-14;REA;Actuadores;WG REA GM CS022;20:32;20:42;10;Maintenance;CHW;Consumables;Argon;paro por cambio de argon. los dos tanques estaban vacios;Si;No
+2026-02-14;REA;Actuadores;WG REA GM CS022;20:50;20:52;2;Production;REA;General;NOK material;motor volteado;Si;No
+2026-02-14;REA;Actuadores;WG REA GM CS022;22:18;22:21;3;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas;No;No
+2026-02-15;REA;Actuadores;WG REA GM CS022;07:00;07:20;20;Maintenance;REA;General;Checklist;Checklist diario inicio de turno.;Si;No
+2026-02-16;REA;Actuadores;WG REA GM CS022;07:00;09:34;154;Maintenance;REA;General;Change Over;Ajustes despues de setup no finalizado correctamente. Errores en los baldes de caw, sustituicon de lente. Sensores invertidos en eol, ajuste no realizado de axis zero, revision general del setup. Ajustes CHW SV nuevo setup camara tras filtro fisico. Ajuste HS.;Si;Si
+2026-02-16;REA;Actuadores;WG REA GM CS022;09:34;12:29;175;Quality;REA;General;Change Over;Liberacion, masters;Si;No
+2026-02-16;REA;Actuadores;WG REA GM CS022;12:40;12:51;11;Maintenance;REA;General;TBD;Receta incorrecta en MSA causa scrap consecutivo, se vuelven a pasar masters ante falta de certeza por medio de las acciones del tecnico en turno para realizar la tarea;Si;No
+2026-02-16;REA;Actuadores;WG REA GM CS022;13:03;13:33;30;Maintenance;CHW;St4;Argon dispensatio;Fuga en el sistema de dispensacion;Si;No
+2026-02-16;REA;Actuadores;WG REA GM CS022;13:33;13:40;7;Maintenance;Robots;R75;Gripper/tool adjustments;Desgaste en gripper causa mal ensamble, se compensa con cinta doble cara;Si;No
+2026-02-16;REA;Actuadores;WG REA GM CS022;13:55;14:00;5;Equipment Fault;EOL;St1;PTC;Conector mal colocado en cho, falla recurrente jig 5;No;No
+2026-02-16;REA;Actuadores;WG REA GM CS022;14:01;14:03;2;Equipment Fault;EOL;St2;Gripper NOK;Set gripper cerrado/abierto;No;No
+2026-02-16;REA;Actuadores;WG REA GM CS022;21:19;21:29;10;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-16;REA;Actuadores;WG REA FORD CA029;22:01;22:02;1;Maintenance;Main conveyor;General;TBD;tbd;Si;No
+2026-02-16;REA;Actuadores;3140CA029;15:00;17:58;178;Equipment Fault;MSA;MSA;Sensor de presencia;Paro por falso en sensor de presencia. el carrito estaba abajo lo cual no permitia que magnet estuviera en posicion para lectura de sensor. se ajusta altura de carrito para tener una lectura correcta;No;No
+2026-02-16;REA;Actuadores;3140CA029;18:04;18:08;4;Production;MAT;General;NOK material;Tornillos atorados por sobrellanar feeder;Si;No
+2026-02-16;REA;Actuadores;3140CA029;18:26;18:30;4;Production;REA;General;NOK material;Feeder llenos de material causan problemas al atorarse;Si;No
+2026-02-16;REA;Actuadores;3140CA029;18:59;19:05;6;Production;REA;General;NOK material;Material mezclado en bowl de feeder 731;Si;No
+2026-02-16;REA;Actuadores;3140CA029;19:50;20:02;12;Equipment Fault;Robots;R38;Motion supervision/Joint collision;Se revisa R38 por motion supervision. manguera trozada. se pone un parche temporal para seguir con produccion;No;No
+2026-02-16;REA;Actuadores;3140CA029;18:55;18:57;2;Equipment Fault;CHW;St3;Gefran module;Alarma por gap de temperatura;No;No
+2026-02-16;REA;Actuadores;WG REA FORD CA029;22:30;22:45;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-16;REA;Actuadores;WG REA FORD CA029;23:00;23:55;55;Equipment Fault;CHW;St5;Vision system;ajuste en sistema de vision;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;02:05;02:07;2;Maintenance;CHW;Consumables;Argon;cambio de tanque;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;02:30;02:45;15;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;03:10;03:18;8;Equipment Fault;EOL;St4;CRIO NOK;reinicio de crio;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;04:20;04:25;5;Maintenance;CAW;LSW;Vision system;limpieza de lente;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;04:23;04:26;3;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;07:00;07:25;25;Maintenance;REA;General;Checklist;Checklist diario inicio de turno y pase de master.;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;07:36;07:40;4;Equipment Fault;CAW;Jig/Index;Blade orienter actuator;mesa desalineada y afecta a centrado de soldadura, sistema de vicio falla.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;07:42;07:43;1;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet no avanza sensor no detecta, se seta st731.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;08:10;08:11;1;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper no abre y no suelta pieza.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;08:14;08:15;1;Equipment Fault;915;915;Missing ogive;ogive se cae.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;08:30;08:31;1;Equipment Fault;USW;St14;Lower Jig;scrap por rebaba.  limpieza.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;10:00;10:02;2;Equipment Fault;Robots;R70;Vacuum system;vacuum off;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;10:15;10:18;3;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosas dañadas.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;10:22;10:37;15;Maintenance;REA;General;Checklist;Checklist por 500 pzs.;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;14:20;14:22;2;Equipment Fault;Aux;805;Presence sensor;se queda pallet esperando señal de sensor;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;14:27;14:30;3;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en st. 731.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:10;15:15;5;Quality;REA;General;Scheduled production stop;Paro para pasar master en chw;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:15;15:40;25;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:41;15:43;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:46;15:49;3;Equipment Fault;MAT;Consumables;Grease;Paro para revisar dispensacion de grasa;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:54;15:56;2;Equipment Fault;915;915;Missing ogive;ogiva caida;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;19:13;19:21;8;Maintenance;CHW;Consumables;Chip reel;cambio;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;19:21;19:30;9;Maintenance;REA;General;Checklist;+500pcs;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;19:31;19:50;19;Equipment Fault;CAW;Jig/Index;Blade orienter actuator;scrap por REA current. se revisa pogo pin. y se revisa cableado. conector tenia un cable desconectado. se repara;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;22:04;22:08;4;Equipment Fault;CAW;CPA;Feeder;sin crank en riel sin embargo el bowl si tenia crank, posible fallo del sensor;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;22:08;22:11;3;Production;MAT;General;NOK material;feeder lleno de materal excesivo;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;22:30;22:45;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;23:25;23:29;4;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;pallet atorado con lift por no deteccion de sensor;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;07:00;07:15;15;Maintenance;REA;General;Checklist;Checklist diario inicio de turno.;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;08:03;08:04;1;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en locking de st750.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;09:31;09:40;9;Equipment Fault;CAW;LSW;Vision system;falla en visión no detecta correctamente soldadura.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;09:43;09:48;5;Maintenance;CHW;Consumables;Chip reel;cambio de chip.;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;10:05;10:15;10;Maintenance;REA;General;Checklist;Checklist de 500 pzs.;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;10:43;10:45;2;Equipment Fault;731;731;Bowl/Lineal feeder;riel base de pin choca con piston colocador.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;10:57;10:58;1;Production;Conveyors;C31;Presence sensor;blister acumulados.;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;13:34;13:36;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallets se atoran en locking de diferentes Sts.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;13:45;13:47;2;Equipment Fault;USW;St12-St13;Presence sensor;pierde secuencia de piezas.;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:10;15:15;5;Quality;REA;General;Scheduled production stop;paro para pasar master en chw;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:15;15:32;17;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:34;15:39;5;Equipment Fault;Robots;R80;Gripper/tool adjustments;robot empieza a tirar piezas, se ajusta gripper. y se restablece caw por falla en secuencia por piezas caidas;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:43;15:46;3;Equipment Fault;731;731;Bowl/Lineal feeder;colision entre linear feeder y prensa;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;16:12;16:16;4;Equipment Fault;Robots;R38;Incorrect pick/place;robot coloca en mala posicion body, se requiere poner manual y continual;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;16:25;16:28;3;Equipment Fault;Robots;R38;Motion supervision/Joint collision;motion supervision por condicion de falta de tornilleria en base;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;07:00;07:17;17;Maintenance;REA;General;Checklist;Checklist diario inicio de turno/ pase de master.;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;08:30;08:31;1;Equipment Fault;CHW;St2;Vacuum system;no colca chip en jig, se respite proceso de St2 CHW.;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;07:50;08:10;20;Equipment Fault;CHW;General;TBD;No responde, falla giro de mesa y pierde secuencia, alarma de st3 despues de haber terminado no gira la mesa. Se intentan varias cosas, finalmente se recurre a hard reset, actualizacion windows pc;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;08:15;08:22;7;Equipment Fault;EOL;St6;Laser module/Samlight;codigo con digito poco legible detectado en cls1, se revisa con calidad (paro) el estado y limpieza de lente/protector. Al no encontrar una causa raiz definitiva se extiende al explorar con calidad las posibles causas y riesgos que implica la produccion;No;Si
+2026-02-17;REA;Actuadores;WG REA FORD CA029;12:40;12:41;1;Production;Aux;710;NOK material;motror invertido;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;12:46;12:47;1;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en locking.;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;13:37;14:00;23;Equipment Fault;CAW;Jig/Index;Blade orienter actuator;Ajuste cilindro vastago flojo, se pregunta a calidad si la itnervencion requiere liberacion. Se aprueba continuar corriendo asi;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;14:00;14:12;12;Maintenance;CHW;St5;Vision system;Se ajusta SV en base a piezas NOK encontradas en la inpseccion 100%. Se revisan masters, monitoreo. Backup del setup anterior en simulator;Si;Si
+2026-02-17;REA;Actuadores;WG REA FORD CA029;14:30;14:35;5;Maintenance;CHW;Consumables;Argon;cambio de argon.;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:09;15:14;5;Maintenance;CHW;St5;Vision system;Actualizacion de master en sistema de vision;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:14;15:19;5;Quality;REA;General;Scheduled production stop;paro para pasar master en chw;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:19;15:29;10;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;15:34;15:36;2;Equipment Fault;CHW;St2;Vacuum system;vacuum off;No;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;18:04;18:09;5;Quality;CAW;Jig/Index;Index not in home;se alinea mesa por falla al insertar crank;Si;No
+2026-02-17;REA;Actuadores;WG REA FORD CA029;18:09;18:19;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;19:06;19:09;3;Quality;MAT;General;Scrapbox full;scrapbox full;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;17:47;17:50;3;Equipment Fault;CAW;Jig/Index;Index not in home;falla place de crank por index ligeramente desalineada;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;20:20;20:28;8;Maintenance;CHW;Consumables;Chip reel;cambio;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;20:28;20:39;11;Maintenance;REA;General;Checklist;cerca de 1000;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;22:30;22:40;10;Maintenance;REA;General;Checklist;check list inicio de turno;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;22:50;22:52;2;Maintenance;CCC;Consumables;Resin;relleno de resina;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;22:50;22:52;2;Maintenance;CCC;Consumables;Resin;relleno de resina;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;23:03;23:05;2;Equipment Fault;731;731;Alphamatic Module;no termino ciclo;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;23:11;23:16;5;Equipment Fault;EOL;St4;CRIO NOK;reinicio de crio;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;07:00;07:18;18;Maintenance;REA;General;Checklist;Checklist diario / pase de masters.;Si;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;07:00;07:15;15;Maintenance;REA;General;Checklist;checklist, pasar masters chw, sop;Si;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;07:15;07:50;35;Equipment Fault;CCC;General;PLC;Pierde secuencia, no responde, despues falla comunicación camara;No;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;08:20;08:24;4;Equipment Fault;MAT;St1;Body DM reader;Scrap en turnos anteriores, se limpia, se ajusta autoid;No;No
+2026-02-11;COVER LINE;Line 2;FORD;17:50;17:53;3;Equipment Fault;OMT;ST7;Laser barrier;;No;No
+2026-02-11;COVER LINE;Line 2;FORD;17:55;18:00;5;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado en bowl;No;No
+2026-02-11;COVER LINE;Line 2;FORD;18:04;18:06;2;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-11;COVER LINE;Line 2;FORD;20:20;20:23;3;Equipment Fault;OMT;ST3;Pogopins;;No;No
+2026-02-18;COVER LINE;Line 2;FORD;17:30;17:31;1;Equipment Fault;Retainer;ST76;Bowl/lineal feeder;retenedor atorado en bowl;No;No
+2026-02-18;COVER LINE;Line 2;FORD;18:13;18:16;3;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-02-18;COVER LINE;Line 2;FORD;18:50;18:52;2;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-18;COVER LINE;Line 2;FORD;19:05;19:15;10;Equipment Fault;Robots;R20;Motion supervision/Joint collision;collision en conveyo;No;No
+2026-02-18;COVER LINE;Line 2;FORD;20:20;20:30;10;Maintenance;OMT;ST3;Pogopins;limpieza de pogos;Si;No
+2026-02-19;COVER LINE;Line 2;FORD;09:15;09:18;3;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-02-19;COVER LINE;Line 2;FORD;09:35;09:40;5;Maintenance;Lip seal;ST74;Actuator;limpieza de filtro de vacío;Si;No
+2026-02-19;COVER LINE;Line 2;FORD;09:50;09:52;2;Equipment Fault;OMT;ST3;Pogopins;;No;No
+2026-02-19;COVER LINE;Line 2;FORD;10:03;10:05;2;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-19;COVER LINE;Line 2;FORD;10:16;10:19;3;Equipment Fault;Robots;R20;Incorrect pick/place;st12;No;No
+2026-02-19;COVER LINE;Line 2;FORD;17:47;17:48;1;Equipment Fault;OMT;ST7;Laser barrier;;No;No
+2026-02-19;COVER LINE;Line 2;FORD;17:45;17:46;1;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-02-19;COVER LINE;Line 2;FORD;17:53;17:59;6;Equipment Fault;OMT;ST3;Pogopins;;No;No
+2026-02-19;COVER LINE;Line 2;FORD;18:12;18:16;4;Equipment Fault;ST30 Molding;General;TBD;terminal dablada;No;No
+2026-02-19;COVER LINE;Line 2;FORD;18:55;19:00;5;Equipment Fault;Robots;R20;Motion supervision/Joint collision;collision en conveyo;No;No
+2026-02-19;COVER LINE;Line 2;FORD;20:25;20:30;5;Equipment Fault;OMT;ST4;Profilometer;;No;No
+2026-02-19;COVER LINE;Line 2;FORD;22:21;22:26;5;Equipment Fault;OMT;ST3;Pogopins;;No;No
+2026-02-19;COVER LINE;Line 2;FORD;23:10;23:13;3;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;09:34;09:36;2;Equipment Fault;620;620;Bowl/Lineal feeder;bearings atorados en vibro y piston no ensambla bearing correctamente.;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;10:00;10:02;2;Equipment Fault;620;620;Feed piston;no sube piston.;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;12:45;12:50;5;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;12:50;12:56;6;Maintenance;CCC;Consumables;Resin;cambio de resina.;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;13:40;13:41;1;Equipment Fault;Robots;R75;Gripper/tool adjustments;no abre gripper.;No;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;10:36;12:31;115;Quality;REA;General;Test approval;Profundidad efectiva nok. Se revisa centrado (OK), se cambia lente, liberación;Si;Si
+2026-02-19;REA;Actuadores;WG REA FORD CA029;15:05;15:10;5;Quality;REA;General;Scheduled production stop;paro para pasar master chw;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;15:10;15:28;18;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;16:08;16:13;5;Equipment Fault;MSA;MSA;Driver;Driver no mandaba señal de pieza lista y robot no continuaba secuencia. se quita magnet shaft manual y se reinicia ciclo;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;16:14;16:16;2;Equipment Fault;Robots;R75;Incorrect pick/place;robot no agarra correctamente cover y colisiona;No;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;16:20;16:23;3;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;palleta atrapado por singulator, fallo presencia;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;18:31;18:41;10;Equipment Fault;CHW;St2;SCARA Pick/Place;error al poner chip en fixture. colisionaba yse alarmaba varias veces seguidas;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;19:03;19:05;2;Equipment Fault;Robots;R75;Incorrect pick/place;robot colisiona al ensamblar cover por mal agarre;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;19:10;19:22;12;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;19:38;19:43;5;Equipment Fault;USW;SCARA;Pick/Place;colision del robot al poner la pieza;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;20:15;20:17;2;Equipment Fault;Robots;R75;Incorrect pick/place;alarma al ensamblar cover;No;No
+2026-02-19;REA;Actuadores;WG REA FORD CA029;20:45;20:50;5;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;sensor no detecta pallet y causa atrapamiento de pallets;No;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;21:15;21:18;3;Equipment Fault;EOL;St4;CRIO NOK;falla y scrap, restaurar;No;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;21:18;21:30;12;Maintenance;REA;General;Checklist;1000pcs;Si;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;21:32;21:36;4;Equipment Fault;CAW;General;Software/PC;no continua ciclo, volver a restaurar;No;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;22:15;22:22;7;Equipment Fault;Robots;R70;Vacuum system;Problemas en ensamble de actuador por nuevas ventosas NOK, se reportaron a Jaxiel;No;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;22:30;22:40;10;Maintenance;REA;General;Checklist;checklist incio de turno;Si;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;23:04;23:06;2;Equipment Fault;Robots;R75;Motion supervision/Joint collision;motion supervision;No;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;23:29;23:31;2;Material/Logistics;Conveyors;C37;Presence sensor;blister dañado y no lo detecto sensor;Si;No
+2026-02-20;REA;Actuadores;WG REA FORD CA029;23:42;23:44;2;Maintenance;CHW;Consumables;Argon;cambio de gas argon;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;00:24;00:27;3;Maintenance;CCC;Consumables;Resin;cambio de resina;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;00:54;00:56;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;cambio de cinta a gripper;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;02:45;02:48;3;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;07:00;07:20;20;Maintenance;REA;General;Checklist;checklist diario/ pase de master.;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;07:38;07:39;1;Equipment Fault;Robots;R65;Vacuum system;se cae gear.;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;07:42;07:44;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;se atoran pallet en locking de prensa 750.;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;07:52;07:53;1;Production;Conveyors;C31;Presence sensor;blister atorado;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;08:12;08:14;2;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;ajuste de sensor, no detectaba pallet.;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;08:31;08:32;1;Equipment Fault;731;731;Presence sensor;pin chueco.;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;08:37;08:38;1;Equipment Fault;CHW;St2;Vacuum system;vaccum off;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;08:52;08:59;7;Equipment Fault;MAT;St5;Axis not in home;falla st5 no dejaba girar mesa.;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;09:15;09:19;4;Equipment Fault;CAW;LSW;Vision system;se paró para revisar por alto scrap.;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;09:58;10:27;29;Equipment Fault;CAW;LSW;Vision system;ajuste de sistema de vision por alto scrap.;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;11:14;11:15;1;Equipment Fault;Robots;R65;Vacuum system;tira gear.;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;11:36;11:38;2;Equipment Fault;Conveyors;C56;Belt;piston tope de blister no sube y pinzas sujetadoras se quedan cerradas.;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;11:48;11:49;1;Production;Aux;710;NOK material;motor invertido.;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;11:55;11:58;3;Maintenance;CHW;Consumables;Argon;cambio de argon.;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;15:10;15:15;5;Quality;REA;General;Scheduled production stop;paro para pasar master en chw;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;15:15;15:33;18;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;18:05;18:15;10;Maintenance;REA;General;Checklist;checlist 500 piezas;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;18:17;18:24;7;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;19:02;19:04;2;Quality;Main conveyor;Main conveyor;Inductive sensor;sensor no detecta pallet;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;19:33;19:37;4;Equipment Fault;Conveyors;C56;Lift;lift no subio completamente. se sube manual con electrovalvula;No;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;20:00;20:30;30;Production;REA;General;Scheduled production stop;paro por hora de comida;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;08:42;08:46;4;Maintenance;CHW;St4;Pressor;limpieza de pressor;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;09:04;09:07;3;Maintenance;CHW;Consumables;Argon;cambio de argon;Si;No
+2026-02-21;REA;Actuadores;WG REA FORD CA029;21:20;21:25;5;Quality;MAT;St4;Power supply CRIO;se reinicia crio por alarma;Si;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;07:14;07:57;43;Quality;REA;General;SOP;esperando liberacion;Si;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;09:20;09:22;2;Equipment Fault;Main conveyor;Main conveyor;RFID Reader;sensor no detecta pallet;No;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;09:48;09:52;4;Equipment Fault;Main conveyor;Main conveyor;Motor;pallet atorado;No;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;10:10;10:12;2;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;sensor no detecta pallet;No;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;10:17;10:27;10;Equipment Fault;CAW;Jig/Index;Index not in home;Ajustes para centrar mesa, ya que fallaba al insertar crank;No;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;10:57;11:03;6;Equipment Fault;EOL;General;Safety system;alarma de seguridad. se revisa material de cinta reflejante;No;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;11:09;11:11;2;Equipment Fault;Robots;R80;Gripper/tool adjustments;no abre gripper correctamente;No;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;12:56;12:58;2;Equipment Fault;CHW;St4;Pressor;limpieza de pressor;No;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;15:05;15:15;10;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;15:26;15:41;15;Equipment Fault;CHW;St6;PTC;error ptc comunicacion. se vacia chw, se manda a mian robot y se reinicia app;No;No
+2026-02-22;REA;Actuadores;WG REA FORD CA029;16:32;16:34;2;Equipment Fault;Robots;R75;Gripper/tool adjustments;gripper no se abre a tiempo;No;No
+2026-02-23;REA;Actuadores;3140CA029;07:00;11:00;240;Maintenance;EOL;General;Pneumatic System;Falla sistema manifold, sin aire, despues sin suficiente presion de aire.;Si;No
+2026-02-23;REA;Actuadores;3140CA030;11:00;11:05;5;Equipment Fault;CAW;General;Software/PC;Crash app ewelder, se reestablece, se sacan muestras para calidad por fallo critico posible variacion en soldadura;No;Si
+2026-02-23;REA;Actuadores;3140CA030;11:05;12:10;65;Quality;REA;General;Test approval;Liberacion tras crash ewelder en CAW;Si;No
+2026-02-23;REA;Actuadores;3140CA030;13:05;13:09;4;Maintenance;CHW;Consumables;Chip reel;cambio;Si;No
+2026-02-23;REA;Actuadores;3140CA030;13:27;13:30;3;Maintenance;CHW;Consumables;Argon;cambio;Si;No
+2026-02-23;REA;Actuadores;3140CA030;13:32;13:35;3;Maintenance;Robots;R70;Vacuum system;ajuste poco vacio;Si;No
+2026-02-23;REA;Actuadores;3140CA030;13:50;13:56;6;Equipment Fault;MAT;St3;INTOCO;punta floja causa scrap;No;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;13:40;13:42;2;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;locking de prensa 750 no abre, se resetea.;No;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;13:54;13:55;1;Equipment Fault;Robots;R38;Gripper/tool adjustments;gripper no abre, sensor con falso, se aprieta conectores.;No;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;14:07;14:08;1;Equipment Fault;CHW;St2;Vacuum system;vacuum off, se repite prueba.;No;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;14:11;14:16;5;Maintenance;REA;General;Checklist;Checklist de 1,000 pzs.;Si;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;14:37;14:38;1;Equipment Fault;CHW;St3;Thermodo;gap temperature st3;No;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;14:39;14:40;1;Quality;Aux;710;NOK material;motor invertido.;Si;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;15:05;15:10;5;Maintenance;REA;General;Checklist;Masters CHW;Si;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;15:45;15:50;5;Equipment Fault;CHW;General;TBD;Falla mesa al girar, se queda a media vuelta;No;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;15:59;16:24;25;Equipment Fault;CHW;General;TBD;falla mesa al girar limpieza de sensores;No;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;16:25;16:30;5;Equipment Fault;CHW;St4;IPG/Samlight;Soldadura nok, puntos de soldadura desfasados se ajustan de  1.5 a 1.6 1.05 a 0.95 3.45 a 3.4;No;Si
+2026-02-24;REA;Actuadores;WG REA FORD CA029;18:33;18:42;9;Maintenance;REA;General;Checklist;+500pcs;Si;No
+2026-02-24;REA;Actuadores;WG REA FORD CA029;19:30;19:48;18;Equipment Fault;CAW;LSW;Vision system;scraps continuos, gain de 2 a 1 en la herramienta 2, en el filtro 2 ajustar posicion de inspeccion;No;Si
+2026-02-23;REA;Actuadores;WG REA FORD CA029;15:23;15:27;4;Maintenance;REA;General;Change Over;set up rework f30;Si;No
+2026-02-23;REA;Actuadores;WG REA FORD CA029;16:20;17:53;93;Maintenance;REA;General;Change Over;set up f29 cambio rapido, liberacion;Si;No
+2026-02-23;REA;Actuadores;WG REA FORD CA029;21:03;21:10;7;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-23;REA;Actuadores;WG REA FORD CA029;21:29;21:31;2;Quality;CHW;General;Scrapbox full;en espera de de vaciado;Si;No
+2026-02-18;REA;Actuadores;WG REA FORD CA029;19:34;22:30;176;Equipment Fault;Main conveyor;Main conveyor;Motor;flecha dañada, vibracion, calentamiento, reemplazo de cabezal;No;No
+2026-02-24;REA;Actuadores;3140CA029;10:30;10:45;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-24;REA;Actuadores;3140CA029;23:00;23:55;55;Equipment Fault;Robots;R38;Motion supervision/Joint collision;soporte dañado tornillos capados;No;No
+2026-02-25;REA;Actuadores;WG REA FORD CA029;01:00;01:10;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-25;REA;Actuadores;WG REA FORD CA029;01:40;01:42;2;Maintenance;CHW;Consumables;Argon;cambio de gas argon;Si;No
+2026-02-25;REA;Actuadores;WG REA FORD CA029;02:05;02:07;2;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa por daño;No;No
+2026-02-18;REA;Actuadores;3140CA029;22:30;23:59;90;Equipment Fault;Main conveyor;Main conveyor;Motor;Falla motor de conveyor principal, se cambia cabezal, se adapta el cabezal por tener un eje mas corto. [Paro cruza medianoche - Parte 1];No;No
+2026-02-19;REA;Actuadores;3140CA029;00:00;00:51;51;Equipment Fault;Main conveyor;Main conveyor;Motor;Falla motor de conveyor principal, se cambia cabezal, se adapta el cabezal por tener un eje mas corto. [Paro cruza medianoche - Parte 2];No;No
+2026-02-23;REA;Actuadores;3140CA029;23:10;23:12;2;Equipment Fault;Robots;R75;Motion supervision/Joint collision;Se alarma al ensamblar por terminales chuecas en motor dc;No;No
+2026-02-24;REA;Actuadores;3140CA029;01:23;01:26;3;Maintenance;CAW;Consumables;Nitrogen;Cambio de tanque Nitrogeno;Si;No
+2026-02-24;REA;Actuadores;3140CA029;02:11;02:21;10;Maintenance;REA;General;Scheduled production stop;Italia pide revisar parametros en CAW;Si;No
+2026-02-24;REA;Actuadores;3140CA029;04:49;04:59;10;Maintenance;REA;General;Checklist;Checklist mtto;Si;No
+2026-02-24;REA;Actuadores;3140CA029;05:17;05:20;3;Equipment Fault;Robots;R38;Motion supervision/Joint collision;Motor DC en St.710 y R38 intenta poner un nuevo motor encima y colisiona.;No;No
+2026-02-24;REA;Actuadores;3140CA029;06:02;06:05;3;Maintenance;Robots;R65;Vacuum system;Cambio de ventosas dañadas;Si;No
+2026-02-24;REA;Actuadores;3140CA029;06:19;06:23;4;Maintenance;CHW;Consumables;Chip reel;Cambio de rollo chip;Si;No
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA042;20:12;20:17;5;Quality;CCC;General;Scrapbox full;scrap box full;Si;No
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA042;20:35;20:38;3;Maintenance;CHW;St4;Pressor;limpieza depressor por scrap;Si;No
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA042;15:00;16:50;110;Quality;REA;General;Change Over;Masters y liberacion;Si;No
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA042;20:52;22:13;81;Equipment Fault;CHW;St4;Pressor;soldadura nok. se hace cambio de goma y puntas. y se ajusta altura de pressor. tambien se revisa sistema de vision por falsos rechazos, se ajusta area de inspeccion de soldadura y heak stake. se pasan master al final de ajustes se actualiza imagen de referencia y se mueve binarizado de area heat stake de 50 a 70, ya que detectaba blanco en zonas negras;No;Si
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA042;18:50;19:31;41;Equipment Fault;CAW;Jig/Index;Index not in home;falla continua de insercion, genera tiempo de ciclo lento y paros en CAW, se intenta alinear mesa, falla en repetidas ocasiones, se ajusta ingun de jig 1 , ya que inclina actuador;No;No
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA042;22:30;22:45;15;Maintenance;REA;General;Checklist;chacklist inicio de turno;Si;No
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA042;22:45;23:07;22;Equipment Fault;CAW;CPA;SCARA;falla al insertar cranck;No;No
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA042;23:20;23:35;15;Equipment Fault;Robots;R38;Motion supervision/Joint collision;soprte de mangueras flojo se cambio tornilleria;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA042;00:05;00:10;5;Equipment Fault;CAW;CPA;SCARA;fallo al insertar crank;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA042;00:15;00:20;5;Equipment Fault;EOL;St2;Gripper NOK;set zero;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA042;03:18;03:23;5;Maintenance;CCC;Consumables;Resin;relleno de resina;Si;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA042;15:05;15:15;10;Equipment Fault;REA;General;Checklist;checklist;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA042;15:18;15:56;38;Equipment Fault;Main conveyor;Main conveyor;Motor;se revisa motor por ruido. se alinea parece estar chueco., se revisa tensor, cadena, alineacion;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA042;16:05;16:10;5;Quality;REA;General;Checklist;paro para pasar master en chw;Si;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;16:45;17:15;30;Production;REA;General;Scheduled production stop;paro para convivio de festejo de cumpleañero;Si;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;17:18;17:23;5;Quality;EOL;General;Scrapbox full;scrap box full;Si;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;18:30;18:32;2;Equipment Fault;EOL;General;Software/PC;time out STX do nothing;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;19:07;19:28;21;Equipment Fault;EOL;General;TBD;se revisa eol por scrap consntante.  se revisa jig, se hace ajuste por tornillos sueltos.  se ajustan conectores  se revisa ingun se calibra a cero gripper st 2;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;19:32;19:51;19;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;acumulacion de pallet por pallet atorado en st915 causa errores en secuecnia, se requiere quitar palletn en manual y robot mandar a main;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;20:42;20:52;10;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;21:15;21:20;5;Equipment Fault;EOL;General;Software/PC;paro consntante por time out do nothing,;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;21:34;21:39;5;Equipment Fault;Robots;R38;Incorrect pick/place;robot no pone correctamente body, cuasando colision al intentar poner motor;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;21:48;21:52;4;Equipment Fault;USW;St14;Lower Jig;limpieza de jig por rebaba;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;22:04;22:10;6;Equipment Fault;CAW;General;TBD;caw no continuaba en auto, al limpiar pressor , no llegaba a posicion final;No;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;22:30;22:45;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;23:20;23:25;5;Quality;EOL;General;Scrapbox full;scrap lleno;Si;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043;23:54;23:59;5;Equipment Fault;Robots;R38;Motion supervision/Joint collision;soporte flojo;No;No
+2026-02-27;REA;Actuadores;WG REA STELLANTIS CA043;03:20;03:30;10;Maintenance;REA;General;Checklist;checklist 500 piezas;Si;No
+2026-02-27;REA;Actuadores;WG REA STELLANTIS CA043;03:50;04:15;25;Equipment Fault;EOL;St2;Gripper NOK;scrap constante st2 soporte italia;No;No
+2026-02-27;REA;Actuadores;WG REA STELLANTIS CA043;04:34;04:37;3;Material/Logistics;CHW;St1;DM reader;cambio de material por codigo QR borroso;Si;No
+2026-02-26;REA;Actuadores;WG REA STELLANTIS CA043 RW NO BRANSON;09:40;15:00;320;Production;REA;General;Change Over;CHO;Si;No
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA043 RW NO BRANSON;07:00;11:20;260;Production;REA;General;Change Over;CHO;Si;No
+2026-02-25;REA;Actuadores;WG REA STELLANTIS CA043 RW NO BRANSON;11:20;15:00;220;Maintenance;REA;General;Scheduled maintenance;Reparacion robot 38, camio flecha motor, otros pendientes;Si;No
+2026-12-20;COVER LINE;Line 2;FORD;08:30;08:32;2;Equipment Fault;ST30 Molding;General;TBD;TERMINAL DOBLADA;No;No
+2026-12-20;COVER LINE;Line 2;FORD;08:40;08:45;5;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atrorado;No;No
+2026-12-20;COVER LINE;Line 2;FORD;08:50;09:00;10;Equipment Fault;OMT;ST4;Profilometer;;No;No
+2026-12-20;COVER LINE;Line 2;FORD;18:45;18:47;2;Equipment Fault;OMT;ST3;Pogopins;;No;No
+2026-12-20;COVER LINE;Line 2;FORD;19:00;20:35;95;Maintenance;OMT;General;TBD;memoria llena;Si;No
+2026-12-20;COVER LINE;Line 2;FORD;22:05;22:15;10;Equipment Fault;ST30 Molding;General;TBD;termina con flash;No;No
+2026-02-27;REA;Actuadores;WG REA MITSUBISHI 3140CA045;07:00;11:00;240;Maintenance;REA;General;Change Over;CHO PPAP 045, solo una persona Cosas extra (ajustes SV CAW, revision recetas, ajuste 750, master Z1-2);Si;No
+2026-12-23;COVER LINE;Line 2;FORD;10:15;10:17;2;Equipment Fault;Lip seal;ST74;Actuator;VACUUM;No;No
+2026-12-23;COVER LINE;Line 2;FORD;10:40;10:45;5;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-12-23;COVER LINE;Line 2;FORD;15:38;15:49;11;Maintenance;OMT;ST3;Pogopins;cambio de pogo quebrado;Si;No
+2026-12-23;COVER LINE;Line 2;FORD;17:20;17:25;5;Maintenance;TBD;General;TBD;se retira coladas de trimer;Si;No
+2026-12-23;COVER LINE;Line 2;FORD;17:30;17:33;3;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-12-23;COVER LINE;Line 2;FORD;18:41;18:47;6;Equipment Fault;Robots;R72;Motion supervision/Joint collision;colission con pallet;No;No
+2026-12-23;COVER LINE;Line 2;FORD;19:20;19:23;3;Equipment Fault;OMT;ST3;Actuator sensor;;No;No
+2026-12-23;COVER LINE;Line 2;FORD;19:38;19:44;6;Equipment Fault;ST30 Molding;General;TBD;terminal mal colocada por flash;No;No
+2026-12-23;COVER LINE;Line 2;FORD;20:30;20:33;3;Equipment Fault;OMT;ST7;Laser barrier;;No;No
+2026-12-24;COVER LINE;Line 2;FORD;09:30;09:35;5;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-12-24;COVER LINE;Line 2;FORD;09:40;09:45;5;Equipment Fault;OMT;ST4;Profilometer;;No;No
+2026-12-24;COVER LINE;Line 2;FORD;10:00;10:03;3;Equipment Fault;OMT;ST7;Vacuum;;No;No
+2026-12-24;COVER LINE;Line 2;FORD;10:54;11:03;9;Equipment Fault;OMT;ST4;Axis;axis fuera de posicion d home;No;No
+2026-12-24;COVER LINE;Line 2;FORD;14:15;14:20;5;Equipment Fault;Robots;R70;Motion supervision/Joint collision;colission con palet;No;No
+2026-12-25;COVER LINE;Line 2;FORD;08:33;08:35;2;Equipment Fault;Lip seal;ST74;Bowl/lineal feeder;vacuum;No;No
+2026-12-25;COVER LINE;Line 2;FORD;08:50;09:00;10;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;FORK ATORADO;No;No
+2026-12-25;COVER LINE;Line 2;FORD;09:15;09:17;2;Equipment Fault;OMT;ST7;Vacuum;;No;No
+2026-12-25;COVER LINE;Line 2;FORD;09:40;09:43;3;Equipment Fault;ST30 Molding;General;TBD;terminal doblada;No;No
+2026-12-25;COVER LINE;Line 2;FORD;10:28;10:30;2;Quality;OMT;ST4;Profilometer;;Si;No
+2026-12-25;COVER LINE;Line 2;FORD;11:50;11:52;2;Maintenance;OMT;ST3;Pogopins;limpieza de pogos;Si;No
+2026-12-25;COVER LINE;Line 2;FORD;13:03;13:22;19;Equipment Fault;Robots;R70;Incorrect pick/place;no agarra pieza st76;No;No
+2026-12-25;COVER LINE;Line 2;FORD;18:21;18:24;3;Equipment Fault;OMT;ST3;Pogopins;;No;No
+2026-12-25;COVER LINE;Line 2;FORD;18:38;18:40;2;Maintenance;Lip seal;ST74;Actuator;limpieza de filtro;Si;No
+2026-12-25;COVER LINE;Line 2;FORD;19:15;19:21;6;Equipment Fault;Output Conveyor;ST150;Actuator NOK;blister atorado;No;No
+2026-12-25;COVER LINE;Line 2;FORD;23:08;23:12;4;Equipment Fault;ST30 Molding;General;TBD;terminal mal colocada;No;No
+2026-02-26;COVER LINE;Line 2;FORD;13:40;13:42;2;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;terminal atorada en bowl;No;No
+2026-02-26;COVER LINE;Line 2;FORD;18:05;18:07;2;Equipment Fault;Lip seal;ST74;Actuator;vacuum;No;No
+2026-02-26;COVER LINE;Line 2;FORD;18:07;18:10;3;Quality;TBD;General;TBD;retirar scrap omt;Si;No
+2026-02-26;COVER LINE;Line 2;FORD;18:40;18:45;5;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-02-26;COVER LINE;Line 2;FORD;19:20;19:22;2;Equipment Fault;Lip seal;ST74;Actuator;vacuum;No;No
+2026-02-26;COVER LINE;Line 2;FORD;19:40;19:42;2;Equipment Fault;ST30 Molding;General;TBD;terminal mal colocada;No;No
+2026-02-28;REA;Actuadores;3140CA029;15:00;16:23;83;Quality;REA;General;Change Over;liberacion ford 29;Si;No
+2026-02-28;REA;Actuadores;3140CA029;16:40;17:03;23;Equipment Fault;EOL;General;Pneumatic System;error en estacion 1 por ptc se reinicia app se reinicia gripper de st 2 se ajustA cable de comunicacion de jig 5;No;No
+2026-02-28;REA;Actuadores;3140CA029;17:27;17:39;12;Equipment Fault;USW;St11;Weld NOK;se revisa jig por alto scrap, se ajusta collapso de 92 a 90;No;No
+2026-02-28;REA;Actuadores;3140CA029;17:39;17:55;16;Equipment Fault;CAW;LSW;Vision system;alto scrap, se revisa sismtema de vision y se ajusta mesa por scrap;No;No
+2026-02-28;REA;Actuadores;3140CA029;18:15;18:22;7;Equipment Fault;CAW;LSW;Vision system;paro por scrap, se ajusta limite superior 850 a 830 e inferior de de 750 a 730 eje x por scrap;No;No
+2026-02-28;REA;Actuadores;3140CA029;19:08;19:16;8;Equipment Fault;CAW;Jig/Index;Index not in home;se ajusta posicion de mesa por scrap en sistema de vision;No;No
+2026-02-28;REA;Actuadores;3140CA029;19:38;19:46;8;Equipment Fault;USW;St11;Weld NOK;se cambia esponga y se pone cinta en zona quemada en actuador;No;No
+2026-03-01;REA;Actuadores;3140CA029;07:00;07:19;19;Production;REA;General;SOP;entrega de actuadores para liberacion;Si;No
+2026-03-01;REA;Actuadores;3140CA029;07:19;08:21;62;Quality;REA;General;Test approval;liberacion;Si;No
+2026-03-01;REA;Actuadores;WG REA MITSUBISHI 3140CA045;09:20;09:22;2;Equipment Fault;Main conveyor;Main conveyor;Inductive sensor;pallet adelantado;No;No
+2026-03-01;REA;Actuadores;WG REA MITSUBISHI 3140CA045;09:10;09:13;3;Equipment Fault;USW;St11;Branson;ajuste por alto scrap;No;No
+2026-03-01;REA;Actuadores;WG REA MITSUBISHI 3140CA045;13:20;13:50;30;Production;REA;General;No staff;paro de linea para comer;Si;No
+2026-03-01;REA;Actuadores;WG REA MITSUBISHI 3140CA045;14:40;14:45;5;Equipment Fault;CHW;St4;Pressor;ajuste por alto scrap;No;No
+2026-03-01;REA;Actuadores;WG REA MITSUBISHI 3140CA045;14:50;14:52;2;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-03-01;REA;Actuadores;WG REA MITSUBISHI 3140CA045;15:02;15:04;2;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa por desgaste;No;No
+2026-03-01;REA;Actuadores;WG REA MITSUBISHI 3140CA045;15:10;15:11;1;Production;Conveyors;C65;DM Reader;blister equivocado;Si;No
+2026-03-02;REA;Actuadores;3140CA029;07:00;08:13;73;Quality;REA;General;Test approval;en espera de liberacion rapida de lunes;Si;No
+2026-03-02;REA;Actuadores;3140CA029;08:16;09:18;62;Equipment Fault;CHW;St5;Vision system;Ajuste en sistema de vision por falsos scrap, se crea una copia stellantis y se crea una nueva FORD 2026, ajusto binarizado de nuevo set up en herramientas de shading;No;Si
+2026-03-02;REA;Actuadores;3140CA029;11:18;11:34;16;Equipment Fault;CHW;St4;Argon dispensatio;se revisa manometro de argon por fuga de gas, se coloca teflon;No;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;09:50;10:48;58;Equipment Fault;Robots;R70;Incorrect pick/place;Falla continua de ensamble de gear, colision/motion supervision, no permite correr, se actualizo posicion para evitar colision , despues de haber hecho back up;No;Si
+2026-03-02;REA;Actuadores;WG REA FORD CA029;12:07;12:20;13;Equipment Fault;Robots;R70;Incorrect pick/place;paros continuos mientras se daba soporte en moldeo, Jorge ocupado por actuadores;No;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;12:20;12:32;12;Equipment Fault;CAW;LSW;Laser module;scraps continuos, ajustar posicion de herramienta 2 y reducir el 2 filtro de shading a 16;No;Si
+2026-03-02;REA;Actuadores;WG REA FORD CA029;15:00;15:15;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;19:50;19:54;4;Equipment Fault;CHW;St4;Pressor;limpieza de pressor;No;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;18:40;18:42;2;Equipment Fault;CAW;LSW;Pressor;limpieza de pressor;No;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;21:00;21:05;5;Quality;CAW;General;Scrapbox full;scrap box full;Si;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;22:30;22:40;10;Maintenance;REA;General;Checklist;Checklist diario/ pase de master.;Si;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;23:08;23:09;1;Equipment Fault;Robots;R75;Gripper/tool adjustments;no abre gripper.;No;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;23:17;23:18;1;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en locking.;No;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;23:28;23:29;1;Equipment Fault;750;750;Bowl/Lineal feeder;bearing atorado.;No;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;23:56;23:59;4;Equipment Fault;Main conveyor;Main conveyor;Singulator NOK;Se adelantan, pierden secuencia, se borran en pallets, se regresan ogivas, se actrualiza buffer [Paro cruza medianoche - Parte 1];No;No
+2026-03-03;REA;Actuadores;WG REA FORD CA029;00:00;00:02;2;Equipment Fault;Main conveyor;Main conveyor;Singulator NOK;Se adelantan, pierden secuencia, se borran en pallets, se regresan ogivas, se actrualiza buffer [Paro cruza medianoche - Parte 2];No;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;23:50;23:56;6;Equipment Fault;USW;St14;Lower Jig;Ajuste por scrap, cilindro conector flojo;No;No
+2026-03-03;REA;Actuadores;WG REA FORD CA029;00:01;00:10;9;Equipment Fault;CHW;St5;Vision system;MAscara de Image region generator esta desfasada, causando falso scrap;No;No
+2026-03-03;REA;Actuadores;WG REA FORD CA029;00:10;00:18;8;Quality;REA;General;Test approval;Espernadon calidad, masters CHW tras ajuste;Si;No
+2026-03-02;REA;Actuadores;WG REA FORD CA029;17:06;17:12;6;Maintenance;REA;General;Checklist;checklist por 1000 pzs.;Si;No
+2026-03-03;REA;Actuadores;WG REA FORD CA029;07:35;07:45;10;Equipment Fault;REA;General;Checklist;checklist;No;No
+2026-03-03;REA;Actuadores;3140CA029;07:05;07:35;30;Equipment Fault;CHW;St5;Vision system;ajuste en sistema de vision;No;Si
+2026-03-03;REA;Actuadores;3140CA029;08:01;08:11;10;Equipment Fault;CAW;LSW;Vision system;se ajusta primer shading corretion por scrap consecutivo;No;Si
+2026-03-03;REA;Actuadores;WG REA FORD CA029;09:35;09:52;17;Equipment Fault;CAW;LSW;Vision system;se ajusta sistema de vision por scrap, se mueve shading 1 y shading 2;No;No
+2026-03-03;REA;Actuadores;WG REA FORD CA029;09:55;09:58;3;Equipment Fault;Robots;R70;Vacuum system;se cambian ventosas por caidas de gear;No;No
+2026-03-03;REA;Actuadores;WG REA FORD CA029;10:01;10:12;11;Equipment Fault;Robots;R70;Incorrect pick/place;fallas constante en al poner gear en body, causando alarma de colision;No;No
+2026-03-03;REA;Actuadores;WG REA FORD CA029;10:15;10:21;6;Equipment Fault;MSA;General;Software/PC;no continua secuencia pese a estar ok la pieza, se quita manual y se restablece el ciclo;No;No
+2026-03-03;REA;Actuadores;WG REA FORD CA029;10:48;10:54;6;Equipment Fault;CAW;LSW;Vision system;revision de sistema de vision por scrap consecutivo;No;No
+2026-03-03;REA;Actuadores;WG REA FORD CA029;10:54;11:04;10;Equipment Fault;REA;General;Checklist;checklist 500 piezas;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;22:30;22:45;15;Maintenance;REA;General;Checklist;Checklist diario inicio de turno / pase de master.;Si;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;23:10;23:11;1;Equipment Fault;Robots;R70;Motion supervision/Joint collision;tarda en poner gear.;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;23:23;23:25;2;Equipment Fault;EOL;St1;Presence sensor;falla por condición de body, se ajusta vision.;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;23:42;23:44;2;Equipment Fault;USW;St14;Lower Jig;rebaba en jig.;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;23:08;23:59;52;Equipment Fault;Robots;R75;Motion supervision/Joint collision;body con gear mal ensamblado, el cover no bajaba por completo, se ensamblo manual. [Paro cruza medianoche - Parte 1];No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA029;00:00;00:00;0;Equipment Fault;Robots;R75;Motion supervision/Joint collision;body con gear mal ensamblado, el cover no bajaba por completo, se ensamblo manual. [Paro cruza medianoche - Parte 2];No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;00:09;00:10;1;Quality;Robots;R70;Motion supervision/Joint collision;tarda en poner gear.;Si;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;00:24;00:25;1;Equipment Fault;Robots;R70;Gripper/tool adjustments;cambio de ventosa dañada.;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;00:48;00:49;1;Equipment Fault;Main conveyor;Main conveyor;Lock NOK;pallet atorado en locking.;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;00:54;00:55;1;Equipment Fault;731;731;Presence sensor;pin chueco.;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;00:59;01:02;3;Equipment Fault;MSA;MSA;Sensor de presencia;falla de señal.;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;00:06;00:07;1;Equipment Fault;Robots;R70;Motion supervision/Joint collision;tarda en poner gear.;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;07:10;07:35;25;Maintenance;REA;General;Checklist;Masters CHW + Checklist + SOP (sin tecnico);Si;No
+2026-02-26;COVER LINE;Line 2;FORD;21:30;21:33;3;Equipment Fault;OMT;ST7;Laser barrier;;No;No
+2026-02-26;COVER LINE;Line 2;FORD;21:50;21:54;4;Equipment Fault;Lip seal;ST74;Actuator;vacuum;No;No
+2026-02-26;COVER LINE;Line 2;FORD;22:05;22:12;7;Equipment Fault;OMT;ST3;Pogopins;;No;No
+2026-02-26;COVER LINE;Line 2;FORD;23:03;23:07;4;Equipment Fault;ST30 Molding;General;TBD;;No;No
+2026-02-26;COVER LINE;Line 2;FORD;23:52;23:54;2;Equipment Fault;Terminal caps;ST94;Bowl/lineal feeder;fork atorado;No;No
+2026-02-27;COVER LINE;Line 2;FORD;17:41;17:46;5;Equipment Fault;OMT;ST3;Pogopins;;No;No
+2026-02-27;COVER LINE;Line 2;FORD;18:40;18:45;5;Equipment Fault;Robots;R20;Motion supervision/Joint collision;conveyo;No;No
+2026-02-27;COVER LINE;Line 2;FORD;18:50;18:55;5;Maintenance;Lip seal;ST74;Actuator;lipieza de filtro;Si;No
+2026-02-27;COVER LINE;Line 2;FORD;23:03;23:09;6;Equipment Fault;ST30 Molding;General;TBD;terminal mas insertada;No;No
+2026-03-02;COVER LINE;Line 2;FORD;08:08;08:10;2;Equipment Fault;ST30 Molding;General;TBD;terminal mal insertada;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;15:00;15:10;10;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;15:53;15:55;2;Equipment Fault;EOL;St2;Gripper NOK;alarma de gripper;No;No
+2026-03-02;COVER LINE;Line 2;FORD;08:30;08:37;7;Equipment Fault;Terminal caps;ST94;Actuator;fork atorado;No;No
+2026-03-02;COVER LINE;Line 2;FORD;11:39;12:20;41;Quality;TBD;General;TBD;ajuste de parametros en omt st4;Si;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;16:58;17:03;5;Equipment Fault;CCC;St6;Thermocamara;app de  termocamara trabada;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;17:38;17:39;1;Maintenance;CHW;Consumables;Argon;cambio de gas argon;Si;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;17:39;17:44;5;Quality;CAW;General;Scrapbox full;scrap crank full;Si;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;21:35;21:37;2;Quality;CAW;General;Scrapbox full;scrap box full cranks;Si;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;21:35;21:41;6;Equipment Fault;CAW;LSW;Pressor;limpieza de pressor;No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA029;07:00;08:38;98;Equipment Fault;Main conveyor;Main conveyor;Motor;Se cambia motor dañado al conveyor de menor carga;No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA029;09:51;09:57;6;Equipment Fault;EOL;General;Safety system;alarma por safety, se revisa cortina y cinta reflejante, tambien se revisa pieza tenga grabado láser ok;No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA029;09:34;09:38;4;Production;REA;General;NOK material;body con carton dentro causa collision de robot con motor;Si;No
+2026-03-05;REA;Actuadores;WG REA FORD CA029;10:02;10:07;5;Equipment Fault;EOL;General;Software/PC;se reinicia app de eol por bug en en st1 de ptc error;No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA029;11:28;11:38;10;Quality;CHW;St4;Argon dispensatio;fallo dispensacion, revision de sistema de valvula;Si;No
+2026-03-05;REA;Actuadores;WG REA FORD CA029;14:06;14:16;10;Maintenance;REA;General;Checklist;Paro para realizar checklist;Si;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;11:35;12:06;31;Equipment Fault;CAW;LSW;Pressor;gap nok, ajuste solicitado por calidad;No;No
+2026-03-04;REA;Actuadores;WG REA FORD CA029;12:06;12:58;52;Quality;CAW;LSW;Pressor;liberacion por gap nok, ajuste solicitado por calidad;Si;No
+2026-03-05;REA;Actuadores;WG REA FORD CA029;15:00;15:10;10;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-03-05;REA;Actuadores;WG REA FORD CA029;15:27;15:31;4;Quality;EOL;General;Scrapbox full;scrap box full cranks;Si;No
+2026-03-05;REA;Actuadores;WG REA FORD CA030;22:30;22:45;15;Maintenance;REA;General;Checklist;Checklist diario / pase de master.;Si;No
+2026-03-05;REA;Actuadores;WG REA FORD CA030;23:09;23:11;2;Equipment Fault;USW;General;PLC;falla no manda señal, se resetea estación USW.;No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA030;23:26;23:27;1;Equipment Fault;Conveyors;C55;Presence sensor;blister atorado.;No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA030;23:42;23:43;1;Equipment Fault;EOL;St2;CRIO NOK;se alarma por falsa falla.;No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA030;00:05;00:09;4;Equipment Fault;CHW;Consumables;Chip reel;cambio de chip.;No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA030;00:40;00:44;4;Maintenance;CAW;Consumables;Nitrogen;cambio de tambo de nitrógeno.;Si;No
+2026-03-05;REA;Actuadores;WG REA FORD CA030;00:53;00:55;2;Equipment Fault;EOL;St2;Gripper NOK;ajuste de gripper de st2.;No;No
+2026-03-05;REA;Actuadores;WG REA FORD CA030;05:18;05:19;1;Equipment Fault;731;General;NOK material;reset st731.;No;No
+2026-03-06;REA;Actuadores;WG REA FORD CA030 REWORK NO BRANSON;17:00;17:20;20;Equipment Fault;Robots;R80;Pneumatic System;cambio de cilindro gripper 2;No;No
+2026-03-06;REA;Actuadores;WG REA FORD CA030 REWORK NO BRANSON;18:20;18:22;2;Equipment Fault;Robots;R75;Electrical system;cable de sensor desconectado;No;No
+2026-03-03;REA;Actuadores;3140CA029;15:00;15:15;15;Maintenance;REA;General;Checklist;checklist inicio de turno;Si;No
+2026-03-03;REA;Actuadores;3140CA029;16:50;16:54;4;Maintenance;CCC;Consumables;Resin;cambio de resina;Si;No
+2026-03-03;REA;Actuadores;3140CA029;17:30;17:45;15;Equipment Fault;CHW;St5;Vision system;ajuste SV;No;No
+2026-03-03;REA;Actuadores;3140CA029;17:35;17:39;4;Quality;CAW;General;Scrapbox full;scrap box full;Si;No
+2026-03-03;REA;Actuadores;3140CA029;17:48;17:51;3;Equipment Fault;Robots;R70;Pneumatic System;medidor de vacio flojo;No;No
+2026-03-03;REA;Actuadores;3140CA029;18:30;18:35;5;Equipment Fault;EOL;St2;CRIO NOK;reinicio de aplicacion;No;No
+2026-03-03;REA;Actuadores;3140CA029;19:25;19:28;3;Quality;CHW;General;Scrapbox full;scrap box full;Si;No
+2026-03-03;REA;Actuadores;3140CA029;20:18;20:21;3;Quality;EOL;General;Scrapbox full;scrap box full;Si;No
+2026-03-03;REA;Actuadores;3140CA029;22:07;22:12;5;Production;CAW;CPA;Feeder;feeder vacio cranks;Si;No
+2026-03-06;REA;Actuadores;WG REA FORD CA030 REWORK NO BRANSON;19:35;19:36;1;Equipment Fault;USW;St14;Ateq;cambio de goma;No;No
+2026-03-06;REA;Actuadores;WG REA FORD CA030 REWORK NO BRANSON;19:38;19:39;1;Equipment Fault;731;731;Bowl/Lineal feeder;pin atorado en feeder;No;No
+2026-03-06;REA;Actuadores;WG REA FORD CA030 REWORK NO BRANSON;22:15;22:22;7;Equipment Fault;CHW;St4;Pressor;cambio de puntas de pressor;No;No
+2026-03-06;REA;Actuadores;WG REA FORD CA030 REWORK NO BRANSON;22:10;22:15;5;Equipment Fault;CAW;LSW;Pressor;limpieza de pressor;No;No
+2026-03-07;REA;Actuadores;WG REA FORD CA029 REWORK EOL;07:00;11:02;242;Quality;REA;General;Change Over;Cambio de numero de parte.  se pasan master en MSA, EOL, CAW, USW se hacen ajustes en caw por falla en sistema de vision. por mal set up. en usw por scrap;Si;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;07:00;07:23;23;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;09:23;09:30;7;Maintenance;CHW;Consumables;Chip reel;cambio de rollo de chip;Si;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;10:02;10:05;3;Equipment Fault;Conveyors;General;Blister NOK/Wrong PN;blister atorado;No;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;12:27;12:38;11;Equipment Fault;CHW;St4;Pressor;se hace ajuste de pressor y se cambia gomas por scrap consecutivo;No;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;11:17;11:25;8;Equipment Fault;CAW;Jig/Index;Ingun actuator;ingun movia el actuador causando variacino al insertar crank, se retrae a una posicion adecuada;No;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;10:10;10:20;10;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;13:41;13:46;5;Equipment Fault;Conveyors;General;Electrical system;tablilla de sensores alarmada, se reinicia para restablecer señales;No;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;14:20;14:25;5;Quality;EOL;General;Scrapbox full;scrap box full;Si;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;14:25;14:30;5;Equipment Fault;EOL;St5;Vision system;ajuste en sistema de vision por scrap ocasional;No;No
+2026-03-08;REA;Actuadores;3140CS022;16:07;16:12;5;Equipment Fault;CAW;General;Software/PC;no continuo ciclo;No;No
+2026-03-08;REA;Actuadores;3140CS022;13:10;13:40;30;Production;REA;General;No staff;paro de linea para salir a comer;Si;No
+2026-03-08;REA;Actuadores;3140CS022;10:05;10:11;6;Equipment Fault;CAW;CPA;Vision system;ajuste en sv;No;No
+2026-03-08;REA;Actuadores;3140CS022;13:50;13:56;6;Equipment Fault;CAW;General;Software/PC;no continuo ciclo;No;No
+2026-03-08;REA;Actuadores;3140CS022;08:45;08:46;1;Equipment Fault;CAW;CPA;Feeder;crank invertido;No;No
+2026-03-08;REA;Actuadores;3140CS022;07:15;08:05;50;Quality;REA;General;Test approval;liberacion;Si;No
+2026-03-08;REA;Actuadores;3140CS022;07:00;07:15;15;Production;REA;General;SOP;entrega de muestras;Si;No
+2026-03-07;REA;Actuadores;3140CS022;21:21;21:26;5;Equipment Fault;CAW;General;Software/PC;no continuo ciclo;No;No
+2026-03-07;REA;Actuadores;3140CS022;20:20;20:25;5;Equipment Fault;MAT;St4;CRIO App;reinicio de crio;No;No
+2026-03-07;REA;Actuadores;3140CS022;20:10;20:20;10;Maintenance;REA;General;Checklist;checklist 500 piezas ok;Si;No
+2026-03-07;REA;Actuadores;3140CS022;19:30;20:00;30;Production;REA;General;No staff;paro de linea para salir a comer;Si;No
+2026-03-07;REA;Actuadores;3140CS022;18:37;18:40;3;Maintenance;CCC;Consumables;Resin;cambio de resina;Si;No
+2026-03-07;REA;Actuadores;3140CS022;18:25;18:30;5;Production;CHW;St1;DM reader;cover numero de parte equivocado;Si;No
+2026-03-07;REA;Actuadores;3140CS022;17:45;17:48;3;Maintenance;CHW;Consumables;Chip reel;cambio de chip;Si;No
+2026-03-07;REA;Actuadores;3140CS022;17:20;17:25;5;Equipment Fault;EOL;St4;CRIO NOK;reinicio de crio por falla y aplicacion;No;No
+2026-03-07;REA;Actuadores;3140CS022;17:00;17:05;5;Equipment Fault;EOL;St4;CRIO NOK;reinicio de crio;No;No
+2026-03-07;REA;Actuadores;3140CS022;16:40;16:41;1;Equipment Fault;EOL;Jigs;Ingun actuator;ingun atorado por cable de sensor por mal ruteo;No;No
+2026-03-07;REA;Actuadores;3140CS022;16:35;16:37;2;Equipment Fault;USW;St11;Branson;ajuste por scrap;No;No
+2026-03-07;REA;Actuadores;3140CS022;15:00;15:30;30;Equipment Fault;USW;St14;Lower Jig;ajustes por fuga de aire en jig;No;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;15:00;15:10;10;Maintenance;REA;General;Checklist;check list inicio de turno;Si;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;16:40;17:32;52;Equipment Fault;CAW;LSW;Pressor;opresor de pressor flojo, paro por mal soldadura y se verifico con calidad;No;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;18:32;18:48;16;Equipment Fault;CHW;St4;Pressor;ajuste de pressor por soldadura nok;No;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;23:00;23:59;60;Quality;REA;General;NOK material;Condicion MS se ve mal colocado respecto a cover seal cap. Calidad no puede hacer ninguna prueba, medicion, criterio de si pasa o no, u otra retroalimentacion. Se revisa MS en linea con un cover con bearing y se encuentra la condicion, se compara con MS de otro lote y no aparece. Se cambia material, se corre de manera controlada bajo inspeccion mientras llega turno con personal capacitado. [Paro cruza medianoche - Parte 1];Si;Si
+2026-03-10;REA;Actuadores;WG REA GM CS022;00:00;00:10;10;Quality;REA;General;NOK material;Condicion MS se ve mal colocado respecto a cover seal cap. Calidad no puede hacer ninguna prueba, medicion, criterio de si pasa o no, u otra retroalimentacion. Se revisa MS en linea con un cover con bearing y se encuentra la condicion, se compara con MS de otro lote y no aparece. Se cambia material, se corre de manera controlada bajo inspeccion mientras llega turno con personal capacitado. [Paro cruza medianoche - Parte 2];Si;Si
+2026-03-09;REA;Actuadores;WG REA GM CS022;00:10;00:50;40;Equipment Fault;CHW;St4;Pressor;Soldadura inestable, varios ajustres de pressor incluyendo altura (pressor arrastra terminal, pudiendo dañarla) y posicion horizontal. Se disminuye el delta de pin 1 de 720 a 400 al ver que sobrecalienta la terminal (Aumento que fue reportado como necesario en turno anterior. Se hacen prueba y error, ya que si es necesario trabajarlo mas alto, se busca menor punto donde trabaje bien). Errores mas marcados en jig 4 y 5 (mas no unicos a estos jigs), se revisan y se limpian residuos de cinta.;No;Si
+2026-03-09;REA;Actuadores;WG REA GM CS022;02:35;02:40;5;Maintenance;CHW;Consumables;Argon;cambio de Argon.;Si;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;02:50;02:55;5;Maintenance;CHW;Consumables;Chip reel;cambio de chip.;Si;No
+2026-03-09;REA;Actuadores;WG REA GM CS022;03:40;03:41;1;Equipment Fault;Robots;R70;Vacuum system;vacuum off.;No;No
+2026-03-10;REA;Actuadores;WG REA GM CS022;07:05;07:10;5;Quality;REA;General;Scheduled production stop;paro para pasar master en sistema de vision chw;Si;No
+2026-03-10;REA;Actuadores;WG REA GM CS022;07:10;07:25;15;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-03-10;REA;Actuadores;WG REA GM CS023;15:00;16:55;115;Maintenance;Main conveyor;Main conveyor;Motor;cambio de motor por fuga de aceite;Si;No
+2026-03-10;REA;Actuadores;WG REA GM CS023;17:30;17:40;10;Equipment Fault;EOL;St3;Axial play NOK;ajuste por scrap en st 3;No;No
+2026-03-10;REA;Actuadores;WG REA GM CS023;17:55;18:04;9;Equipment Fault;CAW;LSW;Vision system;ajuste de SV;No;No
+2026-03-10;REA;Actuadores;3140CS022;07:55;11:25;210;Equipment Fault;Main conveyor;Main conveyor;Motor;Fuga de aceite, motor con problemas previos, sin spare part, pendiente de llegada motor reparado Juvera, falta de empaques, balero se encontraba dañado/mala calidad;No;No
+2026-03-11;REA;Actuadores;3140CA029;15:00;17:45;165;Quality;REA;General;Test approval;liberacion ok;Si;No
+2026-03-11;REA;Actuadores;3140CA029;18:29;18:50;21;Equipment Fault;USW;St11;Weld NOK;alto scrap se ajusto collapse;No;No
+2026-03-11;REA;Actuadores;WG REA GM CS023 REWORK EOL;19:01;19:11;10;Equipment Fault;CAW;LSW;Vision system;ajuste en sv por crank nok;No;No
+2026-03-11;REA;Actuadores;WG REA GM CS023 REWORK EOL;22:35;22:53;18;Maintenance;REA;General;Checklist;checklist diario / pase de master.;Si;No
+2026-03-11;REA;Actuadores;WG REA GM CS023 REWORK EOL;23:20;23:24;4;Equipment Fault;USW;St11;Branson;pieza atorada en sonotrodo por buchin expuesto.;No;No
+2026-03-11;REA;Actuadores;WG REA GM CS023 REWORK EOL;23:31;23:32;1;Production;Conveyors;C31;Presence sensor;blister vacío atorado en riel.;Si;No
+2026-03-12;REA;Actuadores;WG REA FORD CA029;07:05;07:10;5;Quality;REA;General;Scheduled production stop;paro para pasar master en chw sistema de vision;Si;No
+2026-03-12;REA;Actuadores;WG REA FORD CA029;07:10;07:25;15;Maintenance;REA;General;Checklist;checklist;Si;No
+2026-03-11;REA;Actuadores;WG REA FORD CA029;07:00;13:35;395;Material/Logistics;REA;General;NOK material;Se hace cambia de numero de parte sin embargo no hay chip para scar muestras. se corre con RW de cover soldado para sacar piezas de liberacion.;Si;No
+2026-03-11;REA;Actuadores;WG REA FORD CA029;13:35;15:00;85;Quality;REA;General;Change Over;En espera de liberacion por parte de calidad y para pasar master en REA;Si;No
+2026-03-12;REA;Actuadores;WG REA FORD CA029;08:14;08:17;3;Equipment Fault;CAW;General;Software/PC;no continua ciclo, sin detalles, restaurar;No;No
+2026-03-11;REA;Actuadores;WG REA FORD CA029;08:39;08:42;3;Equipment Fault;Robots;R70;Vacuum system;cambio de ventosa, por paro de vacuum off consecutivo.  No hay stock de ventosas;No;No

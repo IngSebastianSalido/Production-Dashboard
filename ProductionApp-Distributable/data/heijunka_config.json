@@ -1,0 +1,22 @@
+{
+  "batches": [
+    {
+      "id": 1769176706856,
+      "pn": "f29",
+      "quantity": 1500,
+      "hourRate": 100,
+      "status": "pending"
+    },
+    {
+      "id": 1769855310712,
+      "pn": "gm22",
+      "quantity": 3000,
+      "hourRate": 180,
+      "status": "pending"
+    }
+  ],
+  "maintenanceBlocks": [],
+  "setupBlocks": [],
+  "weekStart": "2026-01-26",
+  "lastUpdated": "2026-01-31T10:28:49.400Z"
+}

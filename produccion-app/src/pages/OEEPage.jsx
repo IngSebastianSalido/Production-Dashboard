@@ -9,7 +9,6 @@ const OEEPage = () => {
   const [error, setError] = useState(null);
   const [defaultRate, setDefaultRate] = useState(180); // RATE por defecto
   const [showNotes, setShowNotes] = useState(false);
-  const [oeeAverages, setOeeAverages] = useState(null);
   
   // Filters
   const [filters, setFilters] = useState({
@@ -18,6 +17,8 @@ const OEEPage = () => {
     shift: '',
     changeOver: '',
     rework: '',
+    piezasTotalesMenor100: '',
+    domingo: '',
     dateFrom: '',
     dateTo: ''
   });
@@ -63,7 +64,6 @@ const OEEPage = () => {
       
       // response.data.cuts contiene los cortes con métricas OEE ya calculadas
       setData(response.data.cuts || []);
-      setOeeAverages(response.data.summary || null);
     } catch (err) {
       setError('Error de conexión con el servidor');
       console.error('Error fetching OEE cuts:', err);
@@ -128,6 +128,22 @@ const OEEPage = () => {
         if (filters.rework === 'si' && !isRework) return false;
         if (filters.rework === 'no' && isRework) return false;
       }
+
+      // Filtro por Piezas Totales < 100
+      if (filters.piezasTotalesMenor100) {
+        const piezasTotales = Number(cut.piezasTotales) || 0;
+        const esMenorA100 = piezasTotales < 100;
+        if (filters.piezasTotalesMenor100 === 'si' && !esMenorA100) return false;
+        if (filters.piezasTotalesMenor100 === 'no' && esMenorA100) return false;
+      }
+
+      // Filtro por Domingo
+      if (filters.domingo) {
+        const startDate = new Date(cut.startISO);
+        const esDomingo = !isNaN(startDate) && startDate.getDay() === 0;
+        if (filters.domingo === 'si' && !esDomingo) return false;
+        if (filters.domingo === 'no' && esDomingo) return false;
+      }
       
       return true;
     });
@@ -135,7 +151,7 @@ const OEEPage = () => {
 
   const filteredData = getFilteredData();
 
-  // Calculate totals and averages usando los promedios del backend
+  // Calculate totals and averages usando solo los cortes filtrados
   const calculateTotals = () => {
     if (filteredData.length === 0) return null;
     
@@ -161,15 +177,24 @@ const OEEPage = () => {
       downtimeNoProgramadoMinutes: 0
     });
 
-    // Usar los promedios calculados por el backend si están disponibles
-    const disponibilidadAvg = oeeAverages?.disponibilidadAvg !== null 
-      ? Number((oeeAverages.disponibilidadAvg * 100).toFixed(2))
+    const disponibilidadValores = filteredData
+      .map(cut => (typeof cut.disponibilidad === 'number' ? cut.disponibilidad : null))
+      .filter(value => value !== null);
+    const calidadValores = filteredData
+      .map(cut => (typeof cut.calidad === 'number' ? cut.calidad : null))
+      .filter(value => value !== null);
+    const eficienciaValores = filteredData
+      .map(cut => (typeof cut.eficiencia === 'number' ? cut.eficiencia : null))
+      .filter(value => value !== null);
+
+    const disponibilidadAvg = disponibilidadValores.length > 0
+      ? Number(((disponibilidadValores.reduce((acc, value) => acc + value, 0) / disponibilidadValores.length) * 100).toFixed(2))
       : 0;
-    const calidadAvg = oeeAverages?.calidadAvg !== null
-      ? Number((oeeAverages.calidadAvg * 100).toFixed(2))
+    const calidadAvg = calidadValores.length > 0
+      ? Number(((calidadValores.reduce((acc, value) => acc + value, 0) / calidadValores.length) * 100).toFixed(2))
       : 0;
-    const eficienciaAvg = oeeAverages?.eficienciaAvg !== null
-      ? Number((oeeAverages.eficienciaAvg * 100).toFixed(2))
+    const eficienciaAvg = eficienciaValores.length > 0
+      ? Number(((eficienciaValores.reduce((acc, value) => acc + value, 0) / eficienciaValores.length) * 100).toFixed(2))
       : 0;
     
     return {
@@ -179,6 +204,7 @@ const OEEPage = () => {
       oeeAvg: Number(((disponibilidadAvg * calidadAvg * eficienciaAvg) / 10000).toFixed(2)),
       eolOk: totals.eolOk,
       eolNok: totals.eolNok,
+      downtimeMinutes: totals.downtimeMinutes,
       shiftTimeMinutes: totals.shiftTimeMinutes,
       tiempoPlaneadoMinutes: totals.tiempoPlaneadoMinutes,
       downtimeProgramadoMinutes: totals.downtimeProgramadoMinutes,
@@ -406,6 +432,30 @@ const OEEPage = () => {
             </select>
           </div>
           <div style={styles.filterItem}>
+            <label style={styles.label}>Piezas Totales &lt; 100:</label>
+            <select
+              value={filters.piezasTotalesMenor100}
+              onChange={(e) => setFilters({ ...filters, piezasTotalesMenor100: e.target.value })}
+              style={styles.input}
+            >
+              <option value="">Todos</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div style={styles.filterItem}>
+            <label style={styles.label}>Domingo:</label>
+            <select
+              value={filters.domingo}
+              onChange={(e) => setFilters({ ...filters, domingo: e.target.value })}
+              style={styles.input}
+            >
+              <option value="">Todos</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div style={styles.filterItem}>
             <label style={styles.label}>Desde:</label>
             <input
               type="date"
@@ -440,6 +490,8 @@ const OEEPage = () => {
                   shift: '', 
                   changeOver: '', 
                   rework: '', 
+                  piezasTotalesMenor100: '',
+                  domingo: '',
                   dateFrom: formatDate(new Date(today.getFullYear(), today.getMonth(), 1)), 
                   dateTo: formatDate(new Date())
                 });
