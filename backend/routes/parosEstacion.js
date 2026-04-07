@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const ExcelJS = require('exceljs');
+const { resolveParoProgramado } = require('../lib/paroProgramado');
 
 function parseDateOnly(dateStr) {
   if (!dateStr) return null;
@@ -20,9 +21,7 @@ function formatDateDDMMYYYY(dateObj) {
 function normalizeParoProgramado(categoriaData, descripcionModoFalla, paroProgramadoData) {
   let paroProgramadoFinal = paroProgramadoData;
   if (!paroProgramadoFinal || paroProgramadoFinal.trim() === '') {
-    const descripcion = (descripcionModoFalla || '').toLowerCase();
-    const esDescripcionProgramada = descripcion.includes('scheduled stop') || descripcion.includes('paro programado');
-    paroProgramadoFinal = (categoriaData === 'Fallo' || esDescripcionProgramada) ? 'No' : 'Si';
+    paroProgramadoFinal = resolveParoProgramado(categoriaData, descripcionModoFalla);
   }
   return paroProgramadoFinal;
 }

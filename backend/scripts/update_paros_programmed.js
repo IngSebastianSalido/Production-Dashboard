@@ -51,7 +51,7 @@ for (let i = 0; i < lines.length; i++) {
     const isProgrammed = categoria.trim().toLowerCase() !== 'equipment fault';
     
     // Actualizar la columna de paros programados (penúltima columna)
-    parts[12] = isProgrammed ? 'si' : 'no';
+    parts[12] = isProgrammed ? 'Si' : 'No';
     
     if (isProgrammed) {
         programmedCount++;

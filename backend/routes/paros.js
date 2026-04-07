@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { resolveParoProgramado } = require('../lib/paroProgramado');
 
 module.exports = (stopsFilePath) => {
   const router = express.Router();
@@ -81,11 +82,7 @@ module.exports = (stopsFilePath) => {
       return res.status(400).send('El tiempo de paro no puede ser negativo o cero. Verifica las horas ingresadas.');
     }
 
-    // Calcular paro_programado: "No" si es "Equipment fault" o "Fallo"; "Si" en otros casos o si descripcionModoFalla contiene "scheduled stop" o "paro programado"
-    const esDescripcionProgramada = (descripcionModoFallaSanitizada || '').toLowerCase().includes('scheduled stop')
-      || (descripcionModoFallaSanitizada || '').toLowerCase().includes('paro programado');
-    const esCategoriaFallo = categoriaSan === 'Equipment fault' || categoriaSan === 'Fallo';
-    const paroProgramado = esCategoriaFallo ? 'No' : (esDescripcionProgramada ? 'Si' : 'Si');
+    const paroProgramado = resolveParoProgramado(categoriaSan, descripcionModoFallaSanitizada);
 
     fs.readFile(stopsFilePath, 'utf8', (err, data) => {
       if (err) {
@@ -147,10 +144,7 @@ module.exports = (stopsFilePath) => {
           if (cols.length < 13 || cols[12] === undefined || cols[12] === '') {
             const categoria = cols[7]; // índice 7 es categoria
             const descripcionModoFalla = cols[10] || ''; // índice 10 es descripcion_modo_falla
-            const esDescripcionProgramada = descripcionModoFalla.toLowerCase().includes('scheduled stop') || descripcionModoFalla.toLowerCase().includes('paro programado');
-            const esCategoriaFallo = categoria === 'Equipment fault' || categoria === 'Fallo';
-            const paroProgramado = esCategoriaFallo ? 'No' : (esDescripcionProgramada ? 'Si' : 'Si');
-            cols[12] = paroProgramado;
+            cols[12] = resolveParoProgramado(categoria, descripcionModoFalla);
           }
           // Si el registro no tiene ajuste_proceso (columna 13), agregar "No"
           if (cols.length < 14 || cols[13] === undefined || cols[13] === '') {
