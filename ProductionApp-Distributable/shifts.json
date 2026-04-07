@@ -1,0 +1,31 @@
+{
+  "shifts": [
+    {
+      "id": 1,
+      "name": "Turno 1",
+      "startHour": 7,
+      "startMinute": 0,
+      "endHour": 15,
+      "endMinute": 0,
+      "durationMinutes": 480
+    },
+    {
+      "id": 2,
+      "name": "Turno 2",
+      "startHour": 15,
+      "startMinute": 0,
+      "endHour": 22,
+      "endMinute": 30,
+      "durationMinutes": 450
+    },
+    {
+      "id": 3,
+      "name": "Turno 3",
+      "startHour": 22,
+      "startMinute": 30,
+      "endHour": 7,
+      "endMinute": 0,
+      "durationMinutes": 450
+    }
+  ]
+}

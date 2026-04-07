@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import StationStopChart from '../components/StationStopChart';
 import './StationStopPage.css';
 
@@ -10,6 +10,7 @@ const StationStopPage = () => {
   const [estacionesOrden, setEstacionesOrden] = useState([]); // Orden de estaciones del JSON
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [error, setError] = useState(null);
   
   // Estados para los filtros
@@ -179,6 +180,55 @@ const StationStopPage = () => {
     setError(null);
   };
 
+  const handleExportarExcelDiario = async () => {
+    if (!fechaInicio || !fechaFin) {
+      setError('Por favor selecciona el rango de fechas');
+      return;
+    }
+
+    if (new Date(fechaInicio) > new Date(fechaFin)) {
+      setError('La fecha de inicio no puede ser mayor que la fecha fin');
+      return;
+    }
+
+    setExporting(true);
+    setError(null);
+
+    try {
+      const params = new URLSearchParams({
+        fechaInicio,
+        fechaFin,
+      });
+
+      if (areaSeleccionada) params.append('area', areaSeleccionada);
+      if (lineaSeleccionada) params.append('linea', lineaSeleccionada);
+      if (pnSeleccionado) params.append('pn', pnSeleccionado);
+      if (categoriaSeleccionada) params.append('categoria', categoriaSeleccionada);
+      if (paroProgramadoSeleccionado) params.append('paroProgramado', paroProgramadoSeleccionado);
+
+      const response = await fetch(`${serverApiUrl}/api/paros-por-estacion/export-excel-diario?${params}`);
+
+      if (!response.ok) {
+        throw new Error('Error al generar el archivo Excel');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Paros_Estacion_Diario_${fechaInicio}_a_${fechaFin}.xlsx`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error al exportar Excel diario:', err);
+      setError('No se pudo exportar el Excel. Intenta nuevamente.');
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="main-container">
       <div className="page-header">
@@ -309,10 +359,17 @@ const StationStopPage = () => {
           >
             {loading ? 'Generando...' : 'Generar Gráfica'}
           </button>
+          <button
+            className="btn btn-primary"
+            onClick={handleExportarExcelDiario}
+            disabled={loading || exporting}
+          >
+            {exporting ? 'Exportando...' : 'Exportar Excel Diario'}
+          </button>
           <button 
             className="btn btn-secondary" 
             onClick={handleLimpiarFiltros}
-            disabled={loading}
+            disabled={loading || exporting}
           >
             Limpiar Filtros
           </button>

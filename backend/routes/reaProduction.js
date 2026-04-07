@@ -9,9 +9,13 @@ const { execSync } = require('child_process');
 dotenv.config();
 
 // ⚙️ Variables
-const reaSourceFilePath = process.env.REA_SOURCE_FILE_PATH; // Archivo original de producción
-const reaFilePath = path.resolve(__dirname, '../data/ProductionReport.csv'); // Destino en la carpeta data
-const outputCsvPath = path.join(__dirname, '../data/HrperHrReport.csv'); // CSV de diferencias
+const isPackaged = process.pkg !== undefined;
+const baseDir = isPackaged ? process.cwd() : path.join(__dirname, '..');
+const dataDir = path.join(baseDir, 'data');
+
+const reaSourceFilePath = process.env.REA_SOURCE_FILE_PATH || path.join(dataDir, 'ProductionReport.csv'); // Archivo original de producción
+const reaFilePath = path.join(dataDir, 'ProductionReport.csv'); // Destino en la carpeta data
+const outputCsvPath = path.join(dataDir, 'HrperHrReport.csv'); // CSV de diferencias
 
 // 🚀 Copiar ProductionReport y mostrar datos de REA
 router.get('/rea-production', (req, res) => {
@@ -30,15 +34,28 @@ router.get('/rea-production', (req, res) => {
 
     // Regenerar EOL_Cuts.csv y EOL_Cuts_OEE.csv después de copiar
     try {
-      const { spawn } = require('child_process');
-      const scriptPath = path.join(__dirname, '..', 'scripts', 'generate_eol_cuts.js');
-      if (fs.existsSync(scriptPath)) {
-        const child = spawn(process.execPath, [scriptPath, '--rate=154'], { 
-          cwd: path.join(__dirname, '..'),
-          env: process.env,
-          stdio: 'ignore'
+      if (isPackaged) {
+        const { generateCuts, generateEnriched } = require('../scripts/generate_eol_cuts');
+        setImmediate(() => {
+          try {
+            generateCuts();
+            generateEnriched(154);
+            console.log('🔄 EOL_Cuts regenerado en modo empaquetado.');
+          } catch (e) {
+            console.warn('No se pudo regenerar EOL_Cuts:', e.message);
+          }
         });
-        console.log('🔄 Regenerando EOL_Cuts en segundo plano...');
+      } else {
+        const { spawn } = require('child_process');
+        const scriptPath = path.join(__dirname, '..', 'scripts', 'generate_eol_cuts.js');
+        if (fs.existsSync(scriptPath)) {
+          const child = spawn(process.execPath, [scriptPath, '--rate=154'], { 
+            cwd: path.join(__dirname, '..'),
+            env: process.env,
+            stdio: 'ignore'
+          });
+          console.log('🔄 Regenerando EOL_Cuts en segundo plano...');
+        }
       }
     } catch (e) {
       console.warn('No se pudo regenerar EOL_Cuts:', e.message);
@@ -102,15 +119,28 @@ router.get('/rea-production-eolo', (req, res) => {
 
     // Regenerar EOL_Cuts.csv y EOL_Cuts_OEE.csv después de copiar
     try {
-      const { spawn } = require('child_process');
-      const scriptPath = path.join(__dirname, '..', 'scripts', 'generate_eol_cuts.js');
-      if (fs.existsSync(scriptPath)) {
-        const child = spawn(process.execPath, [scriptPath, '--rate=154'], { 
-          cwd: path.join(__dirname, '..'),
-          env: process.env,
-          stdio: 'ignore'
+      if (isPackaged) {
+        const { generateCuts, generateEnriched } = require('../scripts/generate_eol_cuts');
+        setImmediate(() => {
+          try {
+            generateCuts();
+            generateEnriched(154);
+            console.log('🔄 EOL_Cuts regenerado en modo empaquetado.');
+          } catch (e) {
+            console.warn('No se pudo regenerar EOL_Cuts:', e.message);
+          }
         });
-        console.log('🔄 Regenerando EOL_Cuts en segundo plano...');
+      } else {
+        const { spawn } = require('child_process');
+        const scriptPath = path.join(__dirname, '..', 'scripts', 'generate_eol_cuts.js');
+        if (fs.existsSync(scriptPath)) {
+          const child = spawn(process.execPath, [scriptPath, '--rate=154'], { 
+            cwd: path.join(__dirname, '..'),
+            env: process.env,
+            stdio: 'ignore'
+          });
+          console.log('🔄 Regenerando EOL_Cuts en segundo plano...');
+        }
       }
     } catch (e) {
       console.warn('No se pudo regenerar EOL_Cuts:', e.message);
@@ -643,7 +673,7 @@ router.get('/rea-production-eolo-cuts', async (req, res) => {
 
     // Before returning cuts, write a CSV into backend/data for debugging/export
     try {
-      const csvPath = path.join(__dirname, '../data/EOL_Cuts.csv');
+      const csvPath = path.join(dataDir, 'EOL_Cuts.csv');
       const csvHeader = 'startFecha,startHora,startFechaHoraISO,endFecha,endHora,endFechaHoraISO,pn,piezasTotales,startAccum,endAccum,stations_json\n';
       let csvContent = csvHeader;
       if (cuts.length === 0) {
@@ -701,31 +731,38 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
     const ratePerHour = parseFloat(req.query.ratePerHour) || 154;
     
     try {
-      console.log('Generando cortes EOL automáticamente...');
-      execSync(`node "${scriptPath}" --rate=${ratePerHour}`, { 
-        cwd: path.join(__dirname, '..'),
-        stdio: 'pipe' 
-      });
-      console.log('Cortes EOL generados exitosamente');
+      if (isPackaged) {
+        const { generateCuts, generateEnriched } = require('../scripts/generate_eol_cuts');
+        generateCuts();
+        generateEnriched(ratePerHour);
+        console.log('Cortes EOL generados en modo empaquetado');
+      } else {
+        console.log('Generando cortes EOL automáticamente...');
+        execSync(`node "${scriptPath}" --rate=${ratePerHour}`, { 
+          cwd: path.join(__dirname, '..'),
+          stdio: 'pipe' 
+        });
+        console.log('Cortes EOL generados exitosamente');
+      }
     } catch (execErr) {
       console.error('Error al generar cortes EOL:', execErr.message);
       return res.status(500).send('Error al generar cortes EOL: ' + execErr.message);
     }
 
-    const csvPath = path.join(__dirname, '../data/EOL_Cuts.csv');
+    const csvPath = path.join(dataDir, 'EOL_Cuts.csv');
     if (!fs.existsSync(csvPath)) return res.status(404).send('EOL_Cuts.csv no encontrado después de generación.');
 
   // Resolve stops/paros file: prefer STOPS_FILE_PATH env, then backend/data/paros.csv if present, then backend/data/stops.csv
   const candidateEnv = process.env.STOPS_FILE_PATH ? path.resolve(process.env.STOPS_FILE_PATH) : null;
-  const candidateParos = path.join(__dirname, '../data/paros.csv');
-  const candidateStops = path.join(__dirname, '../data/stops.csv');
+  const candidateParos = path.join(dataDir, 'paros.csv');
+  const candidateStops = path.join(dataDir, 'stops.csv');
   let stopsPath = null;
   if (candidateEnv && fs.existsSync(candidateEnv)) stopsPath = candidateEnv;
   else if (fs.existsSync(candidateParos)) stopsPath = candidateParos;
   else stopsPath = candidateStops;
 
     // Load shifts configuration
-    const shiftsPath = path.join(__dirname, '../shifts.json');
+    const shiftsPath = path.join(baseDir, 'shifts.json');
     let shifts = [];
     if (fs.existsSync(shiftsPath)) {
       try {
@@ -1094,7 +1131,7 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
 
     // write an enriched CSV for debugging/export
     try {
-      const outPath = path.join(__dirname, '../data/EOL_Cuts_OEE.csv');
+      const outPath = path.join(dataDir, 'EOL_Cuts_OEE.csv');
       const outHeader = 'startISO,endISO,pn,piezasTotales,durationMinutes,shiftTimeMinutes,tiempoPlaneadoMinutes,downtimeProgramadoMinutes,downtimeNoProgramadoMinutes,downtimeMinutes,disponibilidad,eficiencia,calidad,eolOk,eolNok,changeOver,stations_json\n';
       let outContent = outHeader;
       for (const e of enriched) {

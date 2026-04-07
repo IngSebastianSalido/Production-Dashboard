@@ -2,17 +2,27 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-// Usar la misma fuente que el resto de la aplicación: REA_SOURCE_FILE_PATH
-// Si no está definido en .env, usar ProductionReport.csv (archivo copiado por el endpoint /rea-production)
-const reaSourceFilePath = process.env.REA_SOURCE_FILE_PATH || path.join(__dirname, '..', 'data', 'ProductionReport.csv');
-const outCsv = path.join(__dirname, '..', 'data', 'EOL_Cuts.csv');
+// Lazy load para evitar problemas con __dirname en modo empaquetado
+let reaSourceFilePath = null;
+let outCsv = null;
+let dataDir = null;
+
+function initPaths() {
+  if (dataDir) return;
+  const isPackaged = process.pkg !== undefined;
+  const baseDir = isPackaged ? process.cwd() : (typeof __dirname !== 'undefined' ? path.join(__dirname, '..') : process.cwd());
+  dataDir = path.join(baseDir, 'data');
+  reaSourceFilePath = process.env.REA_SOURCE_FILE_PATH || path.join(dataDir, 'ProductionReport.csv');
+  outCsv = path.join(dataDir, 'EOL_Cuts.csv');
+}
 
 function safeParseInt(v){ return isNaN(parseInt(v)) ? 0 : parseInt(v); }
 
-function generateCuts(){
+function generateCuts(options = {}){
+  initPaths();
   if (!fs.existsSync(reaSourceFilePath)){
     console.error('Source file not found:', reaSourceFilePath);
-    process.exit(1);
+    throw new Error(`Source file not found: ${reaSourceFilePath}`);
   }
 
   const raw = fs.readFileSync(reaSourceFilePath,'utf8');
@@ -75,7 +85,9 @@ function generateCuts(){
   const deltas = [];
   let prev = null;
   const arg = process.argv.find(a=>a.startsWith('--minPrevAccum='));
-  const MIN_PREVIOUS_ACCUM = arg ? parseInt(arg.split('=')[1]) : 5;
+  const MIN_PREVIOUS_ACCUM = (typeof options.minPrevAccum === 'number')
+    ? options.minPrevAccum
+    : (arg ? parseInt(arg.split('=')[1]) : 5);
   
   for (let i=0;i<registros.length;i++){
     const r = registros[i];
@@ -318,19 +330,18 @@ function generateCuts(){
   console.log('Generated', outCsv, 'with', cuts.length, 'cuts');
 }
 
-generateCuts();
-
 // adicional: generar CSV enriquecido con OEE
 function generateEnriched(ratePerHour = 154){
+  initPaths();
   const eolCsv = outCsv;
-  const enrichedOut = path.join(__dirname, '..', 'data', 'EOL_Cuts_OEE.csv');
+  const enrichedOut = path.join(dataDir, 'EOL_Cuts_OEE.csv');
   if (!fs.existsSync(eolCsv)) { console.warn('EOL_Cuts.csv not found, skipping enriched generation'); return; }
   const csvRaw = fs.readFileSync(eolCsv, 'utf8');
   const rows = csvRaw.split('\n').filter(r=>r.trim()!== '');
   const dataRows = rows.slice(1);
 
   // read stops (paros.csv)
-  const stopsPath = path.join(__dirname, '..', 'data', 'paros.csv');
+  const stopsPath = path.join(dataDir, 'paros.csv');
   let stops = [];
   if (fs.existsSync(stopsPath)){
     const stopsRaw = fs.readFileSync(stopsPath, 'utf8');
@@ -375,5 +386,16 @@ function generateEnriched(ratePerHour = 154){
   console.log('Generated', enrichedOut, 'with', enriched.length, 'rows');
 }
 
-// run extra generation with default rate or CLI override --rate=154
-const rateArg = process.argv.find(a=>a.startsWith('--rate=')); const rateVal = rateArg ? parseFloat(rateArg.split('=')[1]) : 154; generateEnriched(rateVal);
+function runCli(){
+  generateCuts();
+  // run extra generation with default rate or CLI override --rate=154
+  const rateArg = process.argv.find(a=>a.startsWith('--rate='));
+  const rateVal = rateArg ? parseFloat(rateArg.split('=')[1]) : 154;
+  generateEnriched(rateVal);
+}
+
+if (require.main === module) {
+  runCli();
+}
+
+module.exports = { generateCuts, generateEnriched };
