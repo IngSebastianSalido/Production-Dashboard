@@ -82,13 +82,7 @@ module.exports = (stopsFilePath) => {
       return res.status(400).send('El tiempo de paro no puede ser negativo o cero. Verifica las horas ingresadas.');
     }
 
-<<<<<<< HEAD
-    // Calcular paro_programado: "No" si es "Equipment fault" o "Fallo"; "Si" en otros casos
-    const esCategoriaFallo = categoriaSan.toLowerCase().trim() === 'equipment fault' || categoriaSan.toLowerCase().trim() === 'fallo';
-    const paroProgramado = esCategoriaFallo ? 'No' : 'Si';
-=======
     const paroProgramado = resolveParoProgramado(categoriaSan, descripcionModoFallaSanitizada);
->>>>>>> c2798f29e577cdb7b6530ca9c5ad3fb4c1680dfc
 
     fs.readFile(stopsFilePath, 'utf8', (err, data) => {
       if (err) {
@@ -148,15 +142,9 @@ module.exports = (stopsFilePath) => {
           const cols = line.split(';');
           // Si el registro no tiene paro_programado (columna 12), calcularlo
           if (cols.length < 13 || cols[12] === undefined || cols[12] === '') {
-            const categoria = cols[7]; // índice 7 es categoria
-<<<<<<< HEAD
-            const esCategoriaFallo = categoria.toLowerCase().trim() === 'equipment fault' || categoria.toLowerCase().trim() === 'fallo';
-            const paroProgramado = esCategoriaFallo ? 'No' : 'Si';
-            cols[12] = paroProgramado;
-=======
+            const categoria = cols[7] || ''; // índice 7 es categoria
             const descripcionModoFalla = cols[10] || ''; // índice 10 es descripcion_modo_falla
             cols[12] = resolveParoProgramado(categoria, descripcionModoFalla);
->>>>>>> c2798f29e577cdb7b6530ca9c5ad3fb4c1680dfc
           }
           // Si el registro no tiene ajuste_proceso (columna 13), agregar "No"
           if (cols.length < 14 || cols[13] === undefined || cols[13] === '') {
