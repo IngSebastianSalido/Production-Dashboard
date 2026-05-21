@@ -15,10 +15,10 @@ const OEEPage = () => {
     area: 'REA', // Filtro por defecto REA
     pn: '',
     shift: '',
-    changeOver: '',
-    rework: '',
-    piezasTotalesMenor100: '',
-    domingo: '',
+    changeOver: 'no',
+    rework: 'no',
+    piezasTotalesMenor100: 'no',
+    domingo: 'no',
     dateFrom: '',
     dateTo: ''
   });
@@ -35,12 +35,16 @@ const OEEPage = () => {
       return `${year}-${month}-${day}`;
     };
 
-    setFilters({
-      ...filters,
+    setFilters(prev => ({
+      ...prev,
       area: 'REA',
+      changeOver: 'no',
+      rework: 'no',
+      piezasTotalesMenor100: 'no',
+      domingo: 'no',
       dateFrom: formatDate(firstDayOfMonth),
       dateTo: formatDate(today)
-    });
+    }));
   }, []);
 
   useEffect(() => {
@@ -232,7 +236,6 @@ const OEEPage = () => {
         'Hora Fin': endDate.toLocaleTimeString(),
         'PN': cut.pn,
         'Piezas Totales': cut.piezasTotales,
-        'Duración (min)': cut.durationMinutes,
         'Tiempo de Turno (min)': metrics.shiftTimeMinutes,
         'Tiempo Planeado (min)': metrics.tiempoPlaneadoMinutes,
         'DT Programado (min)': metrics.downtimeProgramadoMinutes,
@@ -261,7 +264,6 @@ const OEEPage = () => {
       { wch: 12 },  // Hora Fin
       { wch: 20 },  // PN
       { wch: 12 },  // Piezas Totales
-      { wch: 12 },  // Duración
       { wch: 14 },  // Tiempo de Turno
       { wch: 14 },  // Tiempo Planeado
       { wch: 14 },  // DT Programado
@@ -568,7 +570,6 @@ const OEEPage = () => {
               <th style={styles.th}>Fecha Fin</th>
               <th style={styles.th}>Hora Fin</th>
               <th style={styles.th}>Piezas Totales</th>
-              <th style={styles.th}>Duración (min)</th>
               <th style={styles.th}>Tiempo Turno (min)</th>
               <th style={styles.th}>Tiempo Planeado (min)</th>
               <th style={styles.th}>DT Programado (min)</th>
@@ -586,9 +587,9 @@ const OEEPage = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={23} style={styles.td}>Cargando...</td></tr>
+              <tr><td colSpan={22} style={styles.td}>Cargando...</td></tr>
             ) : filteredData.length === 0 ? (
-              <tr><td colSpan={23} style={styles.td}>No hay datos disponibles. Selecciona un rango de fechas.</td></tr>
+              <tr><td colSpan={22} style={styles.td}>No hay datos disponibles. Selecciona un rango de fechas.</td></tr>
             ) : (
               filteredData.map((cut, index) => {
                 const metrics = getOEEMetrics(cut);
@@ -605,7 +606,6 @@ const OEEPage = () => {
                     <td style={styles.td}>{endDate.toLocaleDateString()}</td>
                     <td style={styles.td}>{endDate.toLocaleTimeString()}</td>
                     <td style={styles.td}>{cut.piezasTotales}</td>
-                    <td style={styles.td}>{cut.durationMinutes}</td>
                     <td style={styles.td}>{metrics.shiftTimeMinutes}</td>
                     <td style={styles.td}>{metrics.tiempoPlaneadoMinutes}</td>
                     <td style={{...styles.td, background: '#42424233'}}>{metrics.downtimeProgramadoMinutes}</td>

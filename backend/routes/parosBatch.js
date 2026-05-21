@@ -25,27 +25,61 @@ module.exports = (stopsFilePath) => {
     return new Date(fechaStr);
   };
 
+  const parseHora = (horaStr) => {
+    if (!horaStr) return null;
+
+    const match = String(horaStr).trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?$/i);
+    if (!match) return null;
+
+    let hours = parseInt(match[1], 10);
+    const minutes = parseInt(match[2], 10);
+    const seconds = parseInt(match[3] || '0', 10);
+    const meridiem = match[4] ? match[4].toUpperCase() : null;
+
+    if (meridiem === 'AM' && hours === 12) {
+      hours = 0;
+    } else if (meridiem === 'PM' && hours < 12) {
+      hours += 12;
+    }
+
+    if (hours > 23 || minutes > 59 || seconds > 59) return null;
+
+    return { hours, minutes, seconds };
+  };
+
+  const parseFechaHora = (fechaStr, horaStr) => {
+    const fecha = parseFecha(fechaStr);
+    const hora = parseHora(horaStr);
+
+    if (!fecha || isNaN(fecha.getTime()) || !hora) return null;
+
+    fecha.setHours(hora.hours, hora.minutes, hora.seconds, 0);
+    return fecha;
+  };
+
+  const inferBatchArea = (batchPn) => {
+    const normalizedPn = String(batchPn || '').toUpperCase();
+
+    if (normalizedPn.includes('REA')) return 'REA';
+    if (normalizedPn.includes('COVER')) return 'COVER LINE';
+
+    return null;
+  };
+
   // Función auxiliar para parsear una hora en formato HH:MM a Date completa
   // Considerando el contexto del batch para horas ambiguas
   const parseDateTime = (fechaStr, horaStr, batchStart) => {
     if (!fechaStr || !horaStr) return null;
-    const fecha = parseFecha(fechaStr);
-    if (!fecha || isNaN(fecha.getTime())) return null;
-    
-    const parts = String(horaStr).split(':');
-    if (parts.length >= 2) {
-      let hours = parseInt(parts[0]) || 0;
-      const minutes = parseInt(parts[1]) || 0;
-      
-      fecha.setHours(hours, minutes, 0, 0);
-      
-      // Si el batch cruza medianoche y esta fecha es después de la fecha de inicio del batch,
-      // y la hora es pequeña, probablemente es AM del siguiente día
-      if (batchStart && fecha.toDateString() !== new Date(batchStart).toDateString()) {
-        // Fechas diferentes: la del paro es probablemente al siguiente día
-        // No modificar la hora, mantenerla como está (ya en AM)
-      }
+    const fecha = parseFechaHora(fechaStr, horaStr);
+    if (!fecha) return null;
+
+    // Si el batch cruza medianoche y esta fecha es después de la fecha de inicio del batch,
+    // y la hora es pequeña, probablemente es AM del siguiente día
+    if (batchStart && fecha.toDateString() !== new Date(batchStart).toDateString()) {
+      // Fechas diferentes: la del paro es probablemente al siguiente día
+      // No modificar la hora, mantenerla como está (ya en AM)
     }
+
     return fecha;
   };
 
@@ -164,12 +198,20 @@ module.exports = (stopsFilePath) => {
           const batchId = cols[0].replace(/"/g, '');
           const startISO = cols[3].replace(/"/g, ''); // startFechaHoraISO está en columna 3
           const endISO = cols[6].replace(/"/g, ''); // endFechaHoraISO está en columna 6
+          const startFecha = cols[1] ? cols[1].replace(/"/g, '') : '';
+          const startHora = cols[2] ? cols[2].replace(/"/g, '') : '';
+          const endFecha = cols[4] ? cols[4].replace(/"/g, '') : '';
+          const endHora = cols[5] ? cols[5].replace(/"/g, '') : '';
           const pn = cols[7] ? cols[7].replace(/"/g, '') : ''; // pn está en columna 7
           const piezasTotales = cols[8] ? parseInt(cols[8]) : 0; // piezasTotales en columna 8
           const durationMinutes = 0; // Calcular después
           
-          const batchStart = new Date(startISO);
-          const batchEnd = new Date(endISO);
+          const batchStart = parseFechaHora(startFecha, startHora) || new Date(startISO);
+          const batchEnd = parseFechaHora(endFecha, endHora) || new Date(endISO);
+
+          if (isNaN(batchStart.getTime()) || isNaN(batchEnd.getTime())) {
+            continue;
+          }
           
           // Calcular duración en minutos
           const calculatedDuration = Math.round((batchEnd - batchStart) / (1000 * 60));
@@ -210,8 +252,10 @@ module.exports = (stopsFilePath) => {
 
       // 3. Asociar paros a cada batch
       const batchesConParos = batches.map(batch => {
+        const batchArea = inferBatchArea(batch.pn);
         const parosAsociados = paros.filter(paro => 
-          paroEnBatch(paro, batch.batchStart, batch.batchEnd)
+          paroEnBatch(paro, batch.batchStart, batch.batchEnd) &&
+          (!batchArea || String(paro.area || '').toUpperCase() === batchArea)
         );
 
         // Calcular totales de paros
@@ -223,8 +267,8 @@ module.exports = (stopsFilePath) => {
 
         return {
           batchId: batch.batchId,
-          startISO: batch.startISO,
-          endISO: batch.endISO,
+          startISO: batch.batchStart.toISOString(),
+          endISO: batch.batchEnd.toISOString(),
           pn: batch.pn,
           piezasTotales: batch.piezasTotales,
           durationMinutes: batch.durationMinutes,

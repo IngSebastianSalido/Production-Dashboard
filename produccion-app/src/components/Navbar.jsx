@@ -13,6 +13,9 @@ const Navbar = () => {
           <Link to="/" style={styles.navLink}>REA</Link>
         </li>
         <li style={styles.navItem}>
+          <Link to="/rea-diario" style={styles.navLink}>REA Diario</Link>
+        </li>
+        <li style={styles.navItem}>
           <Link to="/reports" style={styles.navLink}>Reports</Link>
         </li>
         <li style={styles.navItem}>

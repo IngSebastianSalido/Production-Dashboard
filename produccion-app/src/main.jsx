@@ -8,6 +8,7 @@ import StopChartPage from './pages/StopChartPage'; // Importar la nueva página
 import StationStopPage from './pages/StationStopPage'; // Página de paros por estación
 import Navbar from './components/NavBar';
 import REA from './pages/REA';
+import READiarioPage from './pages/READiarioPage'; // Página REA Diario
 import PPTPage from './pages/PPTPage'; // Importar la nueva página de presentación
 import ProductionBoard from './pages/ProductionBoard'; // Importar la página de ProductionBoard
 import Reports from './pages/Reports'; // Nueva página Reports
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <div className="content-container"> {/* Nuevo contenedor */}
     <Routes>
   <Route path="/" element={<REA />} />
+  <Route path="/rea-diario" element={<READiarioPage />} /> {/* Nueva página REA Diario */}
   <Route path="/stop" element={<StopPage />} />
   <Route path="/produccion" element={<ProdPage />} />
   <Route path="/opciones" element={<ConfigPage />} />

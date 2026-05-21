@@ -38,6 +38,9 @@ produccion-app/node_modules/
 produccion-app/dist/
 produccion-app/.env
 
+# Ignorar carpeta de datos del backend
+backend/data/
+
 # Specific exclusions for backend
 backend/node_modules/
 backend/.env

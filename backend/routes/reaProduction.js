@@ -17,89 +17,218 @@ const reaSourceFilePath = process.env.REA_SOURCE_FILE_PATH || path.join(dataDir,
 const reaFilePath = path.join(dataDir, 'ProductionReport.csv'); // Destino en la carpeta data
 const outputCsvPath = path.join(dataDir, 'HrperHrReport.csv'); // CSV de diferencias
 
+// Cache y control de sincronizacion para evitar reprocesar todo en cada refresh.
+const sourceSyncState = {
+  lastSignature: null,
+  eolRefreshInProgress: false,
+};
+
+const eoloGraphCacheState = {
+  sourceSignature: null,
+  diferencias: null,
+  responseByDate: new Map(),
+};
+
+const getFileSignature = async (filePath) => {
+  const st = await fs.promises.stat(filePath);
+  return `${st.size}:${Math.floor(st.mtimeMs)}`;
+};
+
+const syncProductionSourceIfNeeded = async () => {
+  const sourceSignature = await getFileSignature(reaSourceFilePath);
+  const sourceResolved = path.resolve(reaSourceFilePath);
+  const targetResolved = path.resolve(reaFilePath);
+
+  if (sourceResolved === targetResolved) {
+    sourceSyncState.lastSignature = sourceSignature;
+    return { sourceSignature, copied: false };
+  }
+
+  const mustCopy = sourceSyncState.lastSignature !== sourceSignature || !fs.existsSync(reaFilePath);
+  if (mustCopy) {
+    await fs.promises.copyFile(reaSourceFilePath, reaFilePath);
+    sourceSyncState.lastSignature = sourceSignature;
+    return { sourceSignature, copied: true };
+  }
+
+  sourceSyncState.lastSignature = sourceSignature;
+  return { sourceSignature, copied: false };
+};
+
+const triggerEolCutsRefreshInBackground = () => {
+  if (sourceSyncState.eolRefreshInProgress) return;
+  sourceSyncState.eolRefreshInProgress = true;
+
+  try {
+    if (isPackaged) {
+      const { generateCuts, generateEnriched } = require('../scripts/generate_eol_cuts');
+      setImmediate(() => {
+        try {
+          generateCuts();
+          generateEnriched(154);
+          console.log('🔄 EOL_Cuts regenerado en modo empaquetado.');
+        } catch (e) {
+          console.warn('No se pudo regenerar EOL_Cuts:', e.message);
+        } finally {
+          sourceSyncState.eolRefreshInProgress = false;
+        }
+      });
+      return;
+    }
+
+    const { spawn } = require('child_process');
+    const scriptPath = path.join(__dirname, '..', 'scripts', 'generate_eol_cuts.js');
+    if (!fs.existsSync(scriptPath)) {
+      sourceSyncState.eolRefreshInProgress = false;
+      return;
+    }
+
+    const child = spawn(process.execPath, [scriptPath, '--rate=154'], {
+      cwd: path.join(__dirname, '..'),
+      env: process.env,
+      stdio: 'ignore'
+    });
+
+    child.on('error', (err) => {
+      console.warn('No se pudo regenerar EOL_Cuts:', err.message);
+      sourceSyncState.eolRefreshInProgress = false;
+    });
+
+    child.on('close', () => {
+      sourceSyncState.eolRefreshInProgress = false;
+    });
+
+    console.log('🔄 Regenerando EOL_Cuts en segundo plano...');
+  } catch (e) {
+    sourceSyncState.eolRefreshInProgress = false;
+    console.warn('No se pudo regenerar EOL_Cuts:', e.message);
+  }
+};
+
+const getOrBuildEoloDiferencias = async () => {
+  const sourceSignature = await getFileSignature(reaSourceFilePath);
+  if (eoloGraphCacheState.sourceSignature === sourceSignature && Array.isArray(eoloGraphCacheState.diferencias)) {
+    return { sourceSignature, diferencias: eoloGraphCacheState.diferencias, rebuilt: false };
+  }
+
+  const raw = await fs.promises.readFile(reaSourceFilePath, 'utf8');
+  const rows = raw.split('\n').filter(row => row.trim() !== '');
+  if (rows.length === 0) {
+    eoloGraphCacheState.sourceSignature = sourceSignature;
+    eoloGraphCacheState.diferencias = [];
+    eoloGraphCacheState.responseByDate.clear();
+    return { sourceSignature, diferencias: [], rebuilt: true };
+  }
+
+  const header = rows[0].split(';');
+  const maxRows = parseInt(process.env.REA_MAX_ROWS || '0', 10) || 0;
+  const dataRows = maxRows > 0 ? rows.slice(-maxRows) : rows.slice(1);
+  const eoloIndex = header.findIndex(col => col.toLowerCase().includes('eolok'));
+
+  if (eoloIndex === -1) {
+    throw new Error('No se encontró columna EOLOk.');
+  }
+
+  const registros = [];
+  for (const row of dataRows) {
+    const columns = row.split(';');
+    const rowFecha = columns[0];
+    const rowHora = columns[1];
+
+    if (!rowFecha || !rowHora) continue;
+
+    const cleanHora = rowHora.replace('a. m.', 'AM').replace('p. m.', 'PM').trim();
+    const fechaHoraObj = new Date(`${rowFecha} ${cleanHora}`);
+    if (isNaN(fechaHoraObj)) continue;
+
+    const horaCompleta = fechaHoraObj.toTimeString().split(' ')[0];
+    const eolOk = parseInt(columns[eoloIndex]) || 0;
+    registros.push({ fecha: rowFecha, hora: horaCompleta, piezasAcumuladas: eolOk, fechaHoraReal: fechaHoraObj });
+  }
+
+  registros.sort((a, b) => a.fechaHoraReal - b.fechaHoraReal);
+
+  const diferencias = [];
+  let acumuladoAnterior = 0;
+  for (const actual of registros) {
+    let diferencia = 0;
+    if (actual.piezasAcumuladas !== 0) {
+      diferencia = actual.piezasAcumuladas >= acumuladoAnterior
+        ? actual.piezasAcumuladas - acumuladoAnterior
+        : actual.piezasAcumuladas;
+      acumuladoAnterior = actual.piezasAcumuladas;
+    }
+    diferencias.push({
+      fecha: actual.fecha,
+      hora: actual.hora,
+      piezasProducidas: diferencia
+    });
+  }
+
+  const csvHeader = 'Fecha,Hora,PiezasProducidas\n';
+  const csvContent = diferencias.map(dif => `${dif.fecha},${dif.hora},${dif.piezasProducidas}`).join('\n');
+  await fs.promises.writeFile(outputCsvPath, csvHeader + csvContent, 'utf8');
+
+  eoloGraphCacheState.sourceSignature = sourceSignature;
+  eoloGraphCacheState.diferencias = diferencias;
+  eoloGraphCacheState.responseByDate.clear();
+
+  return { sourceSignature, diferencias, rebuilt: true };
+};
+
 // 🚀 Copiar ProductionReport y mostrar datos de REA
-router.get('/rea-production', (req, res) => {
+router.get('/rea-production', async (req, res) => {
   if (!reaSourceFilePath) {
     console.error('No se encontró REA_SOURCE_FILE_PATH en .env');
     return res.status(500).send('No está configurado REA_SOURCE_FILE_PATH.');
   }
 
-  fs.copyFile(reaSourceFilePath, reaFilePath, (copyErr) => {
-    if (copyErr) {
-      console.error('Error al copiar ProductionReport:', copyErr);
-      return res.status(500).send('Error al copiar el archivo ProductionReport.');
+  try {
+    const { copied } = await syncProductionSourceIfNeeded();
+    if (copied) {
+      console.log('✅ Archivo ProductionReport copiado correctamente.');
+      triggerEolCutsRefreshInBackground();
     }
 
-    console.log('✅ Archivo ProductionReport copiado correctamente.');
+    const reportPath = path.resolve(reaSourceFilePath) === path.resolve(reaFilePath)
+      ? reaSourceFilePath
+      : reaFilePath;
+    const data = await fs.promises.readFile(reportPath, 'utf8');
 
-    // Regenerar EOL_Cuts.csv y EOL_Cuts_OEE.csv después de copiar
-    try {
-      if (isPackaged) {
-        const { generateCuts, generateEnriched } = require('../scripts/generate_eol_cuts');
-        setImmediate(() => {
-          try {
-            generateCuts();
-            generateEnriched(154);
-            console.log('🔄 EOL_Cuts regenerado en modo empaquetado.');
-          } catch (e) {
-            console.warn('No se pudo regenerar EOL_Cuts:', e.message);
-          }
+    const rows = data.split('\n').filter(row => row.trim() !== '');
+    if (rows.length === 0) return res.json([]);
+
+    const header = rows[0].split(';');
+    const dataRows = rows.slice(Math.max(rows.length - 1, 1)); // Solo el último registro
+    const resultados = [];
+
+    for (const row of dataRows) {
+      const columns = row.split(';');
+      const fecha = columns[0];
+      const hora = columns[1];
+      const pn = columns[2];
+
+      const estaciones = [];
+      for (let i = 3; i < columns.length; i += 2) {
+        const station = header[i]?.replace(/ok$/i, '') || `Estacion${i}`;
+        const ok = parseInt(columns[i]) || 0;
+        const nok = parseInt(columns[i + 1]) || 0;
+        estaciones.push({
+          station,
+          ok,
+          nok,
+          percent: (ok + nok) ? (ok / (ok + nok)) * 100 : 0,
         });
-      } else {
-        const { spawn } = require('child_process');
-        const scriptPath = path.join(__dirname, '..', 'scripts', 'generate_eol_cuts.js');
-        if (fs.existsSync(scriptPath)) {
-          const child = spawn(process.execPath, [scriptPath, '--rate=154'], { 
-            cwd: path.join(__dirname, '..'),
-            env: process.env,
-            stdio: 'ignore'
-          });
-          console.log('🔄 Regenerando EOL_Cuts en segundo plano...');
-        }
       }
-    } catch (e) {
-      console.warn('No se pudo regenerar EOL_Cuts:', e.message);
+
+      resultados.push({ fecha, hora, pn, estaciones });
     }
 
-    fs.readFile(reaFilePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error('Error leyendo ProductionReport:', err);
-        return res.status(500).send('Error leyendo el archivo ProductionReport.');
-      }
-
-      const rows = data.split('\n').filter(row => row.trim() !== '');
-      const header = rows[0].split(';');
-      const dataRows = rows.slice(Math.max(rows.length - 1, 1)); // Solo la cabecera si hay pocas filas
-
-      const resultados = [];
-
-      for (const row of dataRows) {
-        const columns = row.split(';');
-        const fecha = columns[0];
-        const hora = columns[1];
-        const pn = columns[2]; // Agregar número de parte
-
-        const estaciones = [];
-
-        for (let i = 3; i < columns.length; i += 2) {
-          const station = header[i]?.replace(/ok$/i, '') || `Estacion${i}`;
-          const ok = parseInt(columns[i]) || 0;
-          const nok = parseInt(columns[i + 1]) || 0;
-
-          estaciones.push({
-            station,
-            ok,
-            nok,
-            percent: (ok + nok) ? (ok / (ok + nok)) * 100 : 0,
-          });
-        }
-
-        resultados.push({ fecha, hora, pn, estaciones });
-      }
-
-      res.json(resultados);
-    });
-  });
+    res.json(resultados);
+  } catch (err) {
+    console.error('Error en /rea-production:', err);
+    res.status(500).send('Error leyendo el archivo ProductionReport.');
+  }
 });
 
 // 🚀 Crear HrperHrReport automáticamente basado en ProductionReport
@@ -243,89 +372,22 @@ router.get('/rea-production-eolo-graph', async (req, res) => {
     }
   
     try {
-      //  Siempre regenerar HrperHrReport.csv, no importa si existe
-      await new Promise((resolve, reject) => {
-        fs.readFile(reaSourceFilePath, 'utf8', (err, data) => {
-          if (err) return reject('Error leyendo ProductionReport original.');
-  
-          const rows = data.split('\n').filter(row => row.trim() !== '');
-          const header = rows[0].split(';');
-          const maxRows = parseInt(process.env.REA_MAX_ROWS || '0', 10) || 0;
-          const dataRows = maxRows > 0 ? rows.slice(-maxRows) : rows.slice(1);
-  
-          const eoloIndex = header.findIndex(col => col.toLowerCase().includes('eolok'));
-          if (eoloIndex === -1) return reject('No se encontró columna EOLOk.');
-  
-          const registros = [];
-          for (const row of dataRows) {
-            const columns = row.split(';');
-            const rowFecha = columns[0];
-            const rowHora = columns[1];
-  
-            if (!rowFecha || !rowHora) continue;
-  
-            const cleanHora = rowHora.replace('a. m.', 'AM').replace('p. m.', 'PM').trim();
-            const fechaHoraString = `${rowFecha} ${cleanHora}`;
-            const fechaHoraObj = new Date(fechaHoraString);
-  
-            if (isNaN(fechaHoraObj)) continue;
-  
-            const horaCompleta = fechaHoraObj.toTimeString().split(' ')[0];
-            const eolOk = parseInt(columns[eoloIndex]) || 0;
-  
-            registros.push({ fecha: rowFecha, horaCompleta, piezasAcumuladas: eolOk, fechaHoraReal: fechaHoraObj });
-          }
-  
-          registros.sort((a, b) => a.fechaHoraReal - b.fechaHoraReal);
-  
-          const diferencias = [];
-          let acumuladoAnterior = 0;
-          for (let i = 0; i < registros.length; i++) {
-            const actual = registros[i];
-            let diferencia = 0;
-            if (actual.piezasAcumuladas === 0) {
-              diferencia = 0;
-            } else {
-              diferencia = actual.piezasAcumuladas >= acumuladoAnterior
-                ? actual.piezasAcumuladas - acumuladoAnterior
-                : actual.piezasAcumuladas;
-              acumuladoAnterior = actual.piezasAcumuladas;
-            }
-            diferencias.push({
-              fecha: actual.fecha,
-              hora: actual.horaCompleta,
-              piezasProducidas: diferencia
-            });
-          }
-  
-          const csvHeader = 'Fecha,Hora,PiezasProducidas\n';
-          const csvContent = diferencias.map(dif => `${dif.fecha},${dif.hora},${dif.piezasProducidas}`).join('\n');
-          const fullCsv = csvHeader + csvContent;
-  
-          fs.writeFile(outputCsvPath, fullCsv, 'utf8', (err) => {
-            if (err) return reject('Error escribiendo HrperHrReport.');
-            resolve(); // ✅
-          });
-        });
-      });
-  
-      // Ahora leer HrperHrReport.csv actualizado
-      const data = fs.readFileSync(outputCsvPath, 'utf8');
-      const rows = data.split('\n').filter(row => row.trim() !== '');
-      const header = rows[0].split(',');
-      const dataRows = rows.slice(1);
+      // En cada refresh se valida si cambió el origen; solo se reprocesa cuando hay cambios.
+      const { sourceSignature, diferencias } = await getOrBuildEoloDiferencias();
+      const cacheKey = `${sourceSignature}:${fecha}`;
+      if (eoloGraphCacheState.responseByDate.has(cacheKey)) {
+        return res.json(eoloGraphCacheState.responseByDate.get(cacheKey));
+      }
   
       const registros = [];
       // Se define el rango de 7am a 7am del siguiente día
       const startDate = new Date(`${fecha}T07:00:00`);
       const endDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
 
-  
-      for (const row of rows.slice(1)) {
-        const columns = row.split(',');
-        const fechaRow = columns[0].trim();
-        const horaCompleta = columns[1].trim();
-        const piezasProducidas = parseInt(columns[2]) || 0;
+      for (const row of diferencias) {
+        const fechaRow = String(row.fecha || '').trim();
+        const horaCompleta = String(row.hora || '').trim();
+        const piezasProducidas = parseInt(row.piezasProducidas) || 0;
   
         // Convertir "M/D/YYYY" a "YYYY-MM-DD"
         const parts = fechaRow.split('/');
@@ -342,7 +404,7 @@ router.get('/rea-production-eolo-graph', async (req, res) => {
             });
           }
         } else {
-          console.log(`DEBUG: fechaRow formato inválido: ${fechaRow} for row: ${row}`);
+          console.log(`DEBUG: fechaRow formato inválido: ${fechaRow}`);
         }
       }
       
@@ -389,7 +451,14 @@ router.get('/rea-production-eolo-graph', async (req, res) => {
         }
       }
 
-      res.json({ datos: datosOrdenados, turnos: { turno1, turno2, turno3 } });
+      const responsePayload = { datos: datosOrdenados, turnos: { turno1, turno2, turno3 } };
+      eoloGraphCacheState.responseByDate.set(cacheKey, responsePayload);
+      if (eoloGraphCacheState.responseByDate.size > 30) {
+        const oldestKey = eoloGraphCacheState.responseByDate.keys().next().value;
+        eoloGraphCacheState.responseByDate.delete(oldestKey);
+      }
+
+      res.json(responsePayload);
   
     } catch (error) {
       console.error(error);
@@ -1167,8 +1236,151 @@ router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
     res.status(500).send('Error procesando cortes OEE');
   }
 });
-  
-  
+
+// Endpoint: REA Diario - Tendencia esperada vs producida + Resumen de paros por estación
+router.get('/rea-production-diario', async (req, res) => {
+  try {
+    const { fecha, programmedDowntimeHours = 2.5 } = req.query;
+
+    if (!fecha) {
+      return res.status(400).json({ error: 'Se requiere parámetro fecha (YYYY-MM-DD)' });
+    }
+
+    const [year, month, day] = fecha.split('-').map(Number);
+    if (!year || !month || !day) {
+      return res.status(400).json({ error: 'Formato de fecha inválido (usar YYYY-MM-DD)' });
+    }
+
+    // Ventana 7am del día solicitado → 7am del día siguiente
+    const startDate = new Date(year, month - 1, day, 7, 0, 0);
+    const endDate   = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
+
+    // Usar deltas pre-calculados (EOLOk acumulador → diferencias por fila)
+    const { diferencias } = await getOrBuildEoloDiferencias();
+
+    // Agrupar deltas en slots de 1 hora (slot 0 = 07:00-08:00, …, slot 23 = 06:00-07:00)
+    const slotTotals = new Array(24).fill(0);
+
+    for (const row of diferencias) {
+      const fechaRow    = String(row.fecha || '').trim();
+      const horaRow     = String(row.hora  || '').trim();
+      const piezas      = parseInt(row.piezasProducidas) || 0;
+      if (!piezas) continue;
+
+      // Parsear fecha: M/D/YYYY o YYYY-MM-DD
+      let rowDate;
+      const parts = fechaRow.split('/');
+      if (parts.length === 3) {
+        const iso = `${parts[2]}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`;
+        rowDate = new Date(`${iso}T${horaRow}`);
+      } else {
+        rowDate = new Date(`${fechaRow}T${horaRow}`);
+      }
+      if (isNaN(rowDate)) continue;
+      if (rowDate < startDate || rowDate >= endDate) continue;
+
+      const slotIndex = Math.floor((rowDate.getTime() - startDate.getTime()) / (60 * 60 * 1000));
+      if (slotIndex >= 0 && slotIndex < 24) {
+        slotTotals[slotIndex] += piezas;
+      }
+    }
+
+    // Esperado: totalExpected = (24 - programmedDowntimeHours) * 180
+    // Crece linealmente a lo largo del día hasta llegar a totalExpected al final
+    const pdh = parseFloat(programmedDowntimeHours) || 0;
+    const totalExpected = (24 - pdh) * 180;
+
+    const datosOrdenados = [];
+    let acumuladaProducida = 0;
+
+    for (let i = 0; i < 24; i++) {
+      const slotDate = new Date(startDate.getTime() + i * 60 * 60 * 1000);
+      const hourStr  = slotDate.getHours().toString().padStart(2, '0') + ':00';
+
+      acumuladaProducida += slotTotals[i];
+      // Al final del slot i se han completado (i+1) de 24 horas
+      const acumuladaEsperada = Math.round(((i + 1) / 24) * totalExpected);
+
+      datosOrdenados.push({
+        hora: hourStr,
+        piezasProducidas: slotTotals[i],
+        acumuladaProducida,
+        acumuladaEsperada,
+        diferencia: acumuladaProducida - acumuladaEsperada,
+      });
+    }
+
+    // Paros REA del día — agrupar por (estacion, descripcionModoFalla, categoria)
+    const stopsPath = process.env.STOPS_FILE_PATH
+      ? path.resolve(process.env.STOPS_FILE_PATH)
+      : path.join(dataDir, 'paros.csv');
+
+    let stopsData = [];
+    if (fs.existsSync(stopsPath)) {
+      const stopsRaw  = fs.readFileSync(stopsPath, 'utf8');
+      const stopsRows = stopsRaw.split('\n').slice(1).filter(r => r.trim() !== '');
+
+      // Map: estacion → { tiempoTotal, descripcionesMap: { "desc||cat" → minutos } }
+      const estacionesMap = {};
+
+      for (const stopsRow of stopsRows) {
+        const cols = stopsRow.split(';');
+        const stopFecha           = cols[0];
+        const areaData            = cols[1];
+        const diferencia_minutos  = cols[6];
+        const categoriaData       = cols[7];
+        const estacion            = cols[8];
+        const descripcion_modo_falla = cols[10];
+
+        if (areaData !== 'REA') continue;
+        if (stopFecha !== fecha)  continue;
+        if (!estacion)            continue;
+
+        const minutos = parseInt(diferencia_minutos) || 0;
+        if (minutos <= 0) continue;
+
+        const desc = (descripcion_modo_falla || '').trim();
+        const cat  = (categoriaData || '').trim();
+        const key  = `${desc}||${cat}`;
+
+        if (!estacionesMap[estacion]) {
+          estacionesMap[estacion] = { estacion, tiempoTotal: 0, descripcionesMap: {} };
+        }
+        estacionesMap[estacion].tiempoTotal += minutos;
+        estacionesMap[estacion].descripcionesMap[key] =
+          (estacionesMap[estacion].descripcionesMap[key] || 0) + minutos;
+      }
+
+      stopsData = Object.values(estacionesMap)
+        .map(e => ({
+          estacion: e.estacion,
+          tiempoTotal: e.tiempoTotal,
+          // Array de bloques individuales (descripcion + categoria + minutos)
+          parosAgrupados: Object.entries(e.descripcionesMap).map(([k, mins]) => {
+            const [desc, cat] = k.split('||');
+            return { descripcionModoFalla: desc, categoria: cat, minutos: mins };
+          }).sort((a, b) => b.minutos - a.minutos),
+        }))
+        .sort((a, b) => b.tiempoTotal - a.tiempoTotal);
+    }
+
+    const acumuladaEsperadaFinal = Math.round(totalExpected);
+    res.json({
+      fecha,
+      tendencia: datosOrdenados,
+      parosPorEstacion: stopsData,
+      resumenDiario: {
+        totalProducido: acumuladaProducida,
+        totalEsperado: acumuladaEsperadaFinal,
+        diferenciaDiaria: acumuladaProducida - acumuladaEsperadaFinal,
+        programmedDowntimeHours: pdh,
+      },
+    });
+  } catch (err) {
+    console.error('Error en /rea-production-diario:', err);
+    res.status(500).json({ error: 'Error procesando REA Diario: ' + err.message });
+  }
+});
 
 module.exports = router;
 
