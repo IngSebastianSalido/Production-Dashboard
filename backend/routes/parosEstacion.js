@@ -166,50 +166,7 @@ module.exports = (stopsFilePath) => {
         // Objeto para acumular tiempos por estación
         const estacionesMap = {};
 
-<<<<<<< HEAD
-        rows.forEach(row => {
-          const cols = row.split(';');
-          
-          // Estructura del CSV: fecha;area;linea;pn;hora_paro;hora_arranque;diferencia_minutos;categoria;estacion;modo_falla;descripcion_modo_falla;descripcion;paro_programado
-          const [
-            fecha,
-            areaData,
-            lineaData,
-            pnData,
-            hora_paro,
-            hora_arranque,
-            diferencia_minutos,
-            categoriaData,
-            estacion,
-            modo_falla,
-            descripcion_modo_falla,
-            descripcion,
-            paroProgramadoData
-          ] = cols;
-
-          if (!fecha || !estacion || !diferencia_minutos) return;
-
-          // Convertir fecha del registro
-          const fechaRegistro = new Date(fecha);
-
-          // Calcular paro_programado si no existe en el registro
-          let paroProgramadoFinal = paroProgramadoData;
-          if (!paroProgramadoFinal || paroProgramadoFinal.trim() === '') {
-            const esCategoriaFallo = categoriaData.toLowerCase().trim() === 'equipment fault' || categoriaData.toLowerCase().trim() === 'fallo';
-            paroProgramadoFinal = esCategoriaFallo ? 'No' : 'Si';
-          }
-
-          // Aplicar filtros
-          if (fechaRegistro < fechaInicioDate || fechaRegistro > fechaFinDate) return;
-          if (area && areaData !== area) return;
-          if (linea && lineaData !== linea) return;
-          if (pn && pnData !== pn) return;
-          if (categoria && categoriaData !== categoria) return;
-          if (paroProgramado && paroProgramadoFinal !== paroProgramado) return;
-
-=======
         filteredRows.forEach((stopRow) => {
->>>>>>> c2798f29e577cdb7b6530ca9c5ad3fb4c1680dfc
           // Acumular tiempo por estación
           const minutos = parseInt(stopRow.diferencia_minutos, 10) || 0;
           const estacion = stopRow.estacion;
