@@ -12,10 +12,40 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // Escuchar en todas las interfaces si no se especifica un HOST
 const HOST = process.env.HOST || '0.0.0.0';
+const BACKEND_PORT = String(PORT);
 
-// Middleware: permitir CORS desde cualquier origen en desarrollo
+// Middleware CORS: soporta lista por .env y permite frontend en LAN sin IP fija.
+const envOrigins = String(process.env.CORS_ORIGIN || '')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+
 const corsOptions = {
-    origin: '*',
+    origin: (origin, callback) => {
+        // Permite herramientas no-browser o mismo origen sin cabecera Origin.
+        if (!origin) return callback(null, true);
+
+        if (envOrigins.includes('*') || envOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        // Permite dev frontend desde cualquier host de la LAN en puerto 4000
+        // y también llamadas desde el mismo puerto del backend.
+        try {
+            const parsed = new URL(origin);
+            const isHttp = parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            const isDevFrontendPort = parsed.port === '4000';
+            const isBackendPort = parsed.port === BACKEND_PORT;
+
+            if (isHttp && (isDevFrontendPort || isBackendPort)) {
+                return callback(null, true);
+            }
+        } catch (e) {
+            // Si Origin es inválido, cae en rechazo controlado.
+        }
+
+        return callback(new Error(`CORS: origin no permitido (${origin})`));
+    },
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders: ['Content-Type'],
 };
@@ -51,6 +81,18 @@ function getFilePath(envPath, defaultPath) {
     } catch (err) {
         console.warn(`Network path not accessible: ${envPath}. Falling back to local path: ${defaultPath}`);
         return defaultPath;
+    }
+}
+
+function areEolCutsCurrent() {
+    try {
+        const sourcePath = getFilePath(process.env.REA_SOURCE_FILE_PATH, path.join(dataDir, 'ProductionReport.csv'));
+        const source = fs.statSync(sourcePath);
+        const cuts = fs.statSync(path.join(dataDir, 'EOL_Cuts.csv'));
+        const enriched = fs.statSync(path.join(dataDir, 'EOL_Cuts_OEE.csv'));
+        return cuts.size > 0 && enriched.size > 128 && cuts.mtimeMs >= source.mtimeMs && enriched.mtimeMs >= source.mtimeMs;
+    } catch (err) {
+        return false;
     }
 }
 
@@ -336,7 +378,7 @@ try {
 // Auto-generate EOL_Cuts.csv and EOL_Cuts_OEE.csv on server start (non-blocking)
 // Set AUTO_GENERATE_EOL=false to disable. Default: enabled.
 try {
-    if (process.env.AUTO_GENERATE_EOL === undefined || String(process.env.AUTO_GENERATE_EOL).toLowerCase() !== 'false') {
+    if ((process.env.AUTO_GENERATE_EOL === undefined || String(process.env.AUTO_GENERATE_EOL).toLowerCase() !== 'false') && !areEolCutsCurrent()) {
         const child_process = require('child_process');
         const scriptPath = path.join(__dirname, 'scripts', 'generate_eol_cuts.js');
         if (fs.existsSync(scriptPath)) {
@@ -357,7 +399,7 @@ try {
             console.warn('Auto-generation disabled: script generate_eol_cuts.js not found at', path.join(__dirname, 'scripts'));
         }
     } else {
-        console.log('AUTO_GENERATE_EOL=false -> skipping automatic generation of EOL_Cuts');
+        console.log('EOL_Cuts vigente o AUTO_GENERATE_EOL=false -> se omite la regeneración automática');
     }
 } catch (err) {
     console.warn('Error starting auto-generation of EOL cuts:', err && err.message ? err.message : String(err));

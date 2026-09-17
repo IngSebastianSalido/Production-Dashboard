@@ -34,6 +34,19 @@ const getFileSignature = async (filePath) => {
   return `${st.size}:${Math.floor(st.mtimeMs)}`;
 };
 
+const areEolCutsCurrent = async () => {
+  try {
+    const [source, cuts, enriched] = await Promise.all([
+      fs.promises.stat(reaSourceFilePath),
+      fs.promises.stat(path.join(dataDir, 'EOL_Cuts.csv')),
+      fs.promises.stat(path.join(dataDir, 'EOL_Cuts_OEE.csv')),
+    ]);
+    return cuts.size > 0 && enriched.size > 128 && cuts.mtimeMs >= source.mtimeMs && enriched.mtimeMs >= source.mtimeMs;
+  } catch {
+    return false;
+  }
+};
+
 const syncProductionSourceIfNeeded = async () => {
   const sourceSignature = await getFileSignature(reaSourceFilePath);
   const sourceResolved = path.resolve(reaSourceFilePath);
@@ -55,11 +68,16 @@ const syncProductionSourceIfNeeded = async () => {
   return { sourceSignature, copied: false };
 };
 
-const triggerEolCutsRefreshInBackground = () => {
+const triggerEolCutsRefreshInBackground = async () => {
   if (sourceSyncState.eolRefreshInProgress) return;
   sourceSyncState.eolRefreshInProgress = true;
 
   try {
+    if (await areEolCutsCurrent()) {
+      sourceSyncState.eolRefreshInProgress = false;
+      return;
+    }
+
     if (isPackaged) {
       const { generateCuts, generateEnriched } = require('../scripts/generate_eol_cuts');
       setImmediate(() => {
@@ -94,7 +112,12 @@ const triggerEolCutsRefreshInBackground = () => {
       sourceSyncState.eolRefreshInProgress = false;
     });
 
-    child.on('close', () => {
+    child.on('close', (code) => {
+      if (code === 0) {
+        console.log('✅ EOL_Cuts regenerado en segundo plano.');
+      } else {
+        console.warn(`No se pudo regenerar EOL_Cuts: el proceso terminó con código ${code}.`);
+      }
       sourceSyncState.eolRefreshInProgress = false;
     });
 
@@ -187,7 +210,7 @@ router.get('/rea-production', async (req, res) => {
     const { copied } = await syncProductionSourceIfNeeded();
     if (copied) {
       console.log('✅ Archivo ProductionReport copiado correctamente.');
-      triggerEolCutsRefreshInBackground();
+      void triggerEolCutsRefreshInBackground();
     }
 
     const reportPath = path.resolve(reaSourceFilePath) === path.resolve(reaFilePath)
@@ -199,11 +222,13 @@ router.get('/rea-production', async (req, res) => {
     if (rows.length === 0) return res.json([]);
 
     const header = rows[0].split(';');
-    const dataRows = rows.slice(Math.max(rows.length - 1, 1)); // Solo el último registro
     const resultados = [];
 
-    for (const row of dataRows) {
+    for (let index = rows.length - 1; index > 0; index -= 1) {
+      const row = rows[index];
       const columns = row.split(';');
+      if (columns.length !== header.length) continue;
+
       const fecha = columns[0];
       const hora = columns[1];
       const pn = columns[2];
@@ -222,6 +247,7 @@ router.get('/rea-production', async (req, res) => {
       }
 
       resultados.push({ fecha, hora, pn, estaciones });
+      break;
     }
 
     res.json(resultados);
@@ -232,134 +258,26 @@ router.get('/rea-production', async (req, res) => {
 });
 
 // 🚀 Crear HrperHrReport automáticamente basado en ProductionReport
-router.get('/rea-production-eolo', (req, res) => {
+router.get('/rea-production-eolo', async (req, res) => {
   if (!reaSourceFilePath) {
     console.error('No se encontró REA_SOURCE_FILE_PATH en .env');
     return res.status(500).send('No está configurado REA_SOURCE_FILE_PATH.');
   }
 
-  fs.copyFile(reaSourceFilePath, reaFilePath, (copyErr) => {
-    if (copyErr) {
-      console.error('Error al copiar ProductionReport:', copyErr);
-      return res.status(500).send('Error al copiar ProductionReport.');
+  try {
+    const { copied } = await syncProductionSourceIfNeeded();
+    if (copied) {
+      console.log('✅ ProductionReport copiado.');
+      void triggerEolCutsRefreshInBackground();
     }
 
-    console.log('✅ ProductionReport copiado.');
-
-    // Regenerar EOL_Cuts.csv y EOL_Cuts_OEE.csv después de copiar
-    try {
-      if (isPackaged) {
-        const { generateCuts, generateEnriched } = require('../scripts/generate_eol_cuts');
-        setImmediate(() => {
-          try {
-            generateCuts();
-            generateEnriched(154);
-            console.log('🔄 EOL_Cuts regenerado en modo empaquetado.');
-          } catch (e) {
-            console.warn('No se pudo regenerar EOL_Cuts:', e.message);
-          }
-        });
-      } else {
-        const { spawn } = require('child_process');
-        const scriptPath = path.join(__dirname, '..', 'scripts', 'generate_eol_cuts.js');
-        if (fs.existsSync(scriptPath)) {
-          const child = spawn(process.execPath, [scriptPath, '--rate=154'], { 
-            cwd: path.join(__dirname, '..'),
-            env: process.env,
-            stdio: 'ignore'
-          });
-          console.log('🔄 Regenerando EOL_Cuts en segundo plano...');
-        }
-      }
-    } catch (e) {
-      console.warn('No se pudo regenerar EOL_Cuts:', e.message);
-    }
-
-    fs.readFile(reaFilePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error('Error leyendo ProductionReport:', err);
-        return res.status(500).send('Error leyendo ProductionReport.');
-      }
-
-  const rows = data.split('\n').filter(row => row.trim() !== '');
-  const header = rows[0].split(';');
-  // By default process the entire file. If REA_MAX_ROWS is set (env) and > 0,
-  // only keep the last REA_MAX_ROWS rows to limit memory/CPU for very large files.
-  const maxRows = parseInt(process.env.REA_MAX_ROWS || '0', 10) || 0;
-  const dataRows = maxRows > 0 ? rows.slice(-maxRows) : rows.slice(1);
-
-      const eoloIndex = header.findIndex(col => col.toLowerCase().includes('eolok'));
-
-      if (eoloIndex === -1) {
-        console.error('No se encontró la columna EOLOk.');
-        return res.status(500).send('No se encontró la columna EOLOk.');
-      }
-
-      const registros = [];
-
-      for (const row of dataRows) {
-        const columns = row.split(';');
-        const rowFecha = columns[0];
-        const rowHora = columns[1];
-
-        if (!rowFecha || !rowHora) continue;
-
-        const cleanHora = rowHora.replace('a. m.', 'AM').replace('p. m.', 'PM').trim();
-        const fechaHoraString = `${rowFecha} ${cleanHora}`;
-        const fechaHoraObj = new Date(fechaHoraString);
-
-        if (isNaN(fechaHoraObj)) continue;
-
-        const horaCompleta = fechaHoraObj.toTimeString().split(' ')[0];
-        const eolOk = parseInt(columns[eoloIndex]) || 0;
-
-        registros.push({
-          fecha: rowFecha,
-          horaCompleta,
-          piezasAcumuladas: eolOk,
-          fechaHoraReal: fechaHoraObj
-        });
-      }
-
-      registros.sort((a, b) => a.fechaHoraReal - b.fechaHoraReal);
-
-      const diferencias = [];
-      let acumuladoAnterior = 0;
-
-      for (const actual of registros) {
-        let diferencia = 0;
-
-        if (actual.piezasAcumuladas !== 0) {
-          if (actual.piezasAcumuladas >= acumuladoAnterior) {
-            diferencia = actual.piezasAcumuladas - acumuladoAnterior;
-          } else {
-            diferencia = actual.piezasAcumuladas;
-          }
-          acumuladoAnterior = actual.piezasAcumuladas;
-        }
-
-        diferencias.push({
-          fecha: actual.fecha,
-          hora: actual.horaCompleta,
-          piezasProducidas: diferencia
-        });
-      }
-
-      const csvHeader = 'Fecha,Hora,PiezasProducidas\n';
-      const csvContent = diferencias.map(dif => `${dif.fecha},${dif.hora},${dif.piezasProducidas}`).join('\n');
-      const fullCsv = csvHeader + csvContent;
-
-      fs.writeFile(outputCsvPath, fullCsv, 'utf8', (err) => {
-        if (err) {
-          console.error('Error escribiendo HrperHrReport:', err);
-          return res.status(500).send('Error escribiendo HrperHrReport.csv.');
-        }
-
-        console.log('✅ HrperHrReport.csv generado correctamente.');
-        res.json({ message: 'HrperHrReport.csv generado exitosamente.' });
-      });
-    });
-  });
+    await getOrBuildEoloDiferencias();
+    console.log('✅ HrperHrReport.csv generado correctamente.');
+    res.json({ message: 'HrperHrReport.csv generado exitosamente.' });
+  } catch (err) {
+    console.error('Error en /rea-production-eolo:', err);
+    res.status(500).send('Error procesando el archivo ProductionReport.');
+  }
 });
 
 
@@ -795,27 +713,28 @@ router.get('/rea-production-eolo-cuts', async (req, res) => {
 // Endpoint: devuelve cortes EOL enriquecidos con métricas OEE (disponibilidad, eficiencia, calidad)
 router.get('/rea-production-eolo-cuts-oee', async (req, res) => {
   try {
-    // Ejecutar el script de generación de cortes automáticamente
     const scriptPath = path.join(__dirname, '../scripts/generate_eol_cuts.js');
     const ratePerHour = parseFloat(req.query.ratePerHour) || 154;
-    
-    try {
-      if (isPackaged) {
-        const { generateCuts, generateEnriched } = require('../scripts/generate_eol_cuts');
-        generateCuts();
-        generateEnriched(ratePerHour);
-        console.log('Cortes EOL generados en modo empaquetado');
-      } else {
-        console.log('Generando cortes EOL automáticamente...');
-        execSync(`node "${scriptPath}" --rate=${ratePerHour}`, { 
-          cwd: path.join(__dirname, '..'),
-          stdio: 'pipe' 
-        });
-        console.log('Cortes EOL generados exitosamente');
+
+    if (!(await areEolCutsCurrent()) && !sourceSyncState.eolRefreshInProgress) {
+      try {
+        if (isPackaged) {
+          const { generateCuts, generateEnriched } = require('../scripts/generate_eol_cuts');
+          generateCuts();
+          generateEnriched(ratePerHour);
+          console.log('Cortes EOL generados en modo empaquetado');
+        } else {
+          console.log('Generando cortes EOL automáticamente...');
+          execSync(`node "${scriptPath}" --rate=${ratePerHour}`, {
+            cwd: path.join(__dirname, '..'),
+            stdio: 'pipe'
+          });
+          console.log('Cortes EOL generados exitosamente');
+        }
+      } catch (execErr) {
+        console.error('Error al generar cortes EOL:', execErr.message);
+        return res.status(500).send('Error al generar cortes EOL: ' + execErr.message);
       }
-    } catch (execErr) {
-      console.error('Error al generar cortes EOL:', execErr.message);
-      return res.status(500).send('Error al generar cortes EOL: ' + execErr.message);
     }
 
     const csvPath = path.join(dataDir, 'EOL_Cuts.csv');

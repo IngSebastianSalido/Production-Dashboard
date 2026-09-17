@@ -65,9 +65,30 @@ const OEEPage = () => {
           ratePerHour: defaultRate
         }
       });
-      
+
       // response.data.cuts contiene los cortes con métricas OEE ya calculadas
-      setData(response.data.cuts || []);
+      const cuts = response.data.cuts || [];
+      if (cuts.length === 0) {
+        const availableResponse = await axios.get(`${serverApiUrl}/api/rea-production-eolo-cuts-oee`, {
+          params: { ratePerHour: defaultRate }
+        });
+        const availableCuts = availableResponse.data.cuts || [];
+        const latestCut = availableCuts
+          .filter(cut => !Number.isNaN(new Date(cut.startISO).getTime()))
+          .sort((left, right) => new Date(right.startISO) - new Date(left.startISO))[0];
+
+        if (latestCut) {
+          const latestDate = latestCut.startISO.slice(0, 10);
+          setFilters(previous => ({
+            ...previous,
+            dateFrom: `${latestDate.slice(0, 8)}01`,
+            dateTo: latestDate
+          }));
+          return;
+        }
+      }
+
+      setData(cuts);
     } catch (err) {
       setError('Error de conexión con el servidor');
       console.error('Error fetching OEE cuts:', err);

@@ -10,4 +10,4 @@ echo Iniciando servidor backend...
 start /B node server.js
 popd
 
-echo Servidor iniciado. Abre tu navegador en http://192.168.68.12:3000
+echo Servidor iniciado. Abre tu navegador en http://FMM-C-023:3000

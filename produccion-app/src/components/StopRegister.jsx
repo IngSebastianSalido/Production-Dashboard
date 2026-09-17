@@ -22,6 +22,32 @@ const StopRegister = ({
   };
   const safeCategories = Array.isArray(categories) ? categories : [];
 
+  const readStorageValue = (key) => {
+    try {
+      return localStorage.getItem(key) || '';
+    } catch (error) {
+      return '';
+    }
+  };
+
+  const writeStorageValue = (key, value) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch (error) {
+      if (error?.name !== 'QuotaExceededError' && error?.name !== 'NS_ERROR_DOM_QUOTA_REACHED') {
+        console.warn(`No se pudo guardar ${key} en localStorage:`, error);
+      }
+    }
+  };
+
+  const removeStorageValue = (key) => {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.warn(`No se pudo eliminar ${key} de localStorage:`, error);
+    }
+  };
+
   const buildEmptyState = () => ({
     fecha: '',
     area: '',
@@ -40,9 +66,9 @@ const StopRegister = ({
 
   const buildCreateDefaults = () => ({
     ...buildEmptyState(),
-    area: localStorage.getItem('area') || '',
-    linea: localStorage.getItem('linea') || '',
-    pn: localStorage.getItem('pn') || '',
+    area: readStorageValue('area'),
+    linea: readStorageValue('linea'),
+    pn: readStorageValue('pn'),
   });
 
   const resolveInitialState = () => {
@@ -88,7 +114,7 @@ const StopRegister = ({
           setProductionPn(pnFromReport);
           setFormData((prevFormData) => {
             const updated = { ...prevFormData, pn: pnFromReport };
-            localStorage.setItem('pn', pnFromReport);
+            writeStorageValue('pn', pnFromReport);
             return updated;
           });
         }
@@ -156,20 +182,20 @@ const StopRegister = ({
         newFormData.linea = '';
         newFormData.pn = '';
         if (!isEditMode) {
-          localStorage.removeItem('linea');
-          localStorage.removeItem('pn');
+          removeStorageValue('linea');
+          removeStorageValue('pn');
         }
       } else if (name === 'linea') {
         newFormData.pn = '';
         if (!isEditMode) {
-          localStorage.removeItem('pn');
+          removeStorageValue('pn');
         }
       }
 
       // Validación visual se realizará al enviar para evitar interrupciones durante la edición
 
       if (!isEditMode && name !== 'estacion' && name !== 'modoFalla' && name !== 'categoria' && name !== 'hora_paro' && name !== 'hora_arranque' && name !== 'descripcion' && name !== 'descripcionModoFalla' && name !== 'cruza_medianoche') {
-        localStorage.setItem(name, newValue);
+        writeStorageValue(name, newValue);
       }
 
       return newFormData;

@@ -39,6 +39,8 @@ function generateCuts(options = {}){
   const registros = [];
   for (const row of dataRows){
     const cols = row.split(';');
+    if (cols.length !== header.length) continue;
+
     const rowFecha = cols[0];
     const rowHora = cols[1];
     if (!rowFecha || !rowHora) continue;
@@ -365,9 +367,13 @@ function generateEnriched(ratePerHour = 154){
 
   function parseISOFromParts(dateStr, timeStr, isoStr){ if (isoStr && String(isoStr).trim()!==''){ const cleaned = String(isoStr).trim().replace(/\s+(AM|PM)$/i,''); const d = new Date(cleaned); if (!isNaN(d)) return d; } let dateISO = dateStr; if (dateStr && dateStr.includes('/')){ const p=dateStr.split('/'); if (p.length===3) dateISO = `${p[2]}-${p[0].padStart(2,'0')}-${p[1].padStart(2,'0')}`; } let time = (timeStr||'').trim(); const ampm = /\b(AM|PM)\b/i.exec(time); if (ampm){ const m = time.match(/(\d{1,2}):(\d{2}):(\d{2})/); if (m){ let hh = parseInt(m[1],10); const mm=m[2]; const ss=m[3]; const ap=ampm[1].toUpperCase(); if (ap==='PM' && hh<12) hh+=12; if (ap==='AM' && hh===12) hh=0; time = `${String(hh).padStart(2,'0')}:${mm}:${ss}`; } } const final = new Date(`${dateISO}T${time}`); return isNaN(final)?null:final; }
 
+  const header = splitCsvLine(rows[0]);
+  const columnIndex = Object.fromEntries(header.map((column, index) => [column, index]));
+  const valueFor = (parts, name) => parts[columnIndex[name]] || '';
+
   for (const row of dataRows){
     const parts = splitCsvLine(row); if (parts.length<11) continue;
-    const startFecha = parts[0]; const startHora = parts[1]; const startISOraw = parts[2]; const endFecha = parts[3]; const endHora = parts[4]; const endISOraw = parts[5]; const pn = parts[6]?parts[6].replace(/^"|"$/g,'') : ''; const piezasTotales = parseInt(parts[7])||0; const stationsJsonRaw = parts[10] || parts[parts.length-1];
+    const startFecha = valueFor(parts, 'startFecha'); const startHora = valueFor(parts, 'startHora'); const startISOraw = valueFor(parts, 'startFechaHoraISO'); const endFecha = valueFor(parts, 'endFecha'); const endHora = valueFor(parts, 'endHora'); const endISOraw = valueFor(parts, 'endFechaHoraISO'); const pn = valueFor(parts, 'pn').replace(/^"|"$/g, ''); const piezasTotales = parseInt(valueFor(parts, 'piezasTotales')) || 0; const stationsJsonRaw = valueFor(parts, 'stations_json') || parts[parts.length-1];
     let stations = [];
     try { stations = JSON.parse(stationsJsonRaw.replace(/""/g,'"').replace(/^"|"$/g,'')); } catch(e){ stations = []; }
     const cutStart = parseISOFromParts(startFecha, startHora, startISOraw); const cutEnd = parseISOFromParts(endFecha, endHora, endISOraw); if (!cutStart || !cutEnd) continue;
